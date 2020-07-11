@@ -84,7 +84,7 @@ namespace skoll.ui.Controllers
             usuario.Login = user.Login;
             usuario.Nome = user.Nome;
             if (!String.IsNullOrEmpty(user.Senha))
-                usuario.Senha = user.Senha;//md5.ComputeHash(ASCIIEncoding.ASCII.GetBytes(user.Senha)).ToString();
+                usuario.Senha = md5.ComputeHash(ASCIIEncoding.ASCII.GetBytes(user.Senha)).ToString();
             usuario.Situacao = user.Situacao;
 
             uow.UsuarioRepositorio.Atualizar(usuario);

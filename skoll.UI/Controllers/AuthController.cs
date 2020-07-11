@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Security.Principal;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +24,7 @@ namespace skoll.ui.Controllers
     public class AuthController : ControllerBase
     {
         private IUnitOfWork uow;
+        private readonly MD5 md5 = new MD5CryptoServiceProvider();
         public AuthController(IUnitOfWork unitOfWork,
             [FromServices] SigningConfigurations signingConfigurations,
             [FromServices] TokenConfigurations tokenConfigurations)
@@ -39,13 +42,13 @@ namespace skoll.ui.Controllers
                 return BadRequest();
 
             var usuarioAutenticado = uow.UsuarioRepositorio.Get(u => u.Login == usuario.Login
-                                                                  && u.Senha == usuario.Senha
+                                                                  && u.Senha == md5.ComputeHash(ASCIIEncoding.ASCII.GetBytes(usuario.Senha)).ToString()
                                                                   && u.Situacao == true);
 
             if (usuarioAutenticado != null)
             {
                 ClaimsIdentity identity = new ClaimsIdentity(
-                    new GenericIdentity(usuario.Login, "Login"),
+                    new GenericIdentity(usuario.Login, "Login"),        
                     new[] {
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
                         new Claim(JwtRegisteredClaimNames.UniqueName, usuario.Login)
