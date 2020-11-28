@@ -18,7 +18,7 @@ namespace skoll.Infrastructure
                )
              );
 
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton<IUnitOfWork, UnitOfWork>();
 
             return services;
         }
