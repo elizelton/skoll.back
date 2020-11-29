@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using skoll.Application.Common.Interfaces;
+using skoll.Infraestrutura.Interfaces.UnitOfWork;
+using skoll.Infraestrutura.UnitOfWork;
 using Skoll.Infrastructure.Persistence;
 using System;
 
@@ -10,15 +11,10 @@ namespace skoll.Infrastructure
     public static class DependencyInjection
     {
 
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddInfraestrutura(this IServiceCollection services, IConfiguration configuration)
         {
 
-            services.AddDbContext<AppDbContext>(options =>
-               options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")
-               )
-             );
-
-            services.AddSingleton<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton<IUnitOfWorkFactory, UnitOfWorkFactory>();
 
             return services;
         }
