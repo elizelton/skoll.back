@@ -4,16 +4,18 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using skoll.Aplicacao.Interfaces;
+using skoll.Aplicacao.Notification;
+using skoll.Aplicacao.Servicos;
 using skoll.Application.Common.Model;
 using skoll.Application.Common.Services;
-
 using System;
 
 namespace skoll.Application
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddAplicacao(this IServiceCollection services, IConfiguration configuration)
         {
 
             var signingConfigurations = new SigningConfigurations();
@@ -53,6 +55,12 @@ namespace skoll.Application
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+
+            //Servicos
+            services.AddSingleton<IUsuarioService, UsuarioService>();
+            services.AddSingleton<IAutenticacaoService, AutenticacaoService>();
+            
+            services.AddSingleton<NotificationContext>();
 
             return services;
         }

@@ -10,10 +10,8 @@ namespace skoll.Infraestrutura.Interfaces.UnitOfWork
 {
     public interface IUnitOfWork : IDisposable
     {
-        bool _hasConnection { get; set; }
-        SqlTransaction _transaction { get; set; }
-        SqlConnection _connection { get; set; }
+        IUnitOfWorkRepository Repositorios { get; }
         void SaveChanges();
-        void Dispose();
+        new void Dispose();
     }
 }

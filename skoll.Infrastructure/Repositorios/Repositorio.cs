@@ -1,24 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using skoll.Application.Common.Interfaces;
+using Npgsql;
 using skoll.Infraestrutura.Interfaces.Repositorios;
-using Skoll.Infrastructure.Persistence;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 
 namespace skoll.Infraestrutura.Repositorios
 {
-    public abstract class Repositorio
+    public abstract class RepositorioBase
     {
-        protected SqlConnection _context;
-        protected SqlTransaction _transaction;
+        protected NpgsqlConnection _context;
+        protected NpgsqlTransaction _transaction;
 
-        SqlCommand CreateCommand(string query)
+        protected NpgsqlCommand CreateCommand(string query)
         {
-            return new SqlCommand(query, _context, _transaction);
+            return new NpgsqlCommand(query, _context, _transaction);
         }
     }
 }

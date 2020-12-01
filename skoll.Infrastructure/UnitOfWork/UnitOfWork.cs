@@ -1,4 +1,5 @@
-﻿using skoll.Infraestrutura.Interfaces.UnitOfWork;
+﻿using Npgsql;
+using skoll.Infraestrutura.Interfaces.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,12 +13,12 @@ namespace skoll.Infraestrutura.UnitOfWork
     public class UnitOfWork : IUnitOfWork
     {
         public bool _hasConnection { get; set; }
-        public SqlTransaction _transaction { get; set; }
-        public SqlConnection _connection { get; set; }
+        public NpgsqlTransaction _transaction { get; set; }
+        public NpgsqlConnection _connection { get; set; }
         public IUnitOfWorkRepository Repositorios { get; set; }
 
 
-        public UnitOfWork(SqlConnection connection, bool hasConnection)
+        public UnitOfWork(NpgsqlConnection connection, bool hasConnection)
         {
             _connection = connection;
             _hasConnection = hasConnection;
@@ -49,7 +50,7 @@ namespace skoll.Infraestrutura.UnitOfWork
             }
 
             if (_connection != null && _hasConnection)
-           {
+            {
                 _connection.Close();
                 _connection = null;
             }

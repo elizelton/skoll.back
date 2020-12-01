@@ -1,4 +1,5 @@
-﻿using skoll.Infraestrutura.Interfaces.Repositorios;
+﻿using Npgsql;
+using skoll.Infraestrutura.Interfaces.Repositorios;
 using skoll.Infraestrutura.Interfaces.UnitOfWork;
 using skoll.Infraestrutura.Repositorios;
 using System;
@@ -12,10 +13,10 @@ namespace skoll.Infraestrutura.UnitOfWork
 {
     public class UnitOfWorkRepository : IUnitOfWorkRepository
     {
-        public IUsuarioRepositorio usuarioRepositorio { get; }
-        public UnitOfWorkRepository(SqlConnection context, SqlTransaction transaction)
+        public IUsuarioRepositorio UsuarioRepositorio { get; }
+        public UnitOfWorkRepository(NpgsqlConnection context, NpgsqlTransaction transaction)
         {
-            usuarioRepositorio = new UsuarioRepositorio(context, transaction);
+            UsuarioRepositorio = new UsuarioRepositorio(context, transaction);
         }
     }
 }

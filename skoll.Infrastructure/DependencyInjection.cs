@@ -3,7 +3,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using skoll.Infraestrutura.Interfaces.UnitOfWork;
 using skoll.Infraestrutura.UnitOfWork;
-using Skoll.Infrastructure.Persistence;
 using System;
 
 namespace skoll.Infrastructure

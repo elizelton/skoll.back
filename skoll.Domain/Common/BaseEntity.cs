@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using FluentValidation;
+using System.ComponentModel.DataAnnotations;
 
 namespace skoll.Domain.Common
 {
@@ -6,5 +7,6 @@ namespace skoll.Domain.Common
     {
         [Key()]
         public int Id { get; set; }
+
     }
 }

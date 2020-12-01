@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30128.74
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "skoll.Application", "skoll.Core\skoll.Application.csproj", "{B7D6E976-D179-4539-83B1-C3C1B7345FFE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "skoll.Aplicacao", "skoll.Core\skoll.Aplicacao.csproj", "{B7D6E976-D179-4539-83B1-C3C1B7345FFE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "skoll.Infrastructure", "skoll.Infrastructure\skoll.Infrastructure.csproj", "{2838DFB4-1618-4674-8700-EA2DDF99F5E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "skoll.Infraestrutura", "skoll.Infrastructure\skoll.Infraestrutura.csproj", "{2838DFB4-1618-4674-8700-EA2DDF99F5E6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "skoll.Domain", "skoll.Domain\skoll.Domain.csproj", "{DFCDCF37-E78B-4794-9C3F-6C3EB5D7515A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "skoll.Dominio", "skoll.Domain\skoll.Dominio.csproj", "{DFCDCF37-E78B-4794-9C3F-6C3EB5D7515A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "skoll.ui", "skoll.UI\skoll.ui.csproj", "{C141C9CB-976A-4D2D-A60E-B3FB802A5276}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "skoll.UI", "skoll.UI\skoll.UI.csproj", "{C141C9CB-976A-4D2D-A60E-B3FB802A5276}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

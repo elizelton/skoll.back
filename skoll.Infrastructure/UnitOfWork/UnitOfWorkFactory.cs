@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Npgsql;
 using skoll.Infraestrutura.Interfaces.UnitOfWork;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace skoll.Infraestrutura.UnitOfWork
             if (String.IsNullOrEmpty(connString))
                 throw new ConfigurationErrorsException($"Verificar {stringConexao} no appsetting.json");
 
-            var connection = new SqlConnection(connString);
+            var connection = new NpgsqlConnection(connString);
 
             // Inicia a conexão
             connection.Open();

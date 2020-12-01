@@ -5,6 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using skoll.Infrastructure;
 using skoll.Application;
+using Elastic.Apm.NetCoreAll;
+using Elastic.Apm.DiagnosticSource;
+using Elastic.Apm.EntityFrameworkCore;
 
 namespace skoll
 {
@@ -22,8 +25,8 @@ namespace skoll
         {
             services.AddControllersWithViews();
 
-            services.AddApplication(Configuration);
-            services.AddInfrastructure(Configuration);
+            services.AddAplicacao(Configuration);
+            services.AddInfraestrutura(Configuration);
    
         }
 
@@ -41,12 +44,18 @@ namespace skoll
                 app.UseHsts();
             }
             
+            app.UseCors(builder => builder.WithOrigins("http://localhost:4200")
+                                .AllowAnyMethod()
+                                .AllowAnyHeader());
+
             app.UseCors(builder => builder.WithOrigins("https://skollweb.herokuapp.com/")
                                 .AllowAnyMethod()
                                 .AllowAnyHeader());
     
             
             app.UseHttpsRedirection();
+
+            app.UseAllElasticApm(Configuration);
 
             app.UseRouting();
             app.UseAuthorization();
