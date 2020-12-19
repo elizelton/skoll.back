@@ -13,6 +13,12 @@
     <None Remove=".gitignore" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    <PackageReference Include="Swashbuckle.Core" Version="5.6.0" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\skoll.Aplicacao\skoll.Aplicacao.csproj" />
     <ProjectReference Include="..\skoll.Dominio\skoll.Dominio.csproj" />

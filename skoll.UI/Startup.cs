@@ -7,10 +7,11 @@ using skoll.Infraestrutura;
 using skoll.Dominio.Exceptions;
 using Microsoft.AspNetCore.Http;
 using System;
-using skoll.Dominio.Common;
 using Npgsql;
 using skoll.Aplicacao;
 using Newtonsoft.Json;
+using Swashbuckle.Swagger;
+using Microsoft.OpenApi.Models;
 
 namespace skoll
 {
@@ -30,6 +31,16 @@ namespace skoll
 
             services.AddAplicacao(Configuration);
             services.AddInfraestrutura(Configuration);
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo()
+                {
+                    Version = "v1",
+                    Title = "SKoll API",
+                    Description = "Backend SKoll API"
+                });
+            });
 
         }
 
@@ -52,9 +63,20 @@ namespace skoll
                                 .AllowAnyMethod()
                                 .AllowAnyHeader());
 
+            app.UseCors(builder => builder.WithOrigins("http://0.0.0.0:5001")
+                               .AllowAnyMethod()
+                               .AllowAnyHeader());
+
             app.UseCors(builder => builder.WithOrigins("https://skollweb.herokuapp.com/")
                                 .AllowAnyMethod()
                                 .AllowAnyHeader());
+
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.Use(async (context, next) =>
             {
@@ -64,7 +86,7 @@ namespace skoll
                 }
                 catch (AppError ex)
                 {
-                    string json = JsonConvert.SerializeObject(new Response("error", ex._message));
+                    string json = JsonConvert.SerializeObject(new Dominio.Common.Response("error", ex._message));
                     context.Response.ContentType = "application/json";
                     context.Response.StatusCode = ex._statusCode;
 
@@ -72,7 +94,7 @@ namespace skoll
                 }
                 catch (PostgresException ex)
                 {
-                    string json = JsonConvert.SerializeObject(new Response(ex.SqlState, ex.MessageText));
+                    string json = JsonConvert.SerializeObject(new Dominio.Common.Response(ex.SqlState, ex.MessageText));
                     context.Response.ContentType = "application/json";
                     context.Response.StatusCode = 400;
 
@@ -80,7 +102,7 @@ namespace skoll
                 }
                 catch (Exception ex)
                 {
-                    string json = JsonConvert.SerializeObject(new Response("error", ex.Message));
+                    string json = JsonConvert.SerializeObject(new Dominio.Common.Response("error", ex.Message));
                     context.Response.ContentType = "application/json";
                     context.Response.StatusCode = 500;
 

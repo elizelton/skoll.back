@@ -14,6 +14,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using static skoll.Aplicacao.Util.StringUtil;
+using skoll.Dominio.Exceptions;
 
 namespace skoll.Aplicacao.Servicos
 {
@@ -79,7 +80,7 @@ namespace skoll.Aplicacao.Servicos
                 }
             }
 
-            return null;
+            throw new AppError("Usuário ou Senha", 401);
 
         }
     }
