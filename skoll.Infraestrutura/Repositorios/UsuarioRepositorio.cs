@@ -28,13 +28,21 @@ namespace skoll.Infraestrutura.Repositorios
             {
                 reader.Read();
 
-                return new Usuario
+                if (reader.HasRows)
                 {
-                    Id = Convert.ToInt32(reader["idusuario"]),
-                    UserName = reader["name"].ToString(),
-                    Senha = reader["senha"].ToString(),
-                    Ativo = Convert.ToBoolean(reader["ativo"])
-                };
+                    return new Usuario
+                    {
+                        Id = Convert.ToInt32(reader["idusuario"]),
+                        UserName = reader["username"].ToString(),
+                        Nome = reader["nome"].ToString(),
+                        Senha = reader["senha"].ToString(),
+                        Ativo = Convert.ToBoolean(reader["ativo"])
+                    };
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 
@@ -53,21 +61,27 @@ namespace skoll.Infraestrutura.Repositorios
 
         public Usuario Get(int id)
         {
-            var command = CreateCommand("SELECT idusuario, nome, username, senha, ativo FROM public.Usuario WHERE id = @id");
+            var command = CreateCommand("SELECT idusuario, nome, username, senha, ativo FROM public.Usuario WHERE idusuario = @id");
             command.Parameters.AddWithValue("@idusuario", id);
 
             using (var reader = command.ExecuteReader())
             {
                 reader.Read();
-
-                return new Usuario
+                if (reader.HasRows)
                 {
-                    Id = Convert.ToInt32(reader["idusuario"]),
-                    UserName = reader["username"].ToString(),
-                    Nome = reader["nome"].ToString(),
-                    Senha = reader["senha"].ToString(),
-                    Ativo = Convert.ToBoolean(reader["ativo"])
-                };
+                    return new Usuario
+                    {
+                        Id = Convert.ToInt32(reader["idusuario"]),
+                        UserName = reader["username"].ToString(),
+                        Nome = reader["nome"].ToString(),
+                        Senha = reader["senha"].ToString(),
+                        Ativo = Convert.ToBoolean(reader["ativo"])
+                    };
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 
@@ -81,17 +95,26 @@ namespace skoll.Infraestrutura.Repositorios
             {
                 while (reader.Read())
                 {
-                    result.Add(new Usuario
+                    if (reader.HasRows)
                     {
-                        Id = Convert.ToInt32(reader["idUsuario"]),
-                        UserName = reader["username"].ToString(),
-                        Nome = reader["nome"].ToString(),
-                        Senha = reader["senha"].ToString(),
-                        Ativo = Convert.ToBoolean(reader["ativo"])
-                    });
-                }
-            }
+                        result.Add(new Usuario
+                        {
+                            Id = Convert.ToInt32(reader["idUsuario"]),
+                            UserName = reader["username"].ToString(),
+                            Nome = reader["nome"].ToString(),
+                            Senha = reader["senha"].ToString(),
+                            Ativo = Convert.ToBoolean(reader["ativo"])
+                        });
+                    }
+                    else
+                    {
+                        return null;
+                    }
 
+                }
+                reader.Close();
+            }
+          
             return result;
         }
 

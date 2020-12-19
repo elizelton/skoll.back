@@ -80,7 +80,7 @@ namespace skoll.Aplicacao.Servicos
                 }
             }
 
-            throw new AppError("Usuário ou Senha", 401);
+            throw new AppError("Usuário e/ou Senha inválidos", 401);
 
         }
     }
