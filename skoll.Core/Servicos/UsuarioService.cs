@@ -6,6 +6,7 @@ using skoll.Aplicacao.Notification;
 using skoll.Application.Common.Model;
 using skoll.Application.Common.Services;
 using skoll.Domain.Entities;
+using skoll.Dominio.Exceptions;
 using skoll.Infraestrutura.Interfaces.UnitOfWork;
 using System;
 using System.Collections.Generic;
@@ -22,27 +23,17 @@ namespace skoll.Aplicacao.Servicos
     public class UsuarioService : IUsuarioService
     {
         private IUnitOfWorkFactory _unitOfWork;
-        private readonly NotificationContext _notificationContext;
 
-        public UsuarioService(IUnitOfWorkFactory unitOfWorkFactory,
-                              NotificationContext notificationContext)
+        public UsuarioService(IUnitOfWorkFactory unitOfWorkFactory)
         {
             _unitOfWork = unitOfWorkFactory;
-            _notificationContext = notificationContext;
         }
 
         public void Create(Usuario usuario)
         {
             using (var context = _unitOfWork.Create())
             {
-                try
-                {
-                    context.Repositorios.UsuarioRepositorio.Create(usuario);
-                }
-                catch(PostgresException e)
-                {
-                    _notificationContext.AddNotification("", e.MessageText);
-                }
+                context.Repositorios.UsuarioRepositorio.Create(usuario);
                 context.SaveChanges();
             }
         }

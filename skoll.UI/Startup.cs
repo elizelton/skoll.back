@@ -8,6 +8,12 @@ using skoll.Application;
 using Elastic.Apm.NetCoreAll;
 using Elastic.Apm.DiagnosticSource;
 using Elastic.Apm.EntityFrameworkCore;
+using skoll.Dominio.Exceptions;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
+using System;
+using skoll.Dominio.Common;
+using Npgsql;
 
 namespace skoll
 {
@@ -27,7 +33,7 @@ namespace skoll
 
             services.AddAplicacao(Configuration);
             services.AddInfraestrutura(Configuration);
-   
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,8 +49,8 @@ namespace skoll
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            
-            app.UseCors(builder => builder.WithOrigins("https://skollweb.herokuapp.com")
+
+            app.UseCors(builder => builder.WithOrigins("https://skollweb.herokuapp.com").AllowAnyOrigin());
             app.UseCors(builder => builder.WithOrigins("http://localhost:4200")
                                 .AllowAnyMethod()
                                 .AllowAnyHeader());
@@ -52,11 +58,51 @@ namespace skoll
             app.UseCors(builder => builder.WithOrigins("https://skollweb.herokuapp.com/")
                                 .AllowAnyMethod()
                                 .AllowAnyHeader());
-    
-            
+
+            app.Use(async (context, next) =>
+            {
+                try
+                {
+                    await next();
+                }
+                catch (AppError ex)
+                {
+                    string json = JsonConvert.SerializeObject(new Response("error", ex._message));
+                    context.Response.ContentType = "application/json";
+                    context.Response.StatusCode = ex._statusCode;
+
+                    await context.Response.WriteAsync(json);
+                }
+                catch (PostgresException ex)
+                {
+                    string json = JsonConvert.SerializeObject(new Response(ex.SqlState, ex.MessageText));
+                    context.Response.ContentType = "application/json";
+                    context.Response.StatusCode = 400;
+
+                    await context.Response.WriteAsync(json);
+                }
+                catch (Exception ex)
+                {
+                    string json = JsonConvert.SerializeObject(new Response("error", ex.Message));
+                    context.Response.ContentType = "application/json";
+                    context.Response.StatusCode = 500;
+
+                    await context.Response.WriteAsync(json);
+                }
+                //catch (InvalidOperationException ex)
+                //{
+                //    string json = JsonConvert.SerializeObject(new Response("",""));
+                //    context.Response.ContentType = "application/json";
+                //    context.Response.StatusCode = 400;
+
+                //    await context.Response.WriteAsync(json);
+                //}
+
+            });
+
             app.UseHttpsRedirection();
 
-            app.UseAllElasticApm(Configuration);
+            //app.UseAllElasticApm(Configuration);
 
             app.UseRouting();
             app.UseAuthorization();
@@ -67,7 +113,7 @@ namespace skoll
                     pattern: "{controller}/{action=Index}/{id?}");
             });
 
-            
+
         }
     }
 }
