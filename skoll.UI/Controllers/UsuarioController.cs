@@ -4,8 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using skoll.Aplicacao.Interfaces;
-using skoll.Aplicacao.Notification;
-using skoll.Domain.Entities;
+using skoll.Dominio.Entities;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,14 +16,11 @@ namespace skoll.ui.Controllers
     {
         private IUsuarioService _usuarioService;
         private IAutenticacaoService _autenticacaoService;
-        private readonly NotificationContext _notificationContext;
         public UsuarioController(IUsuarioService usuarioService,
-                                 IAutenticacaoService autenticacaoService,
-                                 NotificationContext notificationContext)
+                                 IAutenticacaoService autenticacaoService)
         {
             this._autenticacaoService = autenticacaoService;
             this._usuarioService = usuarioService;
-            this._notificationContext = notificationContext;
         }
 
         // GET: api/Usuario     
@@ -58,11 +54,6 @@ namespace skoll.ui.Controllers
 
             _usuarioService.Create(user);
 
-            if (_notificationContext.HasNotifications)
-            {
-                var result = JsonConvert.SerializeObject(_notificationContext.Notifications);
-                return new BadRequestObjectResult(result);
-            }
             return CreatedAtRoute("GetUsuario", new { id = user.Id }, user);
         }
 

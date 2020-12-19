@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using skoll.Application.Common.Interfaces;
+using skoll.Aplicacao.Common.Interfaces;
 
 namespace skoll.UI.Controllers.Common
 {

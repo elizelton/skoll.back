@@ -3,17 +3,14 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using skoll.Infrastructure;
-using skoll.Application;
-using Elastic.Apm.NetCoreAll;
-using Elastic.Apm.DiagnosticSource;
-using Elastic.Apm.EntityFrameworkCore;
+using skoll.Infraestrutura;
 using skoll.Dominio.Exceptions;
-using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using System;
 using skoll.Dominio.Common;
 using Npgsql;
+using skoll.Aplicacao;
+using Newtonsoft.Json;
 
 namespace skoll
 {

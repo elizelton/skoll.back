@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30128.74
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "skoll.Aplicacao", "skoll.Core\skoll.Aplicacao.csproj", "{B7D6E976-D179-4539-83B1-C3C1B7345FFE}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "skoll.Infraestrutura", "skoll.Infrastructure\skoll.Infraestrutura.csproj", "{2838DFB4-1618-4674-8700-EA2DDF99F5E6}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "skoll.Dominio", "skoll.Domain\skoll.Dominio.csproj", "{DFCDCF37-E78B-4794-9C3F-6C3EB5D7515A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "skoll.UI", "skoll.UI\skoll.UI.csproj", "{C141C9CB-976A-4D2D-A60E-B3FB802A5276}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "skoll.Aplicacao", "skoll.Aplicacao\skoll.Aplicacao.csproj", "{E1264329-B684-41FD-82DF-FCCDB3D95DCB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "skoll.Dominio", "skoll.Dominio\skoll.Dominio.csproj", "{CF10A2FF-E668-427D-AA26-FEF3B795A588}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "skoll.Infraestrutura", "skoll.Infraestrutura\skoll.Infraestrutura.csproj", "{91515A64-29AB-4F03-BB85-12E847093693}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,22 +17,22 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B7D6E976-D179-4539-83B1-C3C1B7345FFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B7D6E976-D179-4539-83B1-C3C1B7345FFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B7D6E976-D179-4539-83B1-C3C1B7345FFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B7D6E976-D179-4539-83B1-C3C1B7345FFE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2838DFB4-1618-4674-8700-EA2DDF99F5E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2838DFB4-1618-4674-8700-EA2DDF99F5E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2838DFB4-1618-4674-8700-EA2DDF99F5E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2838DFB4-1618-4674-8700-EA2DDF99F5E6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DFCDCF37-E78B-4794-9C3F-6C3EB5D7515A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DFCDCF37-E78B-4794-9C3F-6C3EB5D7515A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DFCDCF37-E78B-4794-9C3F-6C3EB5D7515A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DFCDCF37-E78B-4794-9C3F-6C3EB5D7515A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C141C9CB-976A-4D2D-A60E-B3FB802A5276}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C141C9CB-976A-4D2D-A60E-B3FB802A5276}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C141C9CB-976A-4D2D-A60E-B3FB802A5276}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C141C9CB-976A-4D2D-A60E-B3FB802A5276}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1264329-B684-41FD-82DF-FCCDB3D95DCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1264329-B684-41FD-82DF-FCCDB3D95DCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1264329-B684-41FD-82DF-FCCDB3D95DCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1264329-B684-41FD-82DF-FCCDB3D95DCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF10A2FF-E668-427D-AA26-FEF3B795A588}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF10A2FF-E668-427D-AA26-FEF3B795A588}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF10A2FF-E668-427D-AA26-FEF3B795A588}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF10A2FF-E668-427D-AA26-FEF3B795A588}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91515A64-29AB-4F03-BB85-12E847093693}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91515A64-29AB-4F03-BB85-12E847093693}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91515A64-29AB-4F03-BB85-12E847093693}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91515A64-29AB-4F03-BB85-12E847093693}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

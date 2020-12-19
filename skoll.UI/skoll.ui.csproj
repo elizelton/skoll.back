@@ -14,8 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\skoll.Core\skoll.Aplicacao.csproj" />
-    <ProjectReference Include="..\skoll.Infrastructure\skoll.Infraestrutura.csproj" />
+    <ProjectReference Include="..\skoll.Aplicacao\skoll.Aplicacao.csproj" />
+    <ProjectReference Include="..\skoll.Dominio\skoll.Dominio.csproj" />
+    <ProjectReference Include="..\skoll.Infraestrutura\skoll.Infraestrutura.csproj" />
   </ItemGroup>
 
 
