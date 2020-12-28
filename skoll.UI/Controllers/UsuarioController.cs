@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using skoll.Aplicacao.Interfaces;
 using skoll.Dominio.Entities;
+using skoll.UI.Controllers.Util;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -26,9 +27,9 @@ namespace skoll.ui.Controllers
         // GET: api/Usuario     
         //[Authorize("Bearer")]
         [HttpGet]
-        public IEnumerable<Usuario> GetUsuarios()
+        public object GetUsuarios([FromQuery] QueryString query)
         {
-            return _usuarioService.GetAll();
+            return new { items = _usuarioService.GetAll() };
         }
 
         // GET: api/Usuario/5
@@ -73,6 +74,14 @@ namespace skoll.ui.Controllers
         public IActionResult RemoverUsuario(int id)
         {
             _usuarioService.Remove(id);
+
+            return new NoContentResult();
+        }
+
+        [HttpDelete]
+        public IActionResult RemoverUsuario(List<Usuario> idList)
+        {
+            _usuarioService.Remove(idList);
 
             return new NoContentResult();
         }

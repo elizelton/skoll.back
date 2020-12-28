@@ -1,8 +1,10 @@
 ﻿
 using skoll.Aplicacao.Interfaces;
 using skoll.Dominio.Entities;
+using skoll.Dominio.Exceptions;
 using skoll.Infraestrutura.Interfaces.UnitOfWork;
 using System.Collections.Generic;
+using System.Linq;
 using static skoll.Aplicacao.Util.StringUtil;
 namespace skoll.Aplicacao.Servicos
 {
@@ -48,6 +50,18 @@ namespace skoll.Aplicacao.Servicos
             using (var context = _unitOfWork.Create())
             {
                 context.Repositorios.UsuarioRepositorio.Remove(id);
+                context.SaveChanges();
+            }
+        }
+
+        public void Remove(List<Usuario> usuarios)
+        {
+            if (usuarios.Any(u => u.Id == 0))
+                throw new AppError("Campo Id obrigratório");
+
+            using (var context = _unitOfWork.Create())
+            {
+                context.Repositorios.UsuarioRepositorio.Remove(usuarios);
                 context.SaveChanges();
             }
         }

@@ -3,6 +3,7 @@ using skoll.Dominio.Entities;
 using skoll.Infraestrutura.Interfaces.Repositorios;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace skoll.Infraestrutura.Repositorios
 {
@@ -114,7 +115,7 @@ namespace skoll.Infraestrutura.Repositorios
                 }
                 reader.Close();
             }
-          
+
             return result;
         }
 
@@ -124,6 +125,22 @@ namespace skoll.Infraestrutura.Repositorios
             command.Parameters.AddWithValue("@id", id);
 
             command.ExecuteNonQuery();
+        }
+
+        public void Remove(List<Usuario> usuarios)
+        {
+            //var command = CreateCommand("DELETE FROM Usuario WHERE idusuario IN (@ids)");
+
+            //var parameters = new string[usuarios.Count];
+            //for (int i = 0;  i < usuarios.Count; i++)
+            //{
+            //    parameters[i] = string.Format("@idUsuario{0}", i);
+            //    cmd.Parameters.AddWithValue(parameters[i], items[i]);
+            //}
+
+            //command.Parameters.Add("@ids", String.Join(",", usuarios.Select(u => u.Id)).ToString());
+
+            //command.ExecuteNonQuery();
         }
 
         public void Update(Usuario usuario)

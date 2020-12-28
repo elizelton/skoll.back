@@ -14,5 +14,6 @@ namespace skoll.Aplicacao.Interfaces
         void Create(Usuario usuario);
         void Update(Usuario usuario);
         void Remove(int id);
+        void Remove(List<Usuario> usuarios);
     }
 }
