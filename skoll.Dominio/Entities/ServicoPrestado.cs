@@ -8,6 +8,6 @@ namespace skoll.Dominio.Entities
         public string nome { get; set; }
         public decimal valorUnitario { get; set; }
         public bool ativo { get; set; }
-
+        public Produto produto { get; set; }
     }
 }
