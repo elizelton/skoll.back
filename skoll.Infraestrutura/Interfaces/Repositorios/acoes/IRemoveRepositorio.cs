@@ -9,5 +9,6 @@ namespace skoll.Infraestrutura.Interfaces.Repositorios.acoes
     public interface IRemoveRepositorio<T> where T : class
     {
         void Remove(int id);
+
     }
 }

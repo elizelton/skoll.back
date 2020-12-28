@@ -63,10 +63,6 @@ namespace skoll
                                 .AllowAnyMethod()
                                 .AllowAnyHeader());
 
-            app.UseCors(builder => builder.WithOrigins("http://0.0.0.0:5001")
-                               .AllowAnyMethod()
-                               .AllowAnyHeader());
-
             app.UseCors(builder => builder.WithOrigins("https://skollweb.herokuapp.com/")
                                 .AllowAnyMethod()
                                 .AllowAnyHeader());
