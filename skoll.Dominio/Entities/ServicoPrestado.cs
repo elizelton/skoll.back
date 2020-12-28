@@ -3,11 +3,10 @@ using skoll.Dominio.Enums;
 
 namespace skoll.Dominio.Entities
 {
-    public class Usuario : BaseEntity
+    public class ServicoPrestado : BaseEntity
     {
         public string nome { get; set; }
-        public string userName { get; set; }
-        public string senha { get; set; }
+        public decimal valorUnitario { get; set; }
         public bool ativo { get; set; }
 
     }

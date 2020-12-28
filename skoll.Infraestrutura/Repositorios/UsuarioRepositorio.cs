@@ -33,10 +33,10 @@ namespace skoll.Infraestrutura.Repositorios
                     return new Usuario
                     {
                         Id = Convert.ToInt32(reader["idusuario"]),
-                        UserName = reader["username"].ToString(),
-                        Nome = reader["nome"].ToString(),
-                        Senha = reader["senha"].ToString(),
-                        Ativo = Convert.ToBoolean(reader["ativo"])
+                        userName = reader["username"].ToString(),
+                        nome = reader["nome"].ToString(),
+                        senha = reader["senha"].ToString(),
+                        ativo = Convert.ToBoolean(reader["ativo"])
                     };
                 }
                 else
@@ -51,10 +51,10 @@ namespace skoll.Infraestrutura.Repositorios
             var query = "INSERT INTO public.Usuario(username, nome, senha, ativo) VALUES (@username, @nome, @senha, @ativo)";
             var command = CreateCommand(query);
 
-            command.Parameters.AddWithValue("@username", usuario.UserName);
-            command.Parameters.AddWithValue("@nome", usuario.Nome);
-            command.Parameters.AddWithValue("@senha", usuario.Senha);
-            command.Parameters.AddWithValue("@ativo", usuario.Ativo);
+            command.Parameters.AddWithValue("@username", usuario.userName);
+            command.Parameters.AddWithValue("@nome", usuario.nome);
+            command.Parameters.AddWithValue("@senha", usuario.senha);
+            command.Parameters.AddWithValue("@ativo", usuario.ativo);
 
             command.ExecuteNonQuery();
         }
@@ -72,10 +72,10 @@ namespace skoll.Infraestrutura.Repositorios
                     return new Usuario
                     {
                         Id = Convert.ToInt32(reader["idusuario"]),
-                        UserName = reader["username"].ToString(),
-                        Nome = reader["nome"].ToString(),
-                        Senha = reader["senha"].ToString(),
-                        Ativo = Convert.ToBoolean(reader["ativo"])
+                        userName = reader["username"].ToString(),
+                        nome = reader["nome"].ToString(),
+                        senha = reader["senha"].ToString(),
+                        ativo = Convert.ToBoolean(reader["ativo"])
                     };
                 }
                 else
@@ -100,10 +100,10 @@ namespace skoll.Infraestrutura.Repositorios
                         result.Add(new Usuario
                         {
                             Id = Convert.ToInt32(reader["idUsuario"]),
-                            UserName = reader["username"].ToString(),
-                            Nome = reader["nome"].ToString(),
-                            Senha = reader["senha"].ToString(),
-                            Ativo = Convert.ToBoolean(reader["ativo"])
+                            userName = reader["username"].ToString(),
+                            nome = reader["nome"].ToString(),
+                            senha = reader["senha"].ToString(),
+                            ativo = Convert.ToBoolean(reader["ativo"])
                         });
                     }
                     else
@@ -131,10 +131,10 @@ namespace skoll.Infraestrutura.Repositorios
             var query = "UPDATE public.Usuario SET  Nome = @nome, UserName = @username, senha = @senha, ativo = @ativo WHERE idusuario = @id";
             var command = CreateCommand(query);
 
-            command.Parameters.AddWithValue("@nome", usuario.Nome);
-            command.Parameters.AddWithValue("@username", usuario.UserName);
-            command.Parameters.AddWithValue("@senha", usuario.Senha);
-            command.Parameters.AddWithValue("@ativo", usuario.Ativo);
+            command.Parameters.AddWithValue("@nome", usuario.nome);
+            command.Parameters.AddWithValue("@username", usuario.userName);
+            command.Parameters.AddWithValue("@senha", usuario.senha);
+            command.Parameters.AddWithValue("@ativo", usuario.ativo);
             command.Parameters.AddWithValue("@id", usuario.Id);
 
             command.ExecuteNonQuery();

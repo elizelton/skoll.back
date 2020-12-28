@@ -18,7 +18,7 @@ namespace skoll.Aplicacao.Servicos
         public void Create(Usuario usuario)
         {
 
-            usuario.Senha = GetSHA1(usuario.Senha);
+            usuario.senha = GetSHA1(usuario.senha);
 
             using (var context = _unitOfWork.Create())
             {
@@ -55,7 +55,7 @@ namespace skoll.Aplicacao.Servicos
         public void Update(Usuario usuario)
         {
 
-            usuario.Senha = GetSHA1(usuario.Senha);
+            usuario.senha = GetSHA1(usuario.senha);
 
             using (var context = _unitOfWork.Create())
             {

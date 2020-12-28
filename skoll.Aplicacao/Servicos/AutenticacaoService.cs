@@ -34,19 +34,19 @@ namespace skoll.Aplicacao.Servicos
 
         public object Autenticar(Usuario usuario)
         {
-            if (!String.IsNullOrEmpty(usuario.UserName) && !String.IsNullOrEmpty(usuario.Senha))
+            if (!String.IsNullOrEmpty(usuario.userName) && !String.IsNullOrEmpty(usuario.senha))
             {
                 using (var context = _unitOfWork.Create())
                 {
-                    var usuarioBanco = context.Repositorios.UsuarioRepositorio.GetByUserNameESenha(usuario.UserName, GetSHA1(usuario.Senha));
+                    var usuarioBanco = context.Repositorios.UsuarioRepositorio.GetByUserNameESenha(usuario.userName, GetSHA1(usuario.senha));
 
                     if (usuarioBanco != null)
                     {
                         ClaimsIdentity identity = new ClaimsIdentity(
-                           new GenericIdentity(usuario.UserName, "UserName"),
+                           new GenericIdentity(usuario.userName, "UserName"),
                            new[] {
                             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-                            new Claim(JwtRegisteredClaimNames.UniqueName, usuario.UserName)
+                            new Claim(JwtRegisteredClaimNames.UniqueName, usuario.userName)
                            }
                         );
 
@@ -70,8 +70,8 @@ namespace skoll.Aplicacao.Servicos
 
                         return new
                         {
-                            UserName = usuarioBanco.UserName,
-                            nome = usuarioBanco.Nome,
+                            UserName = usuarioBanco.userName,
+                            nome = usuarioBanco.nome,
                             autenticado = true,
                             accessToken = token,
                             sessaoExpira = dataExpiracao
