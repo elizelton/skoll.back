@@ -9,5 +9,6 @@ namespace skoll.Dominio.Entities
         public string telefone { get; set; }
         public int tipoTelefone { get; set; }
         public bool whatsApp { get; set; }
+        public int idPessoa { get; set; }
     }
 }

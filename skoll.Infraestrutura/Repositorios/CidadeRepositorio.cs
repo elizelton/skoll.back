@@ -30,7 +30,7 @@ namespace skoll.Infraestrutura.Repositorios
         public Cidade Get(int id)
         {
             var command = CreateCommand("SELECT idCidade, cidade, estado FROM public.Cidades WHERE idCidade = @id");
-            command.Parameters.AddWithValue("@idCidade", id);
+            command.Parameters.AddWithValue("@id", id);
 
             using (var reader = command.ExecuteReader())
             {
