@@ -14,7 +14,7 @@ namespace skoll.Dominio.Entities
         public string email { get; set; }
         public string cep { get; set; }
         public string logradouro { get; set; }
-        public Cidades Cidade { get; set; }
+        public Cidade Cidade { get; set; }
         public List<Telefone> telefones { get; set; }
     }
 }
