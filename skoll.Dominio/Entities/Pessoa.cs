@@ -16,5 +16,37 @@ namespace skoll.Dominio.Entities
         public string logradouro { get; set; }
         public Cidade Cidade { get; set; }
         public List<Telefone> telefones { get; set; }
+        public Pessoa ToPessoa()
+        {
+            Pessoa pessoa = new Pessoa();
+            pessoa.Id = this.Id;
+            pessoa.cpfCnpj = this.cpfCnpj;
+            pessoa.numero = this.numero;
+            pessoa.complemento = this.complemento;
+            pessoa.bairro = this.bairro;
+            pessoa.nome = this.nome;
+            pessoa.email = this.email;
+            pessoa.cep = this.cep;
+            pessoa.logradouro = this.logradouro;
+            pessoa.Cidade = this.Cidade;
+            pessoa.telefones = this.telefones;
+
+            return pessoa;
+        }
+
+        public void prenchePessoa(Pessoa pessoa)
+        {
+            this.Id = pessoa.Id;
+            this.cpfCnpj = pessoa.cpfCnpj;
+            this.numero = pessoa.numero;
+            this.complemento = pessoa.complemento;
+            this.bairro = pessoa.bairro;
+            this.nome = pessoa.nome;
+            this.email = pessoa.email;
+            this.cep = pessoa.cep;
+            this.logradouro = pessoa.logradouro;
+            this.Cidade = pessoa.Cidade;
+            this.telefones = pessoa.telefones;
+        }
     }
 }
