@@ -7,6 +7,7 @@ namespace skoll.Dominio.Entities
 {
     public class ContaPagarParcela : BaseEntity
     {
+        public int idContaPagar { get; set; }
         public int numParcela { get; set; }
         public decimal valorParcela { get; set; }
         public DateTime dataVencimento { get; set; }
