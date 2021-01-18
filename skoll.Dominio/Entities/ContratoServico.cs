@@ -7,6 +7,7 @@ namespace skoll.Dominio.Entities
 {
     public class ContratoServico : BaseEntity
     {
+        public int idContrato { get; set; }
         public int quantidade { get; set; }
         public decimal valorUnitario { get; set; }
         public decimal valorTotal { get; set; }
