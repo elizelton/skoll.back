@@ -9,8 +9,9 @@ namespace skoll.Dominio.Entities
     {
         public int numParcelas { get; set; }
         public decimal valorTotal { get; set; }
+        public decimal valorMensal { get; set; }
         public decimal juros { get; set; }
-        public int diasPagamento { get; set; }
+        public string diasPagamento { get; set; }
         public int diaInicial { get; set; }
         public int mesInicial { get; set; }
         public List<ContaPagarParcela> parcelas { get; set; }

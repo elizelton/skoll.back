@@ -18,11 +18,12 @@ namespace skoll.Infraestrutura.Repositorios
 
         public void Create(ContaPagar contaPagar)
         {
-            var query = "INSERT INTO public.ContaPagar(valorTotal, mesInicial, diaInicial, diasPagamento, numParcelas, juros, fk_IdFornecedor, fk_IdPessoa) " +
-                "VALUES (@valorTotal, @mesInicial, @diaInicial, @diasPagamento, @numParcelas, @juros, @fk_IdFornecedor, @fk_IdPessoa)";
+            var query = "INSERT INTO public.ContaPagar(valorTotal, valorMensal, mesInicial, diaInicial, diasPagamento, numParcelas, juros, fk_IdFornecedor, fk_IdPessoa) " +
+                "VALUES (@valorTotal, @valorMensal, @mesInicial, @diaInicial, @diasPagamento, @numParcelas, @juros, @fk_IdFornecedor, @fk_IdPessoa)";
             var command = CreateCommand(query);
 
             command.Parameters.AddWithValue("@valorTotal", contaPagar.valorTotal);
+            command.Parameters.AddWithValue("@valorMensal", contaPagar.valorMensal);
             command.Parameters.AddWithValue("@mesInicial", contaPagar.mesInicial);
             command.Parameters.AddWithValue("@diaInicial", contaPagar.diaInicial);
             command.Parameters.AddWithValue("@diasPagamento", contaPagar.diasPagamento);
@@ -34,9 +35,65 @@ namespace skoll.Infraestrutura.Repositorios
             command.ExecuteNonQuery();
         }
 
-        public void GerarParcelas(ContaPagar contaPagar)
+        public void GerarParcelaAjuste(int idConta, decimal valorDif, DateTime vencimento)
         {
             throw new NotImplementedException();
+        }
+
+        public void GerarParcelas(ContaPagar contaPagar)
+        {
+            if (contaPagar.valorTotal == 0 && contaPagar.valorMensal == 0)
+                throw new InvalidOperationException("É necessário informar o Valor Total ou Mensal para a Conta");
+            else if (contaPagar.valorTotal > 0 && contaPagar.valorMensal > 0)
+                throw new InvalidOperationException("Não é possível informar o Valor Total e Mensal para a Conta");
+            else if (contaPagar.mesInicial <= 0 || contaPagar.mesInicial > 12)
+                throw new InvalidOperationException("O Mês Inicial da Conta deve ser informado");
+            else if (contaPagar.numParcelas <= 0)
+                throw new InvalidOperationException("O número de parcelas da Conta deve ser informado");
+
+            List<ContaPagarParcela> parcelas = new List<ContaPagarParcela>();
+            var ano = (contaPagar.mesInicial < DateTime.Now.Month && (DateTime.Now.Month == 12 && (contaPagar.mesInicial == 1 || contaPagar.mesInicial == 2))) ? DateTime.Now.Year + 1 : DateTime.Now.Year;
+            var diasParc = contaPagar.diasPagamento.Split(',');
+
+            if (contaPagar.valorMensal > 0 && !string.IsNullOrEmpty(contaPagar.diasPagamento))
+            {
+                if (diasParc.Length != contaPagar.numParcelas)
+                    throw new InvalidOperationException("Dias de Pagamento não conferem com o número de parcelas");
+            }
+
+            for (int i = 0; i < contaPagar.numParcelas; i++)
+            {
+                ContaPagarParcela contaPagarParcela = new ContaPagarParcela();
+                decimal valorParc = 0;
+                DateTime data = new DateTime();
+                if (contaPagar.valorTotal > 0)
+                {
+                    data = Convert.ToDateTime(contaPagar.diaInicial + "/" + contaPagar.mesInicial + "/" + ano.ToString()).AddMonths(i);
+                    valorParc = contaPagar.valorTotal / contaPagar.numParcelas;
+                }
+                else if (contaPagar.valorMensal > 0 && !string.IsNullOrEmpty(contaPagar.diasPagamento))
+                {
+                    valorParc = contaPagar.valorMensal / contaPagar.numParcelas;
+                    data = Convert.ToDateTime(diasParc[i].ToString().Trim() + "/" + contaPagar.mesInicial + "/" + ano.ToString());
+                }
+                else if (contaPagar.valorMensal > 0)
+                {
+                    valorParc = contaPagar.valorMensal;
+                    data = Convert.ToDateTime(contaPagar.diaInicial + "/" + contaPagar.mesInicial + "/" + ano.ToString()).AddMonths(i);
+                }
+
+                contaPagarParcela.idContaPagar = contaPagar.Id;
+                contaPagarParcela.numParcela = i + 1;
+                contaPagarParcela.valorParcela = valorParc;
+                contaPagarParcela.dataVencimento = data;
+                parcelas.Add(contaPagarParcela);
+            }
+
+
+            foreach (var parc in parcelas)
+            {
+                new ContaPagarParcelaRepositorio(this._context, this._transaction).Create(parc);
+            }
         }
 
         public ContaPagar Get(int id)
@@ -53,9 +110,10 @@ namespace skoll.Infraestrutura.Repositorios
                     {
                         Id = Convert.ToInt32(reader["idContaPagar"]),
                         valorTotal = Convert.ToDecimal(reader["valorTotal"]),
+                        valorMensal = Convert.ToDecimal(reader["valorMensal"]),
                         mesInicial = Convert.ToInt32(reader["mesInicial"]),
                         diaInicial = Convert.ToInt32(reader["diaInicial"]),
-                        diasPagamento = Convert.ToInt32(reader["diasPagamento"]),
+                        diasPagamento = reader["diasPagamento"].ToString(),
                         numParcelas = Convert.ToInt32(reader["numParcelas"]),
                         juros = Convert.ToDecimal(reader["juros"]),
                         fornecedor = new FornecedorRepositorio(this._context, this._transaction).Get(Convert.ToInt32(reader["fk_IdFornecedor"])),
@@ -85,9 +143,10 @@ namespace skoll.Infraestrutura.Repositorios
                         {
                             Id = Convert.ToInt32(reader["idContaPagar"]),
                             valorTotal = Convert.ToDecimal(reader["valorTotal"]),
+                            valorMensal = Convert.ToDecimal(reader["valorMensal"]),
                             mesInicial = Convert.ToInt32(reader["mesInicial"]),
                             diaInicial = Convert.ToInt32(reader["diaInicial"]),
-                            diasPagamento = Convert.ToInt32(reader["diasPagamento"]),
+                            diasPagamento = reader["diasPagamento"].ToString(),
                             numParcelas = Convert.ToInt32(reader["numParcelas"]),
                             juros = Convert.ToDecimal(reader["juros"]),
                             fornecedor = new FornecedorRepositorio(this._context, this._transaction).Get(Convert.ToInt32(reader["fk_IdFornecedor"])),
@@ -116,12 +175,13 @@ namespace skoll.Infraestrutura.Repositorios
 
         public void Update(ContaPagar contaPagar)
         {
-            var query = "UPDATE public.ContaPagar SET valorTotal = @valorTotal, mesInicial = @mesInicial, diaInicial = @diaInicial, " +
+            var query = "UPDATE public.ContaPagar SET valorTotal = @valorTotal, valorMensal = @valorMensal, mesInicial = @mesInicial, diaInicial = @diaInicial, " +
                         "diasPagamento = @diasPagamento, numParcelas = @numParcelas, juros = @juros, " +
                         "fk_IdFornecedor = @fk_IdFornecedor, fk_IdPessoa = @fk_IdPessoa WHERE idFormaPag = @id";
             var command = CreateCommand(query);
 
             command.Parameters.AddWithValue("@valorTotal", contaPagar.valorTotal);
+            command.Parameters.AddWithValue("@valorMensal", contaPagar.valorMensal);
             command.Parameters.AddWithValue("@mesInicial", contaPagar.mesInicial);
             command.Parameters.AddWithValue("@diaInicial", contaPagar.diaInicial);
             command.Parameters.AddWithValue("@diasPagamento", contaPagar.diasPagamento);
