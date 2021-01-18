@@ -10,6 +10,6 @@ namespace skoll.Dominio.Entities
         public decimal juros { get; set; }
         public decimal comissao { get; set; }
         public DateTime dataPagamento { get; set; }
-
+        public int idContratoParcela { get; set; }
     }
 }
