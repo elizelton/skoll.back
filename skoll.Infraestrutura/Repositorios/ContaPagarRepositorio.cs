@@ -177,7 +177,7 @@ namespace skoll.Infraestrutura.Repositorios
         {
             var query = "UPDATE public.ContaPagar SET valorTotal = @valorTotal, valorMensal = @valorMensal, mesInicial = @mesInicial, diaInicial = @diaInicial, " +
                         "diasPagamento = @diasPagamento, numParcelas = @numParcelas, juros = @juros, " +
-                        "fk_IdFornecedor = @fk_IdFornecedor, fk_IdPessoa = @fk_IdPessoa WHERE idFormaPag = @id";
+                        "fk_IdFornecedor = @fk_IdFornecedor, fk_IdPessoa = @fk_IdPessoa WHERE idContaPagar = @id";
             var command = CreateCommand(query);
 
             command.Parameters.AddWithValue("@valorTotal", contaPagar.valorTotal);
