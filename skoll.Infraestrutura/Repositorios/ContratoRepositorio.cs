@@ -16,6 +16,11 @@ namespace skoll.Infraestrutura.Repositorios
             this._transaction = transaction;
         }
 
+        public void CancelarContrato(int novoCliente, decimal multa)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Create(Contrato Contrato)
         {
             var query = "INSERT INTO public.Contrato(qntdExemplares, tipoDocumento, numParcelas, valorTotal, juros, observacoes, ativo, dataInicio, periodoMeses, dataTermino, fk_IdFormaPag, fk_IdVendedor, fk_IdUsuario, fk_IdCliente, fk_IdPessoa) " +
