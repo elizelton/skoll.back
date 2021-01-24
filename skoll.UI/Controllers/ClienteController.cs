@@ -43,12 +43,12 @@ namespace skoll.ui.Controllers
         [HttpGet("{nome}/nome", Name = "GetClienteNome")]
         public IActionResult GetClienteNome(string nome)
         {
-            var cidade = _clienteService.GetByNomeLike(nome);
+            var cliente = _clienteService.GetByNomeLike(nome);
 
-            if (cidade == null)
+            if (cliente == null)
                 return NotFound();
             else
-                return new ObjectResult(cidade);
+                return new ObjectResult(cliente);
         }
 
         // GET: api/Usuario/5
