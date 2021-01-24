@@ -8,6 +8,7 @@ namespace skoll.Aplicacao.Common.Interfaces
     public interface IUnitOfWork
     {
         IRepositorio<Usuario> UsuarioRepositorio { get; }
+        IRepositorio<Cidade> CidadeRepositorio { get; }
 
         void Commit();
         void RollBack();
