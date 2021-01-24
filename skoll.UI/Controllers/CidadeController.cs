@@ -47,7 +47,7 @@ namespace skoll.ui.Controllers
 
         // GET: api/Usuario/5
         //[Authorize("Bearer")]
-        [HttpGet("{estado}", Name = "GetCidadeEstado")]
+        [HttpGet("{estado}/estado", Name = "GetCidadeEstado")]
         public IActionResult GetCidadeEstado(string estado)
         {
             var cidade = _cidadeService.GetByEstado(estado);
@@ -60,7 +60,7 @@ namespace skoll.ui.Controllers
 
         // GET: api/Usuario/5
         //[Authorize("Bearer")]
-        [HttpGet("{nome}", Name = "GetCidadeNome")]
+        [HttpGet("{nome}/nome", Name = "GetCidadeNome")]
         public IActionResult GetCidadeNome(string nome)
         {
             var cidade = _cidadeService.GetByNome(nome);

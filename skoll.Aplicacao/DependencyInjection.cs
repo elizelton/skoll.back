@@ -58,7 +58,10 @@ namespace skoll.Aplicacao
             //Servicos
             services.AddSingleton<IUsuarioService, UsuarioService>();
             services.AddSingleton<IAutenticacaoService, AutenticacaoService>();
-            
+            services.AddSingleton<ICidadeService, CidadeService>();
+            services.AddSingleton<IClienteService, ClienteService>();
+            services.AddSingleton<IFormaPagamentoService, FormaPagamentoService>();
+
 
             return services;
         }

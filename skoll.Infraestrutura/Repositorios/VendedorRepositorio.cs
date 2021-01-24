@@ -129,8 +129,8 @@ namespace skoll.Infraestrutura.Repositorios
         {
             var result = new List<Vendedor>();
 
-            var command = CreateCommand("SELECT * FROM public.Vendedor where nome like '%@nome%'");
-            command.Parameters.AddWithValue("@nome", nome);
+            var command = CreateCommand("SELECT * FROM public.Vendedor where nome like @nome");
+            command.Parameters.AddWithValue("@nome", "%" + nome + "%");
 
             using (var reader = command.ExecuteReader())
             {
