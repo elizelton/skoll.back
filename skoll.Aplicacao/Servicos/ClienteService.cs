@@ -50,6 +50,14 @@ namespace skoll.Aplicacao.Servicos
             }
         }
 
+        public IEnumerable<Cliente> GetByNomeLike(string nome)
+        {
+            using (var context = _unitOfWork.Create())
+            {
+                return context.Repositorios.ClienteRepositorio.GetByNomeLike(nome);
+            }
+        }
+
         public void Remove(int id)
         {
             using (var context = _unitOfWork.Create())
