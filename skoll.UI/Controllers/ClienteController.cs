@@ -40,6 +40,17 @@ namespace skoll.ui.Controllers
             return new { items = _clienteService.GetAtivos() };
         }
 
+        [HttpGet("{nome}/nome", Name = "GetClienteNome")]
+        public IActionResult GetClienteNome(string nome)
+        {
+            var cidade = _clienteService.GetByNomeLike(nome);
+
+            if (cidade == null)
+                return NotFound();
+            else
+                return new ObjectResult(cidade);
+        }
+
         // GET: api/Usuario/5
         //[Authorize("Bearer")]
         [HttpGet("{id}", Name = "GetCliente")]

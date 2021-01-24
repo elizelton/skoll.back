@@ -17,6 +17,8 @@ namespace skoll.Aplicacao.Interfaces
 
         IEnumerable<Cliente> GetAtivos();
 
+        IEnumerable<Cliente> GetByNomeLike(string nome);
+
         void Remove(int id);
 
         void Update(Cliente cliente);

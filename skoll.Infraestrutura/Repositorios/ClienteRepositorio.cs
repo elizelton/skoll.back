@@ -146,6 +146,44 @@ namespace skoll.Infraestrutura.Repositorios
             return result;
         }
 
+        public IEnumerable<Cliente> GetByNomeLike(string nome)
+        {
+            var result = new List<Cliente>();
+
+            var command = CreateCommand("SELECT * FROM cliente c inner join pessoa p on c.fk_idPessoa = p.idPessoa where p.nome like @nome");
+            command.Parameters.AddWithValue("@nome", "%" + nome + "%");
+
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    if (reader.HasRows)
+                    {
+                        var cliente = new Cliente
+                        {
+                            Id = Convert.ToInt32(reader["fk_IdPessoa"]),
+                            idCliente = Convert.ToInt32(reader["idCliente"]),
+                            ativo = Convert.ToBoolean(reader["ativo"]),
+                            nascimento = Convert.ToDateTime(reader["nascimento"]),
+                            tipoCliente = Convert.ToInt32(reader["tipoCliente"])
+                        };
+
+                        cliente.prenchePessoa(new PessoaRepositorio(this._context, this._transaction).Get(cliente.Id));
+
+                        result.Add(cliente);
+                    }
+                    else
+                    {
+                        return null;
+                    }
+
+                }
+                reader.Close();
+            }
+
+            return result;
+        }
+
         public void Remove(int id)
         {
             var command = CreateCommand("DELETE FROM Cliente WHERE idCliente = @id");
