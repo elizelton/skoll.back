@@ -27,6 +27,9 @@ CREATE FUNCTION usuario_trigger() RETURNS trigger AS $usuario_trigger$
 		IF NEW.userName IS NULL or NEW.userName = '' THEN
             RAISE EXCEPTION 'O Usuário deve possuir um nome de usuário';
         END IF;
+        IF NEW.email IS NULL or NEW.email = '' THEN
+            RAISE EXCEPTION 'O Usuário deve possuir um e-mail';
+        END IF;
         IF EXISTS (SELECT 1 FROM USUARIO WHERE userName = NEW.userName) THEN
             RAISE EXCEPTION 'Nome de usuário já cadastrado';
         END IF;

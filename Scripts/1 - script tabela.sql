@@ -19,6 +19,7 @@ CREATE TABLE Usuario (
     idUsuario SERIAL PRIMARY KEY,
     nome varchar(50) NOT NULL,
     userName varchar(100) UNIQUE NOT NULL,
+    email varchar(45) UNIQUE NOT NULL,
     senha varchar(1000) NOT NULL,
     ativo boolean
 );
