@@ -66,6 +66,7 @@ namespace skoll.Aplicacao
             services.AddSingleton<IProdutoService, ProdutoService>();
             services.AddSingleton<IServicoPrestadoService, ServicoPrestadoService>();
             services.AddSingleton<ITelefoneService, TelefoneService>();
+            services.AddSingleton<IVendedorService, VendedorService>();
 
 
             return services;
