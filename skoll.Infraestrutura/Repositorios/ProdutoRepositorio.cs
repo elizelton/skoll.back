@@ -25,6 +25,18 @@ namespace skoll.Infraestrutura.Repositorios
             command.Parameters.AddWithValue("@ativo", produto.ativo);
 
             command.ExecuteNonQuery();
+
+            query = "select currval('produto_idproduto_seq') as newId";
+            command = CreateCommand(query);
+
+            using (var reader = command.ExecuteReader())
+            {
+                reader.Read();
+                if (reader.HasRows)
+                {
+                    produto.Id = Convert.ToInt32(reader["newId"]);
+                }
+            }
         }
 
         public Produto Get(int id)

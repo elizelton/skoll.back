@@ -28,6 +28,18 @@ namespace skoll.Infraestrutura.Repositorios
             command.Parameters.AddWithValue("@percComis", vendedor.percComis);
 
             command.ExecuteNonQuery();
+
+            query = "select currval('vendedor_idvendedor_seq') as newId";
+            command = CreateCommand(query);
+
+            using (var reader = command.ExecuteReader())
+            {
+                reader.Read();
+                if (reader.HasRows)
+                {
+                    vendedor.Id = Convert.ToInt32(reader["newId"]);
+                }
+            }
         }
 
         public Vendedor Get(int id)

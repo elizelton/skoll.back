@@ -58,6 +58,18 @@ namespace skoll.Infraestrutura.Repositorios
             command.Parameters.AddWithValue("@ativo", usuario.ativo);
 
             command.ExecuteNonQuery();
+
+            query = "select currval('usuario_idusuario_seq') as newId";
+            command = CreateCommand(query);
+
+            using (var reader = command.ExecuteReader())
+            {
+                reader.Read();
+                if (reader.HasRows)
+                {
+                    usuario.Id = Convert.ToInt32(reader["newId"]);
+                }
+            }
         }
 
         public Usuario Get(int id)

@@ -27,7 +27,10 @@ namespace skoll.Infraestrutura.Repositorios
                 var pessoaInsert = new PessoaRepositorio(this._context, this._transaction).GetByCpfCnpj(fornecedor.cpfCnpj);
 
                 if (pessoaInsert != null)
+                {
                     idPessoa = pessoaInsert.Id;
+                    fornecedor.Id = idPessoa;
+                }
             }
 
             var query = "INSERT INTO public.Fornecedor(ativo, tipoFornecedor, fk_IdPessoa) " +
@@ -39,6 +42,18 @@ namespace skoll.Infraestrutura.Repositorios
             command.Parameters.AddWithValue("@fk_IdPessoa", idPessoa);
 
             command.ExecuteNonQuery();
+
+            query = "select currval('fornecedor_idfornecedor_seq') as newId";
+            command = CreateCommand(query);
+
+            using (var reader = command.ExecuteReader())
+            {
+                reader.Read();
+                if (reader.HasRows)
+                {
+                    fornecedor.idFornecedor = Convert.ToInt32(reader["newId"]);
+                }
+            }
         }
 
         public Fornecedor Get(int id)

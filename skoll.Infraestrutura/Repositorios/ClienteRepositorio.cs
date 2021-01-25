@@ -27,7 +27,10 @@ namespace skoll.Infraestrutura.Repositorios
                 var pessoaInsert = new PessoaRepositorio(this._context, this._transaction).GetByCpfCnpj(cliente.cpfCnpj);
 
                 if (pessoaInsert != null)
+                {
                     idPessoa = pessoaInsert.Id;
+                    cliente.Id = idPessoa;
+                }
             }
 
             var query = "INSERT INTO public.Cliente(tipoCliente, ativo, nascimento, fk_IdPessoa) " +
@@ -40,6 +43,19 @@ namespace skoll.Infraestrutura.Repositorios
             command.Parameters.AddWithValue("@fk_IdPessoa", idPessoa);
 
             command.ExecuteNonQuery();
+
+
+            query = "select currval('cliente_idcliente_seq') as newId";
+            command = CreateCommand(query);
+
+            using (var reader = command.ExecuteReader())
+            {
+                reader.Read();
+                if (reader.HasRows)
+                {
+                    cliente.idCliente = Convert.ToInt32(reader["newId"]);
+                }
+            }
         }
 
         public Cliente Get(int id)

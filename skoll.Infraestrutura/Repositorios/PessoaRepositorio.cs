@@ -33,6 +33,18 @@ namespace skoll.Infraestrutura.Repositorios
             command.Parameters.AddWithValue("@fk_IdCidade", pessoa.Cidade.Id);
 
             command.ExecuteNonQuery();
+
+            query = "select currval('pessoa_idpessoa_seq') as newId";
+            command = CreateCommand(query);
+
+            using (var reader = command.ExecuteReader())
+            {
+                reader.Read();
+                if (reader.HasRows)
+                {
+                    pessoa.Id = Convert.ToInt32(reader["newId"]);
+                }
+            }
         }
 
         public Pessoa Get(int id)

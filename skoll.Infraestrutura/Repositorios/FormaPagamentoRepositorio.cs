@@ -26,6 +26,18 @@ namespace skoll.Infraestrutura.Repositorios
             command.Parameters.AddWithValue("@ativo", formaPag.ativo);
 
             command.ExecuteNonQuery();
+
+            query = "select currval('formapagamento_idformapag_seq') as newId";
+            command = CreateCommand(query);
+
+            using (var reader = command.ExecuteReader())
+            {
+                reader.Read();
+                if (reader.HasRows)
+                {
+                    formaPag.Id = Convert.ToInt32(reader["newId"]);
+                }
+            }
         }
 
         public FormaPagamento Get(int id)

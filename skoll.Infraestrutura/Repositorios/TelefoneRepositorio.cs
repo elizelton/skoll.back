@@ -29,6 +29,18 @@ namespace skoll.Infraestrutura.Repositorios
             command.Parameters.AddWithValue("@fk_IdPessoa", telefone.idPessoa);
 
             command.ExecuteNonQuery();
+
+            query = "select currval('telefone_idtelefone_seq') as newId";
+            command = CreateCommand(query);
+
+            using (var reader = command.ExecuteReader())
+            {
+                reader.Read();
+                if (reader.HasRows)
+                {
+                    telefone.Id = Convert.ToInt32(reader["newId"]);
+                }
+            }
         }
 
         public Telefone Get(int id)

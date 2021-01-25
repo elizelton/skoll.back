@@ -29,6 +29,18 @@ namespace skoll.Infraestrutura.Repositorios
             command.Parameters.AddWithValue("@fk_IdContrato", contServ.idContrato);
 
             command.ExecuteNonQuery();
+
+            query = "select currval('contratoservico_idcontratoservicoprestado_seq') as newId";
+            command = CreateCommand(query);
+
+            using (var reader = command.ExecuteReader())
+            {
+                reader.Read();
+                if (reader.HasRows)
+                {
+                    contServ.Id = Convert.ToInt32(reader["newId"]);
+                }
+            }
         }
 
         public ContratoServico Get(int id)

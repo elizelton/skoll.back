@@ -74,7 +74,7 @@ namespace skoll.ui.Controllers
 
             _fornecedorService.Create(fornecedor);
 
-            return CreatedAtRoute("GetFornecedor", new { id = fornecedor.Id }, fornecedor);
+            return CreatedAtRoute("GetFornecedor", new { id = fornecedor.idFornecedor }, fornecedor);
         }
 
         // PUT: api/Usuario/5

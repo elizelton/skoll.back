@@ -28,6 +28,18 @@ namespace skoll.Infraestrutura.Repositorios
             command.Parameters.AddWithValue("@fk_IdContratoParcela", contParcPag.idContratoParcela);
 
             command.ExecuteNonQuery();
+
+            query = "select currval('contratoparcelapagamento_idcontratoparcelapgto_seq') as newId";
+            command = CreateCommand(query);
+
+            using (var reader = command.ExecuteReader())
+            {
+                reader.Read();
+                if (reader.HasRows)
+                {
+                    contParcPag.Id = Convert.ToInt32(reader["newId"]);
+                }
+            }
         }
 
         public ContratoParcelaPagamento Get(int id)

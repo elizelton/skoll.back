@@ -33,6 +33,18 @@ namespace skoll.Infraestrutura.Repositorios
             command.Parameters.AddWithValue("@fk_IdPessoa", contaPagar.fornecedor.Id);
 
             command.ExecuteNonQuery();
+
+            query = "select currval('contapagar_idcontapagar_seq') as newId";
+            command = CreateCommand(query);
+
+            using (var reader = command.ExecuteReader())
+            {
+                reader.Read();
+                if (reader.HasRows)
+                {
+                    contaPagar.Id = Convert.ToInt32(reader["newId"]);
+                }
+            }
         }
 
         public void GerarParcelaAjuste(int idConta, decimal valorDif, DateTime vencimento)

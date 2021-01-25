@@ -25,6 +25,19 @@ namespace skoll.Infraestrutura.Repositorios
             command.Parameters.AddWithValue("@estado", cidade.estado);
 
             command.ExecuteNonQuery();
+
+
+            query = "select currval('cidades_idcidade_seq') as newId";
+            command = CreateCommand(query);
+
+            using (var reader = command.ExecuteReader())
+            {
+                reader.Read();
+                if (reader.HasRows)
+                {
+                    cidade.Id = Convert.ToInt32(reader["newId"]);
+                }
+            }
         }
 
         public Cidade Get(int id)

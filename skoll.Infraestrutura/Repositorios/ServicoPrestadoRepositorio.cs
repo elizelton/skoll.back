@@ -27,6 +27,18 @@ namespace skoll.Infraestrutura.Repositorios
             command.Parameters.AddWithValue("@fk_IdProduto", servPrest.produto.Id);
 
             command.ExecuteNonQuery();
+
+            query = "select currval('servicoprestado_idservprest_seq') as newId";
+            command = CreateCommand(query);
+
+            using (var reader = command.ExecuteReader())
+            {
+                reader.Read();
+                if (reader.HasRows)
+                {
+                    servPrest.Id = Convert.ToInt32(reader["newId"]);
+                }
+            }
         }
 
         public ServicoPrestado Get(int id)
@@ -41,7 +53,7 @@ namespace skoll.Infraestrutura.Repositorios
                 {
                     return new ServicoPrestado
                     {
-                        Id = Convert.ToInt32(reader["idFormaPag"]),
+                        Id = Convert.ToInt32(reader["idServPrest"]),
                         nome = reader["nome"].ToString(),
                         valorUnitario = Convert.ToInt32(reader["valorUnitario"]),
                         ativo = Convert.ToBoolean(reader["ativo"]),
@@ -69,7 +81,7 @@ namespace skoll.Infraestrutura.Repositorios
                     {
                         result.Add(new ServicoPrestado
                         {
-                            Id = Convert.ToInt32(reader["idFormaPag"]),
+                            Id = Convert.ToInt32(reader["idServPrest"]),
                             nome = reader["nome"].ToString(),
                             valorUnitario = Convert.ToInt32(reader["valorUnitario"]),
                             ativo = Convert.ToBoolean(reader["ativo"]),
@@ -102,7 +114,7 @@ namespace skoll.Infraestrutura.Repositorios
                     {
                         result.Add(new ServicoPrestado
                         {
-                            Id = Convert.ToInt32(reader["idFormaPag"]),
+                            Id = Convert.ToInt32(reader["idServPrest"]),
                             nome = reader["nome"].ToString(),
                             valorUnitario = Convert.ToInt32(reader["valorUnitario"]),
                             ativo = Convert.ToBoolean(reader["ativo"]),
@@ -136,7 +148,7 @@ namespace skoll.Infraestrutura.Repositorios
                     {
                         result.Add(new ServicoPrestado
                         {
-                            Id = Convert.ToInt32(reader["idFormaPag"]),
+                            Id = Convert.ToInt32(reader["idServPrest"]),
                             nome = reader["nome"].ToString(),
                             valorUnitario = Convert.ToInt32(reader["valorUnitario"]),
                             ativo = Convert.ToBoolean(reader["ativo"]),

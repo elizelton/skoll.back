@@ -74,7 +74,7 @@ namespace skoll.ui.Controllers
 
             _clienteService.Create(cliente);
 
-            return CreatedAtRoute("GetCliente", new { id = cliente.Id }, cliente);
+            return CreatedAtRoute("GetCliente", new { id = cliente.idCliente }, cliente);
         }
 
         // PUT: api/Usuario/5

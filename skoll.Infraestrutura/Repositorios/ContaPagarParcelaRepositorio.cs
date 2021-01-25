@@ -27,6 +27,18 @@ namespace skoll.Infraestrutura.Repositorios
             command.Parameters.AddWithValue("@fk_IdContaPagar", contPgParc.idContaPagar);
 
             command.ExecuteNonQuery();
+
+            query = "select currval('contapagarparcela_idcontapagarparcela_seq') as newId";
+            command = CreateCommand(query);
+
+            using (var reader = command.ExecuteReader())
+            {
+                reader.Read();
+                if (reader.HasRows)
+                {
+                    contPgParc.Id = Convert.ToInt32(reader["newId"]);
+                }
+            }
         }
 
         public ContaPagarParcela Get(int id)
