@@ -8,7 +8,7 @@ CREATE FUNCTION pessoa_trigger() RETURNS trigger AS $pessoa_trigger$
 		IF NEW.cpfCnpj IS NULL or NEW.cpfCnpj = '' THEN
             RAISE EXCEPTION 'O Documento do Cadastrado não pode ser vazio';
         END IF;
-        IF EXISTS (SELECT 1 FROM PESSOA WHERE cpfCnpj = NEW.cpfCnpj) THEN
+        IF EXISTS (SELECT 1 FROM PESSOA WHERE cpfCnpj = NEW.cpfCnpj and idPessoa <> NEW.idPessoa) THEN
             RAISE EXCEPTION 'CPF ou CNPJ já cadastrado';
         END IF;
 		RETURN NEW;
@@ -30,7 +30,7 @@ CREATE FUNCTION usuario_trigger() RETURNS trigger AS $usuario_trigger$
         IF NEW.email IS NULL or NEW.email = '' THEN
             RAISE EXCEPTION 'O Usuário deve possuir um e-mail';
         END IF;
-        IF EXISTS (SELECT 1 FROM USUARIO WHERE userName = NEW.userName) THEN
+        IF EXISTS (SELECT 1 FROM USUARIO WHERE userName = NEW.userName and idUsuario <> NEW.idUsuario) THEN
             RAISE EXCEPTION 'Nome de usuário já cadastrado';
         END IF;
 		IF NEW.senha IS NULL or NEW.senha = '' THEN
@@ -137,7 +137,7 @@ CREATE FUNCTION servicoprestadoinsert_trigger() RETURNS trigger AS $servicoprest
 		IF NEW.fk_IdProduto IS NULL or NEW.fk_IdProduto <= 0 THEN
             RAISE EXCEPTION 'O Serviço Prestado deve estar atrelado a um Produto';
         END IF;
-        IF EXISTS (SELECT 1 FROM ServicoPrestado WHERE nome = NEW.nome AND fk_IdProduto = new.fk_IdProduto) THEN
+        IF EXISTS (SELECT 1 FROM ServicoPrestado WHERE nome = NEW.nome AND fk_IdProduto = new.fk_IdProduto and idServPrest <> NEW.idServPrest) THEN
             RAISE EXCEPTION 'Nome de serviço já cadastrado para o produto selecionado';
         END IF;
         IF NOT EXISTS (SELECT 1 FROM PRODUTO WHERE idProduto = NEW.fk_IdProduto and ativo = true) THEN
@@ -162,7 +162,7 @@ CREATE FUNCTION formapagamento_trigger() RETURNS trigger AS $formapagamento_trig
 		IF NEW.qtdParcela IS NULL or NEW.qtdParcela <= 0 THEN
             RAISE EXCEPTION 'A forma de pagamento deve ter um valor máximo de parcelas';
         END IF;
-        IF EXISTS (SELECT 1 FROM FormaPagamento WHERE nome = NEW.nome) THEN
+        IF EXISTS (SELECT 1 FROM FormaPagamento WHERE nome = NEW.nome and idFormaPag <> NEW.idFormaPag) THEN
             RAISE EXCEPTION 'Nome de forma de pagamento já cadastrado';
         END IF;
 		IF NEW.Ativo IS NULL THEN
