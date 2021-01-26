@@ -15,5 +15,8 @@ namespace skoll.Aplicacao.Interfaces
         void Update(Usuario usuario);
         void Remove(int id);
         void Remove(List<Usuario> usuarios);
+        Usuario GetByUserNameESenha(string UserName, string senha);
+        Usuario GetByUserName(string userName);
+        Usuario GetByEmail(string email);
     }
 }

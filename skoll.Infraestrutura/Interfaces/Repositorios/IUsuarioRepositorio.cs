@@ -10,8 +10,9 @@ namespace skoll.Infraestrutura.Interfaces.Repositorios
 {
     public interface IUsuarioRepositorio : ICRUDRepositorio<Usuario>
     {
-        Usuario GetByUserNameESenha(string UserName, string senha);
-
+        Usuario GetByUserNameESenha(string username, string senha);
+        Usuario GetByUserName(string userName);
+        Usuario GetByEmail(string email);
         void Remove(List<Usuario> usuarios);
     }
 }

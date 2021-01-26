@@ -48,6 +48,68 @@ namespace skoll.Infraestrutura.Repositorios
             }
         }
 
+        public Usuario GetByUserName(string username)
+        {
+            var command = CreateCommand("SELECT * FROM public.Usuario " +
+                "WHERE UserName = @username " +
+                "AND ativo = true");
+
+            command.Parameters.AddWithValue("@username", username);
+
+            using (var reader = command.ExecuteReader())
+            {
+                reader.Read();
+
+                if (reader.HasRows)
+                {
+                    return new Usuario
+                    {
+                        Id = Convert.ToInt32(reader["idusuario"]),
+                        userName = reader["username"].ToString(),
+                        email = reader["email"].ToString(),
+                        nome = reader["nome"].ToString(),
+                        senha = reader["senha"].ToString(),
+                        ativo = Convert.ToBoolean(reader["ativo"])
+                    };
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        public Usuario GetByEmail(string email)
+        {
+            var command = CreateCommand("SELECT * FROM public.Usuario " +
+                "WHERE email = @email " +
+                "AND ativo = true");
+
+            command.Parameters.AddWithValue("@email", email);
+
+            using (var reader = command.ExecuteReader())
+            {
+                reader.Read();
+
+                if (reader.HasRows)
+                {
+                    return new Usuario
+                    {
+                        Id = Convert.ToInt32(reader["idusuario"]),
+                        userName = reader["username"].ToString(),
+                        email = reader["email"].ToString(),
+                        nome = reader["nome"].ToString(),
+                        senha = reader["senha"].ToString(),
+                        ativo = Convert.ToBoolean(reader["ativo"])
+                    };
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
         public void Create(Usuario usuario)
         {
             var query = "INSERT INTO public.Usuario(username, email, nome, senha, ativo) VALUES (@username, @email, @nome, @senha, @ativo)";

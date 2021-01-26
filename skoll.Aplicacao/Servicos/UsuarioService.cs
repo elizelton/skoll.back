@@ -77,5 +77,29 @@ namespace skoll.Aplicacao.Servicos
                 context.SaveChanges();
             }
         }
+
+        public Usuario GetByUserNameESenha(string username, string senha)
+        {
+            using (var context = _unitOfWork.Create())
+            {
+                return context.Repositorios.UsuarioRepositorio.GetByUserNameESenha(username, senha);
+            }
+        }
+
+        public Usuario GetByUserName(string username)
+        {
+            using (var context = _unitOfWork.Create())
+            {
+                return context.Repositorios.UsuarioRepositorio.GetByUserName(username);
+            }
+        }
+
+        public Usuario GetByEmail(string email)
+        {
+            using (var context = _unitOfWork.Create())
+            {
+                return context.Repositorios.UsuarioRepositorio.GetByEmail(email);
+            }
+        }
     }
 }

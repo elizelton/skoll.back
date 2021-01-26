@@ -91,5 +91,20 @@ namespace skoll.ui.Controllers
         {
             return Ok(_autenticacaoService.Autenticar(user));
         }
+
+        [HttpPut("/esquecisenha")]
+        public IActionResult EsqueciSenha([FromBody] Usuario user)
+        {
+            if (!string.IsNullOrEmpty(user.userName))
+                user = _usuarioService.GetByUserName(user.userName);
+            else if (!string.IsNullOrEmpty(user.email))
+                user = _usuarioService.GetByEmail(user.email);
+
+            _autenticacaoService.EsqueciMinhaSenha(user);
+            
+            string valida = "A nova senha foi enviada para o seu email";
+
+            return new ObjectResult(valida);
+        }
     }
 }

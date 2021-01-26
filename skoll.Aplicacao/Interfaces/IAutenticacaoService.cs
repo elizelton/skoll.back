@@ -10,5 +10,6 @@ namespace skoll.Aplicacao.Interfaces
     public interface IAutenticacaoService
     {
         public object Autenticar(Usuario usuario);
+        string EsqueciMinhaSenha(Usuario usuario);
     }
 }
