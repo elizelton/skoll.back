@@ -71,6 +71,8 @@ namespace skoll.Infraestrutura.Repositorios
             }
 
             contrato.servicoPrestado = new ServicoPrestadoRepositorio(this._context, this._transaction).Get(contrato.servicoPrestado.Id);
+
+            return contrato;
         }
 
         public IEnumerable<ContratoServico> GetAll()
