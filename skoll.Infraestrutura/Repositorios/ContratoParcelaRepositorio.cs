@@ -48,13 +48,14 @@ namespace skoll.Infraestrutura.Repositorios
         {
             var command = CreateCommand("SELECT * FROM public.ContratoParcela WHERE idContratoParcela = @id");
             command.Parameters.AddWithValue("@id", id);
+            ContratoParcela contrato = null; 
 
             using (var reader = command.ExecuteReader())
             {
                 reader.Read();
                 if (reader.HasRows)
                 {
-                    return new ContratoParcela
+                    contrato = new ContratoParcela
                     {
                         Id = Convert.ToInt32(reader["idContratoParcela"]),
                         dataVencimento = Convert.ToDateTime(reader["dataVencimento"]),
@@ -71,6 +72,10 @@ namespace skoll.Infraestrutura.Repositorios
                     return null;
                 }
             }
+
+            contrato.pagamentos = (List<ContratoParcelaPagamento>)new ContratoParcelaPagamentoRepositorio(this._context, this._transaction).GetByContratoParcela(contrato.Id);
+
+            return contrato;
         }
 
         public IEnumerable<ContratoParcela> GetAll()
@@ -93,8 +98,7 @@ namespace skoll.Infraestrutura.Repositorios
                             numParcela = Convert.ToInt32(reader["numParcela"]),
                             idContrato = Convert.ToInt32(reader["fk_IdContrato"]),
                             situacao = Convert.ToInt32(reader["situacao"]),
-                            comissao = Convert.ToDecimal(reader["comissao"]),
-                            pagamentos = (List<ContratoParcelaPagamento>)new ContratoParcelaPagamentoRepositorio(this._context, this._transaction).GetByContratoParcela(Convert.ToInt32(reader["idContratoParcela"]))
+                            comissao = Convert.ToDecimal(reader["comissao"])
                         });
                     }
                     else
@@ -105,6 +109,9 @@ namespace skoll.Infraestrutura.Repositorios
                 }
                 reader.Close();
             }
+
+            foreach (var contrato in result)
+                contrato.pagamentos = (List<ContratoParcelaPagamento>)new ContratoParcelaPagamentoRepositorio(this._context, this._transaction).GetByContratoParcela(contrato.Id);
 
             return result;
         }
@@ -130,8 +137,7 @@ namespace skoll.Infraestrutura.Repositorios
                             numParcela = Convert.ToInt32(reader["numParcela"]),
                             idContrato = Convert.ToInt32(reader["fk_IdContrato"]),
                             situacao = Convert.ToInt32(reader["situacao"]),
-                            comissao = Convert.ToDecimal(reader["comissao"]),
-                            pagamentos = (List<ContratoParcelaPagamento>)new ContratoParcelaPagamentoRepositorio(this._context, this._transaction).GetByContratoParcela(Convert.ToInt32(reader["idContratoParcela"]))
+                            comissao = Convert.ToDecimal(reader["comissao"])
                         });
                     }
                     else
@@ -142,6 +148,9 @@ namespace skoll.Infraestrutura.Repositorios
                 }
                 reader.Close();
             }
+
+            foreach (var contrato in result)
+                contrato.pagamentos = (List<ContratoParcelaPagamento>)new ContratoParcelaPagamentoRepositorio(this._context, this._transaction).GetByContratoParcela(contrato.Id);
 
             return result;
         }
@@ -167,8 +176,7 @@ namespace skoll.Infraestrutura.Repositorios
                             numParcela = Convert.ToInt32(reader["numParcela"]),
                             idContrato = Convert.ToInt32(reader["fk_IdContrato"]),
                             situacao = Convert.ToInt32(reader["situacao"]),
-                            comissao = Convert.ToDecimal(reader["comissao"]),
-                            pagamentos = (List<ContratoParcelaPagamento>)new ContratoParcelaPagamentoRepositorio(this._context, this._transaction).GetByContratoParcela(Convert.ToInt32(reader["idContratoParcela"]))
+                            comissao = Convert.ToDecimal(reader["comissao"])
                         });
                     }
                     else
@@ -179,6 +187,9 @@ namespace skoll.Infraestrutura.Repositorios
                 }
                 reader.Close();
             }
+
+            foreach (var contrato in result)
+                contrato.pagamentos = (List<ContratoParcelaPagamento>)new ContratoParcelaPagamentoRepositorio(this._context, this._transaction).GetByContratoParcela(contrato.Id);
 
             return result;
         }
@@ -203,8 +214,7 @@ namespace skoll.Infraestrutura.Repositorios
                             numParcela = Convert.ToInt32(reader["numParcela"]),
                             idContrato = Convert.ToInt32(reader["fk_IdContrato"]),
                             situacao = Convert.ToInt32(reader["situacao"]),
-                            comissao = Convert.ToDecimal(reader["comissao"]),
-                            pagamentos = (List<ContratoParcelaPagamento>)new ContratoParcelaPagamentoRepositorio(this._context, this._transaction).GetByContratoParcela(Convert.ToInt32(reader["idContratoParcela"]))
+                            comissao = Convert.ToDecimal(reader["comissao"])
                         });
                     }
                     else
@@ -215,6 +225,9 @@ namespace skoll.Infraestrutura.Repositorios
                 }
                 reader.Close();
             }
+
+            foreach (var contrato in result)
+                contrato.pagamentos = (List<ContratoParcelaPagamento>)new ContratoParcelaPagamentoRepositorio(this._context, this._transaction).GetByContratoParcela(contrato.Id);
 
             return result;
         }
@@ -239,8 +252,7 @@ namespace skoll.Infraestrutura.Repositorios
                             numParcela = Convert.ToInt32(reader["numParcela"]),
                             idContrato = Convert.ToInt32(reader["fk_IdContrato"]),
                             situacao = Convert.ToInt32(reader["situacao"]),
-                            comissao = Convert.ToDecimal(reader["comissao"]),
-                            pagamentos = (List<ContratoParcelaPagamento>)new ContratoParcelaPagamentoRepositorio(this._context, this._transaction).GetByContratoParcela(Convert.ToInt32(reader["idContratoParcela"]))
+                            comissao = Convert.ToDecimal(reader["comissao"])
                         });
                     }
                     else
@@ -251,6 +263,9 @@ namespace skoll.Infraestrutura.Repositorios
                 }
                 reader.Close();
             }
+
+            foreach (var contrato in result)
+                contrato.pagamentos = (List<ContratoParcelaPagamento>)new ContratoParcelaPagamentoRepositorio(this._context, this._transaction).GetByContratoParcela(contrato.Id);
 
             return result;
         }

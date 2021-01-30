@@ -47,20 +47,21 @@ namespace skoll.Infraestrutura.Repositorios
         {
             var command = CreateCommand("SELECT * FROM public.ContratoServico WHERE idContratoServicoPrestado = @id");
             command.Parameters.AddWithValue("@id", id);
+            ContratoServico contrato = null;
 
             using (var reader = command.ExecuteReader())
             {
                 reader.Read();
                 if (reader.HasRows)
                 {
-                    return new ContratoServico
+                    contrato = new ContratoServico
                     {
                         Id = Convert.ToInt32(reader["idContratoServicoPrestado"]),
                         valorUnitario = Convert.ToDecimal(reader["valorUnitario"]),
                         quantidade = Convert.ToInt32(reader["quantidade"]),
                         valorTotal = Convert.ToDecimal(reader["valorTotal"]),
                         idContrato = Convert.ToInt32(reader["fk_IdContrato"]),
-                        servicoPrestado = new ServicoPrestadoRepositorio(this._context, this._transaction).Get(Convert.ToInt32(reader["fk_IdServicoPrestado"]))
+                        servicoPrestado = new ServicoPrestado() { Id = (Convert.ToInt32(reader["fk_IdServicoPrestado"])) }
                     };
                 }
                 else
@@ -68,6 +69,8 @@ namespace skoll.Infraestrutura.Repositorios
                     return null;
                 }
             }
+
+            contrato.servicoPrestado = new ServicoPrestadoRepositorio(this._context, this._transaction).Get(contrato.servicoPrestado.Id);
         }
 
         public IEnumerable<ContratoServico> GetAll()
@@ -89,7 +92,7 @@ namespace skoll.Infraestrutura.Repositorios
                             quantidade = Convert.ToInt32(reader["quantidade"]),
                             valorTotal = Convert.ToDecimal(reader["valorTotal"]),
                             idContrato = Convert.ToInt32(reader["fk_IdContrato"]),
-                            servicoPrestado = new ServicoPrestadoRepositorio(this._context, this._transaction).Get(Convert.ToInt32(reader["fk_IdServicoPrestado"]))
+                            servicoPrestado = new ServicoPrestado() { Id = (Convert.ToInt32(reader["fk_IdServicoPrestado"])) }
                         });
                     }
                     else
@@ -100,6 +103,9 @@ namespace skoll.Infraestrutura.Repositorios
                 }
                 reader.Close();
             }
+
+            foreach(var contrato in result)
+                contrato.servicoPrestado = new ServicoPrestadoRepositorio(this._context, this._transaction).Get(contrato.servicoPrestado.Id);
 
             return result;
         }
@@ -124,7 +130,7 @@ namespace skoll.Infraestrutura.Repositorios
                             quantidade = Convert.ToInt32(reader["quantidade"]),
                             valorTotal = Convert.ToDecimal(reader["valorTotal"]),
                             idContrato = Convert.ToInt32(reader["fk_IdContrato"]),
-                            servicoPrestado = new ServicoPrestadoRepositorio(this._context, this._transaction).Get(Convert.ToInt32(reader["fk_IdServicoPrestado"]))
+                            servicoPrestado = new ServicoPrestado() { Id = (Convert.ToInt32(reader["fk_IdServicoPrestado"])) }
                         });
                     }
                     else
@@ -135,6 +141,9 @@ namespace skoll.Infraestrutura.Repositorios
                 }
                 reader.Close();
             }
+
+            foreach (var contrato in result)
+                contrato.servicoPrestado = new ServicoPrestadoRepositorio(this._context, this._transaction).Get(contrato.servicoPrestado.Id);
 
             return result;
         }

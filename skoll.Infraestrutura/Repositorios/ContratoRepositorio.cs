@@ -72,13 +72,14 @@ namespace skoll.Infraestrutura.Repositorios
         {
             var command = CreateCommand("SELECT * FROM public.Contrato WHERE idContrato = @id");
             command.Parameters.AddWithValue("@id", id);
+            Contrato contrato = null;
 
             using (var reader = command.ExecuteReader())
             {
                 reader.Read();
                 if (reader.HasRows)
                 {
-                    return new Contrato
+                    contrato = new Contrato
                     {
                         Id = Convert.ToInt32(reader["idContrato"]),
                         qntdExemplares = Convert.ToInt32(reader["qntdExemplares"]),
@@ -91,10 +92,10 @@ namespace skoll.Infraestrutura.Repositorios
                         dataInicio = Convert.ToDateTime(reader["dataInicio"]),
                         periodoMeses = Convert.ToInt32(reader["periodoMeses"]),
                         dataTermino = Convert.ToDateTime(reader["dataTermino"]),
-                        formaPagamento = new FormaPagamentoRepositorio(this._context, this._transaction).Get(Convert.ToInt32(reader["fk_IdFormaPag"])),
-                        vendedor = new VendedorRepositorio(this._context, this._transaction).Get(Convert.ToInt32(reader["fk_IdVendedor"])),
-                        usuario = new UsuarioRepositorio(this._context, this._transaction).Get(Convert.ToInt32(reader["fk_IdUsuario"])),
-                        cliente = new ClienteRepositorio(this._context, this._transaction).Get(Convert.ToInt32(reader["fk_IdCliente"]))
+                        formaPagamento = new FormaPagamento() { Id = Convert.ToInt32(reader["fk_IdFormaPag"]) },
+                        vendedor = new Vendedor() { Id = Convert.ToInt32(reader["fk_IdVendedor"]) },
+                        usuario = new Usuario() { Id = Convert.ToInt32(reader["fk_IdUsuario"]) },
+                        cliente = new Cliente() { idCliente = Convert.ToInt32(reader["fk_IdCliente"]) }
                     };
                 }
                 else
@@ -102,6 +103,13 @@ namespace skoll.Infraestrutura.Repositorios
                     return null;
                 }
             }
+
+            contrato.formaPagamento = new FormaPagamentoRepositorio(this._context, this._transaction).Get(contrato.formaPagamento.Id);
+            contrato.vendedor = new VendedorRepositorio(this._context, this._transaction).Get(contrato.vendedor.Id);
+            contrato.usuario = new UsuarioRepositorio(this._context, this._transaction).Get(contrato.usuario.Id);
+            contrato.cliente = new ClienteRepositorio(this._context, this._transaction).Get(contrato.cliente.idCliente);
+
+            return contrato;
         }
 
         public IEnumerable<Contrato> GetAll()
@@ -129,10 +137,10 @@ namespace skoll.Infraestrutura.Repositorios
                             dataInicio = Convert.ToDateTime(reader["dataInicio"]),
                             periodoMeses = Convert.ToInt32(reader["periodoMeses"]),
                             dataTermino = Convert.ToDateTime(reader["dataTermino"]),
-                            formaPagamento = new FormaPagamentoRepositorio(this._context, this._transaction).Get(Convert.ToInt32(reader["fk_IdFormaPag"])),
-                            vendedor = new VendedorRepositorio(this._context, this._transaction).Get(Convert.ToInt32(reader["fk_IdVendedor"])),
-                            usuario = new UsuarioRepositorio(this._context, this._transaction).Get(Convert.ToInt32(reader["fk_IdUsuario"])),
-                            cliente = new ClienteRepositorio(this._context, this._transaction).Get(Convert.ToInt32(reader["fk_IdCliente"]))
+                            formaPagamento = new FormaPagamento() { Id = Convert.ToInt32(reader["fk_IdFormaPag"]) },
+                            vendedor = new Vendedor() { Id = Convert.ToInt32(reader["fk_IdVendedor"]) },
+                            usuario = new Usuario() { Id = Convert.ToInt32(reader["fk_IdUsuario"]) },
+                            cliente = new Cliente() { idCliente = Convert.ToInt32(reader["fk_IdCliente"]) }
                         });
                     }
                     else
@@ -142,6 +150,14 @@ namespace skoll.Infraestrutura.Repositorios
 
                 }
                 reader.Close();
+            }
+
+            foreach(var contrato in result)
+            {
+                contrato.formaPagamento = new FormaPagamentoRepositorio(this._context, this._transaction).Get(contrato.formaPagamento.Id);
+                contrato.vendedor = new VendedorRepositorio(this._context, this._transaction).Get(contrato.vendedor.Id);
+                contrato.usuario = new UsuarioRepositorio(this._context, this._transaction).Get(contrato.usuario.Id);
+                contrato.cliente = new ClienteRepositorio(this._context, this._transaction).Get(contrato.cliente.idCliente);
             }
 
             return result;

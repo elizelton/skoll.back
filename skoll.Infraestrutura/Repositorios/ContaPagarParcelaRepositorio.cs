@@ -45,20 +45,20 @@ namespace skoll.Infraestrutura.Repositorios
         {
             var command = CreateCommand("SELECT * FROM public.ContaPagarParcela WHERE idContaPagarParcela = @id");
             command.Parameters.AddWithValue("@id", id);
+            ContaPagarParcela conta = null; 
 
             using (var reader = command.ExecuteReader())
             {
                 reader.Read();
                 if (reader.HasRows)
                 {
-                    return new ContaPagarParcela
+                    conta = new ContaPagarParcela
                     {
                         Id = Convert.ToInt32(reader["idContaPagarParcela"]),
                         dataVencimento = Convert.ToDateTime(reader["dataVencimento"]),
                         valorParcela = Convert.ToDecimal(reader["valorParcela"]),
                         numParcela = Convert.ToInt32(reader["numParcela"]),
-                        idContaPagar = Convert.ToInt32(reader["fk_IdContaPagar"]),
-                        pagamentos = (List<ContaPagarParcelaPagamento>)new ContaPagarParcelaPagamentoRepositorio(this._context, this._transaction).GetByContaPagarParcela(Convert.ToInt32(reader["idContaPagarParcela"]))
+                        idContaPagar = Convert.ToInt32(reader["fk_IdContaPagar"])
                     };
                 }
                 else
@@ -66,6 +66,8 @@ namespace skoll.Infraestrutura.Repositorios
                     return null;
                 }
             }
+            conta.pagamentos = (List<ContaPagarParcelaPagamento>)new ContaPagarParcelaPagamentoRepositorio(this._context, this._transaction).GetByContaPagarParcela(conta.Id);
+            return conta;
         }
 
         public IEnumerable<ContaPagarParcela> GetAll()
@@ -86,8 +88,7 @@ namespace skoll.Infraestrutura.Repositorios
                             dataVencimento = Convert.ToDateTime(reader["dataVencimento"]),
                             valorParcela = Convert.ToDecimal(reader["valorParcela"]),
                             numParcela = Convert.ToInt32(reader["numParcela"]),
-                            idContaPagar = Convert.ToInt32(reader["fk_IdContaPagar"]),
-                            pagamentos = (List<ContaPagarParcelaPagamento>)new ContaPagarParcelaPagamentoRepositorio(this._context, this._transaction).GetByContaPagarParcela(Convert.ToInt32(reader["idContaPagarParcela"]))
+                            idContaPagar = Convert.ToInt32(reader["fk_IdContaPagar"])
                         });
                     }
                     else
@@ -98,6 +99,9 @@ namespace skoll.Infraestrutura.Repositorios
                 }
                 reader.Close();
             }
+
+            foreach (var conta in result)
+                conta.pagamentos = (List<ContaPagarParcelaPagamento>)new ContaPagarParcelaPagamentoRepositorio(this._context, this._transaction).GetByContaPagarParcela(conta.Id);
 
             return result;
         }
@@ -121,8 +125,7 @@ namespace skoll.Infraestrutura.Repositorios
                             dataVencimento = Convert.ToDateTime(reader["dataVencimento"]),
                             valorParcela = Convert.ToDecimal(reader["valorParcela"]),
                             numParcela = Convert.ToInt32(reader["numParcela"]),
-                            idContaPagar = Convert.ToInt32(reader["fk_IdContaPagar"]),
-                            pagamentos = (List<ContaPagarParcelaPagamento>)new ContaPagarParcelaPagamentoRepositorio(this._context, this._transaction).GetByContaPagarParcela(Convert.ToInt32(reader["idContaPagarParcela"]))
+                            idContaPagar = Convert.ToInt32(reader["fk_IdContaPagar"])
                         });
                     }
                     else
@@ -133,6 +136,9 @@ namespace skoll.Infraestrutura.Repositorios
                 }
                 reader.Close();
             }
+
+            foreach (var conta in result)
+                conta.pagamentos = (List<ContaPagarParcelaPagamento>)new ContaPagarParcelaPagamentoRepositorio(this._context, this._transaction).GetByContaPagarParcela(conta.Id);
 
             return result;
         }
@@ -156,8 +162,7 @@ namespace skoll.Infraestrutura.Repositorios
                             dataVencimento = Convert.ToDateTime(reader["dataVencimento"]),
                             valorParcela = Convert.ToDecimal(reader["valorParcela"]),
                             numParcela = Convert.ToInt32(reader["numParcela"]),
-                            idContaPagar = Convert.ToInt32(reader["fk_IdContaPagar"]),
-                            pagamentos = (List<ContaPagarParcelaPagamento>)new ContaPagarParcelaPagamentoRepositorio(this._context, this._transaction).GetByContaPagarParcela(Convert.ToInt32(reader["idContaPagarParcela"]))
+                            idContaPagar = Convert.ToInt32(reader["fk_IdContaPagar"])
                         });
                     }
                     else
@@ -168,6 +173,9 @@ namespace skoll.Infraestrutura.Repositorios
                 }
                 reader.Close();
             }
+
+            foreach (var conta in result)
+                conta.pagamentos = (List<ContaPagarParcelaPagamento>)new ContaPagarParcelaPagamentoRepositorio(this._context, this._transaction).GetByContaPagarParcela(conta.Id);
 
             return result;
         }
@@ -190,8 +198,7 @@ namespace skoll.Infraestrutura.Repositorios
                             dataVencimento = Convert.ToDateTime(reader["dataVencimento"]),
                             valorParcela = Convert.ToDecimal(reader["valorParcela"]),
                             numParcela = Convert.ToInt32(reader["numParcela"]),
-                            idContaPagar = Convert.ToInt32(reader["fk_IdContaPagar"]),
-                            pagamentos = (List<ContaPagarParcelaPagamento>)new ContaPagarParcelaPagamentoRepositorio(this._context, this._transaction).GetByContaPagarParcela(Convert.ToInt32(reader["idContaPagarParcela"]))
+                            idContaPagar = Convert.ToInt32(reader["fk_IdContaPagar"])
                         });
                     }
                     else
@@ -202,6 +209,9 @@ namespace skoll.Infraestrutura.Repositorios
                 }
                 reader.Close();
             }
+
+            foreach (var conta in result)
+                conta.pagamentos = (List<ContaPagarParcelaPagamento>)new ContaPagarParcelaPagamentoRepositorio(this._context, this._transaction).GetByContaPagarParcela(conta.Id);
 
             return result;
         }

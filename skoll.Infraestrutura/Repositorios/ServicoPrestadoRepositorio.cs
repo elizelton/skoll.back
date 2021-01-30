@@ -45,19 +45,20 @@ namespace skoll.Infraestrutura.Repositorios
         {
             var command = CreateCommand("SELECT * FROM public.ServicoPrestado WHERE idServPrest = @id");
             command.Parameters.AddWithValue("@id", id);
+            ServicoPrestado serv = null;
 
             using (var reader = command.ExecuteReader())
             {
                 reader.Read();
                 if (reader.HasRows)
                 {
-                    return new ServicoPrestado
+                    serv = new ServicoPrestado
                     {
                         Id = Convert.ToInt32(reader["idServPrest"]),
                         nome = reader["nome"].ToString(),
                         valorUnitario = Convert.ToInt32(reader["valorUnitario"]),
                         ativo = Convert.ToBoolean(reader["ativo"]),
-                        produto = new ProdutoRepositorio(this._context, this._transaction).Get(Convert.ToInt32(reader["fk_IdProduto"]))
+                        produto = new Produto() { Id = Convert.ToInt32(reader["fk_IdProduto"])}
                     };
                 }
                 else
@@ -65,6 +66,10 @@ namespace skoll.Infraestrutura.Repositorios
                     return null;
                 }
             }
+
+            serv.produto = new ProdutoRepositorio(this._context, this._transaction).Get(serv.produto.Id);
+
+            return serv;
         }
 
         public IEnumerable<ServicoPrestado> GetAll()
@@ -85,7 +90,7 @@ namespace skoll.Infraestrutura.Repositorios
                             nome = reader["nome"].ToString(),
                             valorUnitario = Convert.ToInt32(reader["valorUnitario"]),
                             ativo = Convert.ToBoolean(reader["ativo"]),
-                            produto = new ProdutoRepositorio(this._context, this._transaction).Get(Convert.ToInt32(reader["fk_IdProduto"]))
+                            produto = new Produto() { Id = Convert.ToInt32(reader["fk_IdProduto"]) }
                         });
                     }
                     else
@@ -96,6 +101,9 @@ namespace skoll.Infraestrutura.Repositorios
                 }
                 reader.Close();
             }
+
+            foreach (var serv in result)
+                serv.produto = new ProdutoRepositorio(this._context, this._transaction).Get(serv.produto.Id);
 
             return result;
         }
@@ -118,7 +126,7 @@ namespace skoll.Infraestrutura.Repositorios
                             nome = reader["nome"].ToString(),
                             valorUnitario = Convert.ToInt32(reader["valorUnitario"]),
                             ativo = Convert.ToBoolean(reader["ativo"]),
-                            produto = new ProdutoRepositorio(this._context, this._transaction).Get(Convert.ToInt32(reader["fk_IdProduto"]))
+                            produto = new Produto() { Id = Convert.ToInt32(reader["fk_IdProduto"]) }
                         });
                     }
                     else
@@ -129,6 +137,9 @@ namespace skoll.Infraestrutura.Repositorios
                 }
                 reader.Close();
             }
+
+            foreach (var serv in result)
+                serv.produto = new ProdutoRepositorio(this._context, this._transaction).Get(serv.produto.Id);
 
             return result;
         }
@@ -152,7 +163,7 @@ namespace skoll.Infraestrutura.Repositorios
                             nome = reader["nome"].ToString(),
                             valorUnitario = Convert.ToInt32(reader["valorUnitario"]),
                             ativo = Convert.ToBoolean(reader["ativo"]),
-                            produto = new ProdutoRepositorio(this._context, this._transaction).Get(Convert.ToInt32(reader["fk_IdProduto"]))
+                            produto = new Produto() { Id = Convert.ToInt32(reader["fk_IdProduto"]) }
                         });
                     }
                     else
@@ -163,6 +174,9 @@ namespace skoll.Infraestrutura.Repositorios
                 }
                 reader.Close();
             }
+
+            foreach (var serv in result)
+                serv.produto = new ProdutoRepositorio(this._context, this._transaction).Get(serv.produto.Id);
 
             return result;
         }

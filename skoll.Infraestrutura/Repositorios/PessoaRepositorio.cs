@@ -51,13 +51,14 @@ namespace skoll.Infraestrutura.Repositorios
         {
             var command = CreateCommand("SELECT * FROM public.Pessoa WHERE idPessoa = @id");
             command.Parameters.AddWithValue("@id", id);
+            Pessoa pessoa = null;
 
             using (var reader = command.ExecuteReader())
             {
                 reader.Read();
                 if (reader.HasRows)
                 {
-                    return new Pessoa
+                    pessoa = new Pessoa
                     {
                         Id = Convert.ToInt32(reader["idPessoa"]),
                         cpfCnpj = reader["cpfCnpj"].ToString(),
@@ -68,8 +69,7 @@ namespace skoll.Infraestrutura.Repositorios
                         email = reader["email"].ToString(),
                         cep = reader["cep"].ToString(),
                         logradouro = reader["logradouro"].ToString(),
-                        Cidade = new CidadeRepositorio(this._context, this._transaction).Get(Convert.ToInt32(reader["fk_IdCidade"])),
-                        telefones = (List<Telefone>)new TelefoneRepositorio(this._context, this._transaction).GetByPessoa(Convert.ToInt32(reader["idPessoa"]))
+                        Cidade = new Cidade() { Id = Convert.ToInt32(reader["fk_IdCidade"]) }
                     };
                 }
                 else
@@ -77,6 +77,11 @@ namespace skoll.Infraestrutura.Repositorios
                     return null;
                 }
             }
+
+            pessoa.Cidade = new CidadeRepositorio(this._context, this._transaction).Get(pessoa.Cidade.Id);
+            pessoa.telefones = (List<Telefone>)new TelefoneRepositorio(this._context, this._transaction).GetByPessoa(pessoa.Id);
+
+            return pessoa;
         }
 
         public IEnumerable<Pessoa> GetAll()
@@ -102,8 +107,7 @@ namespace skoll.Infraestrutura.Repositorios
                             email = reader["email"].ToString(),
                             cep = reader["cep"].ToString(),
                             logradouro = reader["logradouro"].ToString(),
-                            Cidade = new CidadeRepositorio(this._context, this._transaction).Get(Convert.ToInt32(reader["fk_IdCidade"])),
-                            telefones = (List<Telefone>)new TelefoneRepositorio(this._context, this._transaction).GetByPessoa(Convert.ToInt32(reader["idPessoa"]))
+                            Cidade = new Cidade() { Id = Convert.ToInt32(reader["fk_IdCidade"]) }
                         });
                     }
                     else
@@ -113,6 +117,12 @@ namespace skoll.Infraestrutura.Repositorios
 
                 }
                 reader.Close();
+            }
+
+            foreach(var pessoa in result)
+            {
+                pessoa.Cidade = new CidadeRepositorio(this._context, this._transaction).Get(pessoa.Cidade.Id);
+                pessoa.telefones = (List<Telefone>)new TelefoneRepositorio(this._context, this._transaction).GetByPessoa(pessoa.Id);
             }
 
             return result;
@@ -142,8 +152,7 @@ namespace skoll.Infraestrutura.Repositorios
                             email = reader["email"].ToString(),
                             cep = reader["cep"].ToString(),
                             logradouro = reader["logradouro"].ToString(),
-                            Cidade = new CidadeRepositorio(this._context, this._transaction).Get(Convert.ToInt32(reader["fk_IdCidade"])),
-                            telefones = (List<Telefone>)new TelefoneRepositorio(this._context, this._transaction).GetByPessoa(Convert.ToInt32(reader["idPessoa"]))
+                            Cidade = new Cidade() { Id = Convert.ToInt32(reader["fk_IdCidade"]) }
                         });
                     }
                     else
@@ -155,6 +164,12 @@ namespace skoll.Infraestrutura.Repositorios
                 reader.Close();
             }
 
+            foreach (var pessoa in result)
+            {
+                pessoa.Cidade = new CidadeRepositorio(this._context, this._transaction).Get(pessoa.Cidade.Id);
+                pessoa.telefones = (List<Telefone>)new TelefoneRepositorio(this._context, this._transaction).GetByPessoa(pessoa.Id);
+            }
+
             return result;
         }
 
@@ -162,13 +177,14 @@ namespace skoll.Infraestrutura.Repositorios
         {
             var command = CreateCommand("SELECT * FROM public.Pessoa where cpfCnpj = @cpfCnpj");
             command.Parameters.AddWithValue("@cpfCnpj", cpfCnpj);
+            Pessoa pessoa = null;
 
             using (var reader = command.ExecuteReader())
             {
                 reader.Read();
                 if (reader.HasRows)
                 {
-                    return new Pessoa
+                    pessoa = new Pessoa
                     {
                         Id = Convert.ToInt32(reader["idPessoa"]),
                         cpfCnpj = reader["cpfCnpj"].ToString(),
@@ -179,8 +195,7 @@ namespace skoll.Infraestrutura.Repositorios
                         email = reader["email"].ToString(),
                         cep = reader["cep"].ToString(),
                         logradouro = reader["logradouro"].ToString(),
-                        Cidade = new CidadeRepositorio(this._context, this._transaction).Get(Convert.ToInt32(reader["fk_IdCidade"])),
-                        telefones = (List<Telefone>)new TelefoneRepositorio(this._context, this._transaction).GetByPessoa(Convert.ToInt32(reader["idPessoa"]))
+                        Cidade = new Cidade() { Id = Convert.ToInt32(reader["fk_IdCidade"]) }
                     };
                 }
                 else
@@ -188,6 +203,11 @@ namespace skoll.Infraestrutura.Repositorios
                     return null;
                 }
             }
+
+            pessoa.Cidade = new CidadeRepositorio(this._context, this._transaction).Get(pessoa.Cidade.Id);
+            pessoa.telefones = (List<Telefone>)new TelefoneRepositorio(this._context, this._transaction).GetByPessoa(pessoa.Id);
+
+            return pessoa;
         }
 
         public void Remove(int id)

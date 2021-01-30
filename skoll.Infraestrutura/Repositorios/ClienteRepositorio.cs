@@ -62,30 +62,31 @@ namespace skoll.Infraestrutura.Repositorios
         {
             var command = CreateCommand("SELECT * FROM public.Cliente WHERE idCliente = @id");
             command.Parameters.AddWithValue("@id", id);
+            Cliente cliente = null;
 
             using (var reader = command.ExecuteReader())
             {
                 reader.Read();
                 if (reader.HasRows)
                 {
-                    var cliente = new Cliente
+                    cliente = new Cliente
                     {
                         Id = Convert.ToInt32(reader["fk_IdPessoa"]),
                         idCliente = Convert.ToInt32(reader["idCliente"]),
                         ativo = Convert.ToBoolean(reader["ativo"]),
                         nascimento = Convert.ToDateTime(reader["nascimento"]),
                         tipoCliente = Convert.ToInt32(reader["tipoCliente"])
-                    };
-
-                    cliente.prenchePessoa(new PessoaRepositorio(this._context, this._transaction).Get(cliente.Id));
-
-                    return cliente;
+                    };                    
                 }
                 else
                 {
                     return null;
                 }
             }
+
+            cliente.prenchePessoa(new PessoaRepositorio(this._context, this._transaction).Get(cliente.Id));
+
+            return cliente;
         }
 
         public IEnumerable<Cliente> GetAll()
@@ -107,9 +108,7 @@ namespace skoll.Infraestrutura.Repositorios
                             ativo = Convert.ToBoolean(reader["ativo"]),
                             nascimento = Convert.ToDateTime(reader["nascimento"]),
                             tipoCliente = Convert.ToInt32(reader["tipoCliente"])
-                        };
-
-                        cliente.prenchePessoa(new PessoaRepositorio(this._context, this._transaction).Get(cliente.Id));
+                        };                       
 
                         result.Add(cliente);
                     }
@@ -121,6 +120,9 @@ namespace skoll.Infraestrutura.Repositorios
                 }
                 reader.Close();
             }
+
+            foreach (var cli in result)
+                cli.prenchePessoa(new PessoaRepositorio(this._context, this._transaction).Get(cli.Id));
 
             return result;
         }
@@ -146,8 +148,6 @@ namespace skoll.Infraestrutura.Repositorios
                             tipoCliente = Convert.ToInt32(reader["tipoCliente"])
                         };
 
-                        cliente.prenchePessoa(new PessoaRepositorio(this._context, this._transaction).Get(cliente.Id));
-
                         result.Add(cliente);
                     }
                     else
@@ -158,6 +158,9 @@ namespace skoll.Infraestrutura.Repositorios
                 }
                 reader.Close();
             }
+
+            foreach (var cli in result)
+                cli.prenchePessoa(new PessoaRepositorio(this._context, this._transaction).Get(cli.Id));
 
             return result;
         }
@@ -184,8 +187,6 @@ namespace skoll.Infraestrutura.Repositorios
                             tipoCliente = Convert.ToInt32(reader["tipoCliente"])
                         };
 
-                        cliente.prenchePessoa(new PessoaRepositorio(this._context, this._transaction).Get(cliente.Id));
-
                         result.Add(cliente);
                     }
                     else
@@ -196,6 +197,9 @@ namespace skoll.Infraestrutura.Repositorios
                 }
                 reader.Close();
             }
+
+            foreach (var cli in result)
+                cli.prenchePessoa(new PessoaRepositorio(this._context, this._transaction).Get(cli.Id));
 
             return result;
         }

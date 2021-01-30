@@ -60,29 +60,30 @@ namespace skoll.Infraestrutura.Repositorios
         {
             var command = CreateCommand("SELECT * FROM public.Fornecedor WHERE idFornecedor = @id");
             command.Parameters.AddWithValue("@id", id);
+            Fornecedor fornecedor = null;
 
             using (var reader = command.ExecuteReader())
             {
                 reader.Read();
                 if (reader.HasRows)
                 {
-                    var fornecedor = new Fornecedor
+                    fornecedor = new Fornecedor
                     {
                         Id = Convert.ToInt32(reader["fk_IdPessoa"]),
                         idFornecedor = Convert.ToInt32(reader["idFornecedor"]),
                         ativo = Convert.ToBoolean(reader["ativo"]),
                         tipoFornecedor = Convert.ToInt32(reader["tipoFornecedor"])                        
-                    };
-
-                    fornecedor.prenchePessoa(new PessoaRepositorio(this._context, this._transaction).Get(fornecedor.Id));
-
-                    return fornecedor;
+                    };                    
                 }
                 else
                 {
                     return null;
                 }
             }
+
+            fornecedor.prenchePessoa(new PessoaRepositorio(this._context, this._transaction).Get(fornecedor.Id));
+
+            return fornecedor;
         }
 
         public IEnumerable<Fornecedor> GetAll()
@@ -105,8 +106,6 @@ namespace skoll.Infraestrutura.Repositorios
                             tipoFornecedor = Convert.ToInt32(reader["tipoFornecedor"])
                         };
 
-                        fornecedor.prenchePessoa(new PessoaRepositorio(this._context, this._transaction).Get(fornecedor.Id));
-
                         result.Add(fornecedor);
                     }
                     else
@@ -117,6 +116,9 @@ namespace skoll.Infraestrutura.Repositorios
                 }
                 reader.Close();
             }
+
+            foreach(var fornecedor in result)
+                fornecedor.prenchePessoa(new PessoaRepositorio(this._context, this._transaction).Get(fornecedor.Id));
 
             return result;
         }
@@ -141,8 +143,6 @@ namespace skoll.Infraestrutura.Repositorios
                             tipoFornecedor = Convert.ToInt32(reader["tipoFornecedor"])
                         };
 
-                        fornecedor.prenchePessoa(new PessoaRepositorio(this._context, this._transaction).Get(fornecedor.Id));
-
                         result.Add(fornecedor);
                     }
                     else
@@ -153,6 +153,9 @@ namespace skoll.Infraestrutura.Repositorios
                 }
                 reader.Close();
             }
+
+            foreach (var fornecedor in result)
+                fornecedor.prenchePessoa(new PessoaRepositorio(this._context, this._transaction).Get(fornecedor.Id));
 
             return result;
         }
@@ -178,8 +181,6 @@ namespace skoll.Infraestrutura.Repositorios
                             tipoFornecedor = Convert.ToInt32(reader["tipoFornecedor"])
                         };
 
-                        fornecedor.prenchePessoa(new PessoaRepositorio(this._context, this._transaction).Get(fornecedor.Id));
-
                         result.Add(fornecedor);
                     }
                     else
@@ -190,6 +191,9 @@ namespace skoll.Infraestrutura.Repositorios
                 }
                 reader.Close();
             }
+
+            foreach (var fornecedor in result)
+                fornecedor.prenchePessoa(new PessoaRepositorio(this._context, this._transaction).Get(fornecedor.Id));
 
             return result;
         }
