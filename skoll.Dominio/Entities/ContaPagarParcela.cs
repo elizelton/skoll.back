@@ -10,6 +10,7 @@ namespace skoll.Dominio.Entities
         public int idContaPagar { get; set; }
         public int numParcela { get; set; }
         public decimal valorParcela { get; set; }
+        public decimal ajuste { get; set; }
         public DateTime dataVencimento { get; set; }
         public List<ContaPagarParcelaPagamento> pagamentos { get; set; }
     }

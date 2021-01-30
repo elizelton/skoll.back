@@ -18,8 +18,8 @@ namespace skoll.Infraestrutura.Repositorios
 
         public void Create(ContaPagar contaPagar)
         {
-            var query = "INSERT INTO public.ContaPagar(valorTotal, valorMensal, mesInicial, diaInicial, diasPagamento, numParcelas, juros, fk_IdFornecedor, fk_IdPessoa) " +
-                "VALUES (@valorTotal, @valorMensal, @mesInicial, @diaInicial, @diasPagamento, @numParcelas, @juros, @fk_IdFornecedor, @fk_IdPessoa)";
+            var query = "INSERT INTO public.ContaPagar(valorTotal, valorMensal, mesInicial, diaInicial, diasPagamento, numParcelas, juros, ajuste, fk_IdFornecedor, fk_IdPessoa) " +
+                "VALUES (@valorTotal, @valorMensal, @mesInicial, @diaInicial, @diasPagamento, @numParcelas, @juros, @ajuste, @fk_IdFornecedor, @fk_IdPessoa)";
             var command = CreateCommand(query);
 
             command.Parameters.AddWithValue("@valorTotal", contaPagar.valorTotal);
@@ -29,6 +29,7 @@ namespace skoll.Infraestrutura.Repositorios
             command.Parameters.AddWithValue("@diasPagamento", contaPagar.diasPagamento);
             command.Parameters.AddWithValue("@numParcelas", contaPagar.numParcelas);
             command.Parameters.AddWithValue("@juros", contaPagar.juros);
+            command.Parameters.AddWithValue("@ajuste", contaPagar.ajuste);
             command.Parameters.AddWithValue("@fk_IdFornecedor", contaPagar.fornecedor.idFornecedor);
             command.Parameters.AddWithValue("@fk_IdPessoa", contaPagar.fornecedor.Id);
 
@@ -129,6 +130,7 @@ namespace skoll.Infraestrutura.Repositorios
                         diasPagamento = reader["diasPagamento"].ToString(),
                         numParcelas = Convert.ToInt32(reader["numParcelas"]),
                         juros = Convert.ToDecimal(reader["juros"]),
+                        ajuste = Convert.ToDecimal(reader["ajuste"]),
                         fornecedor = new Fornecedor() { idFornecedor = Convert.ToInt32(reader["fk_IdFornecedor"]) }
                     };
                 }
@@ -166,6 +168,7 @@ namespace skoll.Infraestrutura.Repositorios
                             diasPagamento = reader["diasPagamento"].ToString(),
                             numParcelas = Convert.ToInt32(reader["numParcelas"]),
                             juros = Convert.ToDecimal(reader["juros"]),
+                            ajuste = Convert.ToDecimal(reader["ajuste"]),
                             fornecedor = new Fornecedor() { idFornecedor = Convert.ToInt32(reader["fk_IdFornecedor"]) }
                         });
                     }
@@ -198,7 +201,7 @@ namespace skoll.Infraestrutura.Repositorios
         public void Update(ContaPagar contaPagar)
         {
             var query = "UPDATE public.ContaPagar SET valorTotal = @valorTotal, valorMensal = @valorMensal, mesInicial = @mesInicial, diaInicial = @diaInicial, " +
-                        "diasPagamento = @diasPagamento, numParcelas = @numParcelas, juros = @juros, " +
+                        "diasPagamento = @diasPagamento, numParcelas = @numParcelas, juros = @juros, ajuste = @ajuste, " +
                         "fk_IdFornecedor = @fk_IdFornecedor, fk_IdPessoa = @fk_IdPessoa WHERE idContaPagar = @id";
             var command = CreateCommand(query);
 
@@ -209,6 +212,7 @@ namespace skoll.Infraestrutura.Repositorios
             command.Parameters.AddWithValue("@diasPagamento", contaPagar.diasPagamento);
             command.Parameters.AddWithValue("@numParcelas", contaPagar.numParcelas);
             command.Parameters.AddWithValue("@juros", contaPagar.juros);
+            command.Parameters.AddWithValue("@ajuste", contaPagar.ajuste);
             command.Parameters.AddWithValue("@fk_IdFornecedor", contaPagar.fornecedor.idFornecedor);
             command.Parameters.AddWithValue("@fk_IdPessoa", contaPagar.fornecedor.Id);
             command.Parameters.AddWithValue("@id", contaPagar.Id);

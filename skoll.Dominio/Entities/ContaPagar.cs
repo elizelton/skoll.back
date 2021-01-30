@@ -11,6 +11,7 @@ namespace skoll.Dominio.Entities
         public decimal valorTotal { get; set; }
         public decimal valorMensal { get; set; }
         public decimal juros { get; set; }
+        public decimal ajuste { get; set; }
         public string diasPagamento { get; set; }
         public int diaInicial { get; set; }
         public int mesInicial { get; set; }

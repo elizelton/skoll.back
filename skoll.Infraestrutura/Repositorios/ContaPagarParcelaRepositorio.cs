@@ -18,11 +18,12 @@ namespace skoll.Infraestrutura.Repositorios
 
         public void Create(ContaPagarParcela contPgParc)
         {
-            var query = "INSERT INTO public.ContaPagarParcela(dataVencimento, valorParcela, numParcela, fk_IdContaPagar) VALUES (@dataVencimento, @valorParcela, @numParcela, @fk_IdContaPagar)";
+            var query = "INSERT INTO public.ContaPagarParcela(dataVencimento, valorParcela, ajuste, numParcela, fk_IdContaPagar) VALUES (@dataVencimento, @valorParcela, @ajuste, @numParcela, @fk_IdContaPagar)";
             var command = CreateCommand(query);
 
             command.Parameters.AddWithValue("@dataVencimento", contPgParc.dataVencimento);
             command.Parameters.AddWithValue("@valorParcela", contPgParc.valorParcela);
+            command.Parameters.AddWithValue("@ajuste", contPgParc.ajuste);
             command.Parameters.AddWithValue("@numParcela", contPgParc.numParcela);
             command.Parameters.AddWithValue("@fk_IdContaPagar", contPgParc.idContaPagar);
 
@@ -57,6 +58,7 @@ namespace skoll.Infraestrutura.Repositorios
                         Id = Convert.ToInt32(reader["idContaPagarParcela"]),
                         dataVencimento = Convert.ToDateTime(reader["dataVencimento"]),
                         valorParcela = Convert.ToDecimal(reader["valorParcela"]),
+                        ajuste = Convert.ToDecimal(reader["ajuste"]),
                         numParcela = Convert.ToInt32(reader["numParcela"]),
                         idContaPagar = Convert.ToInt32(reader["fk_IdContaPagar"])
                     };
@@ -87,6 +89,7 @@ namespace skoll.Infraestrutura.Repositorios
                             Id = Convert.ToInt32(reader["idContaPagarParcela"]),
                             dataVencimento = Convert.ToDateTime(reader["dataVencimento"]),
                             valorParcela = Convert.ToDecimal(reader["valorParcela"]),
+                            ajuste = Convert.ToDecimal(reader["ajuste"]),
                             numParcela = Convert.ToInt32(reader["numParcela"]),
                             idContaPagar = Convert.ToInt32(reader["fk_IdContaPagar"])
                         });
@@ -124,6 +127,7 @@ namespace skoll.Infraestrutura.Repositorios
                             Id = Convert.ToInt32(reader["idContaPagarParcela"]),
                             dataVencimento = Convert.ToDateTime(reader["dataVencimento"]),
                             valorParcela = Convert.ToDecimal(reader["valorParcela"]),
+                            ajuste = Convert.ToDecimal(reader["ajuste"]),
                             numParcela = Convert.ToInt32(reader["numParcela"]),
                             idContaPagar = Convert.ToInt32(reader["fk_IdContaPagar"])
                         });
@@ -161,6 +165,7 @@ namespace skoll.Infraestrutura.Repositorios
                             Id = Convert.ToInt32(reader["idContaPagarParcela"]),
                             dataVencimento = Convert.ToDateTime(reader["dataVencimento"]),
                             valorParcela = Convert.ToDecimal(reader["valorParcela"]),
+                            ajuste = Convert.ToDecimal(reader["ajuste"]),
                             numParcela = Convert.ToInt32(reader["numParcela"]),
                             idContaPagar = Convert.ToInt32(reader["fk_IdContaPagar"])
                         });
@@ -197,6 +202,7 @@ namespace skoll.Infraestrutura.Repositorios
                             Id = Convert.ToInt32(reader["idContaPagarParcela"]),
                             dataVencimento = Convert.ToDateTime(reader["dataVencimento"]),
                             valorParcela = Convert.ToDecimal(reader["valorParcela"]),
+                            ajuste = Convert.ToDecimal(reader["ajuste"]),
                             numParcela = Convert.ToInt32(reader["numParcela"]),
                             idContaPagar = Convert.ToInt32(reader["fk_IdContaPagar"])
                         });
@@ -233,6 +239,7 @@ namespace skoll.Infraestrutura.Repositorios
                             Id = Convert.ToInt32(reader["idContaPagarParcela"]),
                             dataVencimento = Convert.ToDateTime(reader["dataVencimento"]),
                             valorParcela = Convert.ToDecimal(reader["valorParcela"]),
+                            ajuste = Convert.ToDecimal(reader["ajuste"]),
                             numParcela = Convert.ToInt32(reader["numParcela"]),
                             idContaPagar = Convert.ToInt32(reader["fk_IdContaPagar"]),
                             pagamentos = new List<ContaPagarParcelaPagamento>()
@@ -261,12 +268,13 @@ namespace skoll.Infraestrutura.Repositorios
         public void Update(ContaPagarParcela contPgParc)
         {
             var query = "UPDATE public.ContaPagarParcela SET dataVencimento = @dataVencimento, valorParcela = @valorParcela, " +
-                        "numParcela = @numParcela, fk_IdContaPagar = @fk_IdContaPagar WHERE idContaPagarParcela = @id";
+                        "numParcela = @numParcela, ajuste = @ajuste, fk_IdContaPagar = @fk_IdContaPagar WHERE idContaPagarParcela = @id";
             var command = CreateCommand(query);
 
             command.Parameters.AddWithValue("@dataVencimento", contPgParc.dataVencimento);
             command.Parameters.AddWithValue("@valorParcela", contPgParc.valorParcela);
             command.Parameters.AddWithValue("@numParcela", contPgParc.numParcela);
+            command.Parameters.AddWithValue("@ajuste", contPgParc.ajuste);
             command.Parameters.AddWithValue("@fk_IdContaPagar", contPgParc.idContaPagar);
             command.Parameters.AddWithValue("@id", contPgParc.Id);
 

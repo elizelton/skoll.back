@@ -23,8 +23,8 @@ namespace skoll.Infraestrutura.Repositorios
 
         public void Create(Contrato Contrato)
         {
-            var query = "INSERT INTO public.Contrato(qntdExemplares, tipoDocumento, numParcelas, valorTotal, juros, observacoes, ativo, dataInicio, periodoMeses, dataTermino, fk_IdFormaPag, fk_IdVendedor, fk_IdUsuario, fk_IdCliente, fk_IdPessoa) " +
-                "VALUES (@qntdExemplares, @tipoDocumento, @numParcelas, @valorTotal, @juros, @observacoes, @ativo, @dataInicio, @periodoMeses, @dataTermino, @fk_IdFormaPag, @fk_IdVendedor, @fk_IdUsuario, @fk_IdCliente, @fk_IdPessoa)";
+            var query = "INSERT INTO public.Contrato(qntdExemplares, tipoDocumento, numParcelas, valorTotal, juros, ajuste, observacoes, ativo, dataInicio, periodoMeses, dataTermino, fk_IdFormaPag, fk_IdVendedor, fk_IdUsuario, fk_IdCliente, fk_IdPessoa) " +
+                "VALUES (@qntdExemplares, @tipoDocumento, @numParcelas, @valorTotal, @juros, @ajuste, @observacoes, @ativo, @dataInicio, @periodoMeses, @dataTermino, @fk_IdFormaPag, @fk_IdVendedor, @fk_IdUsuario, @fk_IdCliente, @fk_IdPessoa)";
             var command = CreateCommand(query);
 
             command.Parameters.AddWithValue("@qntdExemplares", Contrato.qntdExemplares);
@@ -32,6 +32,7 @@ namespace skoll.Infraestrutura.Repositorios
             command.Parameters.AddWithValue("@numParcelas", Contrato.numParcelas);
             command.Parameters.AddWithValue("@valorTotal", Contrato.valorTotal);
             command.Parameters.AddWithValue("@juros", Contrato.juros);
+            command.Parameters.AddWithValue("@ajuste", Contrato.ajuste);
             command.Parameters.AddWithValue("@observacoes", Contrato.observacoes);
             command.Parameters.AddWithValue("@ativo", Contrato.ativo);
             command.Parameters.AddWithValue("@dataInicio", Contrato.dataInicio);
@@ -87,6 +88,7 @@ namespace skoll.Infraestrutura.Repositorios
                         numParcelas = Convert.ToInt32(reader["numParcelas"]),
                         valorTotal = Convert.ToDecimal(reader["valorTotal"]),
                         juros = Convert.ToDecimal(reader["juros"]),
+                        ajuste = Convert.ToDecimal(reader["ajuste"]),
                         observacoes = reader["observacoes"].ToString(),
                         ativo = Convert.ToBoolean(reader["ativo"]),
                         dataInicio = Convert.ToDateTime(reader["dataInicio"]),
@@ -132,6 +134,7 @@ namespace skoll.Infraestrutura.Repositorios
                             numParcelas = Convert.ToInt32(reader["numParcelas"]),
                             valorTotal = Convert.ToDecimal(reader["valorTotal"]),
                             juros = Convert.ToDecimal(reader["juros"]),
+                            ajuste = Convert.ToDecimal(reader["ajuste"]),
                             observacoes = reader["observacoes"].ToString(),
                             ativo = Convert.ToBoolean(reader["ativo"]),
                             dataInicio = Convert.ToDateTime(reader["dataInicio"]),
@@ -174,7 +177,7 @@ namespace skoll.Infraestrutura.Repositorios
         public void Update(Contrato Contrato)
         {
             var query = "UPDATE public.Contrato SET qntdExemplares = @qntdExemplares, tipoDocumento = @tipoDocumento, numParcelas = @numParcelas, " +
-                        "valorTotal = @valorTotal, juros = @juros, observacoes = @observacoes, ativo = @ativo, dataInicio = @dataInicio, " +
+                        "valorTotal = @valorTotal, juros = @juros, ajuste = @ajuste, observacoes = @observacoes, ativo = @ativo, dataInicio = @dataInicio, " +
                         "periodoMeses = @periodoMeses, dataTermino = @dataTermino, fk_IdFormaPag = @fk_IdFormaPag, fk_IdVendedor = @fk_IdVendedor, " +
                         "fk_IdUsuario = @fk_IdUsuario, fk_IdCliente = @fk_IdCliente, fk_IdPessoa = @fk_IdPessoa WHERE idContrato = @id";
             var command = CreateCommand(query);
@@ -184,6 +187,7 @@ namespace skoll.Infraestrutura.Repositorios
             command.Parameters.AddWithValue("@numParcelas", Contrato.numParcelas);
             command.Parameters.AddWithValue("@valorTotal", Contrato.valorTotal);
             command.Parameters.AddWithValue("@juros", Contrato.juros);
+            command.Parameters.AddWithValue("@ajuste", Contrato.ajuste);
             command.Parameters.AddWithValue("@observacoes", Contrato.observacoes);
             command.Parameters.AddWithValue("@ativo", Contrato.ativo);
             command.Parameters.AddWithValue("@dataInicio", Contrato.dataInicio);

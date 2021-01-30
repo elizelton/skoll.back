@@ -12,6 +12,7 @@ namespace skoll.Dominio.Entities
         public int numParcelas { get; set; }
         public decimal valorTotal { get; set; }
         public decimal juros { get; set; }
+        public decimal ajuste { get; set; }
         public string observacoes { get; set; }
         public bool ativo { get; set; }
         public int periodoMeses { get; set; }
