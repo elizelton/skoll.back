@@ -184,6 +184,11 @@ CREATE FUNCTION vendedor_trigger() RETURNS trigger AS $vendedor_trigger$
 		IF NEW.percComis IS NULL or NEW.percComis <= 0 THEN
             RAISE EXCEPTION 'O Vendedor deve ter um percentual de comissão válido';
         END IF;
+        IF NEW.Cpf is not null and NEW.Cpf <> '' THEN
+            IF EXISTS (SELECT 1 FROM Vendedor WHERE cpf = NEW.cpf) THEN
+                RAISE EXCEPTION 'CPF de Vendedor já cadastrado';
+            END IF;
+        END IF;
         IF NEW.Ativo IS NULL THEN
             NEW.Ativo := true;
         END IF;
