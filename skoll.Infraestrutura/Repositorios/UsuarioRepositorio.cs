@@ -139,7 +139,7 @@ namespace skoll.Infraestrutura.Repositorios
         public Usuario Get(int id)
         {
             var command = CreateCommand("SELECT idusuario, nome, username, senha, ativo, email FROM public.Usuario WHERE idusuario = @id");
-            command.Parameters.AddWithValue("@idusuario", id);
+            command.Parameters.AddWithValue("@id", id);
 
             using (var reader = command.ExecuteReader())
             {
