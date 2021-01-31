@@ -167,7 +167,7 @@ namespace skoll.Infraestrutura.Repositorios
         {
             var result = new List<Usuario>();
 
-            var command = CreateCommand("SELECT * FROM public.Usuario and username <> 'skolladmin' ");
+            var command = CreateCommand("SELECT * FROM public.Usuario where username <> 'skolladmin' ");
 
             using (var reader = command.ExecuteReader())
             {
