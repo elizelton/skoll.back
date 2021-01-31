@@ -37,7 +37,7 @@ namespace skoll.Infraestrutura.Repositorios
                         userName = reader["username"].ToString(),
                         email = reader["email"].ToString(),
                         nome = reader["nome"].ToString(),
-                        senha = reader["senha"].ToString(),
+                        //senha = reader["senha"].ToString(),
                         ativo = Convert.ToBoolean(reader["ativo"])
                     };
                 }
@@ -68,7 +68,7 @@ namespace skoll.Infraestrutura.Repositorios
                         userName = reader["username"].ToString(),
                         email = reader["email"].ToString(),
                         nome = reader["nome"].ToString(),
-                        senha = reader["senha"].ToString(),
+                        //senha = reader["senha"].ToString(),
                         ativo = Convert.ToBoolean(reader["ativo"])
                     };
                 }
@@ -99,7 +99,7 @@ namespace skoll.Infraestrutura.Repositorios
                         userName = reader["username"].ToString(),
                         email = reader["email"].ToString(),
                         nome = reader["nome"].ToString(),
-                        senha = reader["senha"].ToString(),
+                        //senha = reader["senha"].ToString(),
                         ativo = Convert.ToBoolean(reader["ativo"])
                     };
                 }
@@ -152,7 +152,7 @@ namespace skoll.Infraestrutura.Repositorios
                         userName = reader["username"].ToString(),
                         email = reader["email"].ToString(),
                         nome = reader["nome"].ToString(),
-                        senha = reader["senha"].ToString(),
+                        //senha = reader["senha"].ToString(),
                         ativo = Convert.ToBoolean(reader["ativo"])
                     };
                 }
@@ -181,7 +181,7 @@ namespace skoll.Infraestrutura.Repositorios
                             userName = reader["username"].ToString(),
                             email = reader["email"].ToString(),
                             nome = reader["nome"].ToString(),
-                            senha = reader["senha"].ToString(),
+                            //senha = reader["senha"].ToString(),
                             ativo = Convert.ToBoolean(reader["ativo"])
                         });
                     }
@@ -223,12 +223,17 @@ namespace skoll.Infraestrutura.Repositorios
 
         public void Update(Usuario usuario)
         {
-            var query = "UPDATE public.Usuario SET  Nome = @nome, UserName = @username, senha = @senha, ativo = @ativo, email = @email WHERE idusuario = @id";
+            string query = "";
+            if (!string.IsNullOrEmpty(usuario.senha))
+                query = "UPDATE public.Usuario SET  Nome = @nome, UserName = @username, senha = @senha, ativo = @ativo, email = @email WHERE idusuario = @id";
+            else
+                query = "UPDATE public.Usuario SET  Nome = @nome, UserName = @username, ativo = @ativo, email = @email WHERE idusuario = @id";
             var command = CreateCommand(query);
 
             command.Parameters.AddWithValue("@nome", usuario.nome);
             command.Parameters.AddWithValue("@username", usuario.userName);
-            command.Parameters.AddWithValue("@senha", usuario.senha);
+            if (!string.IsNullOrEmpty(usuario.senha))
+                command.Parameters.AddWithValue("@senha", usuario.senha);
             command.Parameters.AddWithValue("@ativo", usuario.ativo);
             command.Parameters.AddWithValue("@email", usuario.email);
             command.Parameters.AddWithValue("@id", usuario.Id);

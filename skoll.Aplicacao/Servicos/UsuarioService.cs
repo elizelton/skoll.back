@@ -68,8 +68,8 @@ namespace skoll.Aplicacao.Servicos
 
         public void Update(Usuario usuario)
         {
-
-            usuario.senha = GetSHA1(usuario.senha);
+            if (!string.IsNullOrEmpty(usuario.senha))
+                usuario.senha = GetSHA1(usuario.senha);
 
             using (var context = _unitOfWork.Create())
             {
