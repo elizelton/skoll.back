@@ -61,7 +61,19 @@ namespace skoll.Infraestrutura.Repositorios
 
         public void GerarParcelaAjuste(int idConta, decimal valorDif, DateTime vencimento)
         {
-            throw new NotImplementedException();
+            if (idConta == 0)
+                throw new InvalidOperationException("É necessário informar o ID do Contrato");
+            else if (valorDif == 0)
+                throw new InvalidOperationException("É necessário informar o valor de ajuste para o Contrato");
+
+            var query = "select PARCELAAJUSTECONTRATO(@valor, @idContrato, @venc) ";
+            var command = CreateCommand(query);
+
+            command.Parameters.AddWithValue("@valor", valorDif);
+            command.Parameters.AddWithValue("@idContrato", idConta);
+            command.Parameters.AddWithValue("@venc", vencimento);
+
+            command.ExecuteNonQuery();
         }
 
         public void GerarParcelas(Contrato Contrato, int diaVencimentoDemais, bool isPrimeiraVigencia)

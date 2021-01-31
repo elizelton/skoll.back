@@ -58,8 +58,8 @@ namespace skoll.Infraestrutura.Repositorios
             var query = "select PARCELAAJUSTECONTA(@valor, @idConta, @venc) ";
             var command = CreateCommand(query);
 
-            command.Parameters.AddWithValue("@valor", idConta);
-            command.Parameters.AddWithValue("@idConta", valorDif);
+            command.Parameters.AddWithValue("@valor", valorDif);
+            command.Parameters.AddWithValue("@idConta", idConta);
             command.Parameters.AddWithValue("@venc", vencimento);
 
             command.ExecuteNonQuery();
