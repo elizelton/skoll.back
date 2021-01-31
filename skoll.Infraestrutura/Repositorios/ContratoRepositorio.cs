@@ -16,7 +16,7 @@ namespace skoll.Infraestrutura.Repositorios
             this._transaction = transaction;
         }
 
-        public void CancelarContrato(int novoCliente, decimal multa)
+        public void CancelarContrato(Contrato contrato, int novoCliente, decimal multa)
         {
             throw new NotImplementedException();
         }

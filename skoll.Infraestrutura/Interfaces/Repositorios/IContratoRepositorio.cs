@@ -8,6 +8,6 @@ namespace skoll.Infraestrutura.Interfaces.Repositorios
     {
         public void GerarParcelas(Contrato Contrato);
         public void GerarParcelaAjuste(int idConta, decimal valorDif, DateTime vencimento);
-        public void CancelarContrato(int novoCliente, decimal multa);
+        public void CancelarContrato(Contrato contrato, int novoCliente, decimal multa);
     }
 }
