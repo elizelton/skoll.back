@@ -19,6 +19,8 @@ namespace skoll.Aplicacao.Interfaces
 
         IEnumerable<ServicoPrestado> GetByNomeLike(string nome);
 
+        IEnumerable<ServicoPrestado> GetByProduto(int idProduto);
+
         void Remove(int id);
 
         void Update(ServicoPrestado servPrest);

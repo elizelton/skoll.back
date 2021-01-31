@@ -144,6 +144,43 @@ namespace skoll.Infraestrutura.Repositorios
             return result;
         }
 
+        public IEnumerable<ServicoPrestado> GetByProduto(int idProduto)
+        {
+            var result = new List<ServicoPrestado>();
+
+            var command = CreateCommand("SELECT * FROM public.ServicoPrestado where fk_idProduto = @idProduto");
+            command.Parameters.AddWithValue("@idProduto", idProduto);
+
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    if (reader.HasRows)
+                    {
+                        result.Add(new ServicoPrestado
+                        {
+                            Id = Convert.ToInt32(reader["idServPrest"]),
+                            nome = reader["nome"].ToString(),
+                            valorUnitario = Convert.ToInt32(reader["valorUnitario"]),
+                            ativo = Convert.ToBoolean(reader["ativo"]),
+                            produto = new Produto() { Id = Convert.ToInt32(reader["fk_IdProduto"]) }
+                        });
+                    }
+                    else
+                    {
+                        return null;
+                    }
+
+                }
+                reader.Close();
+            }
+
+            foreach (var serv in result)
+                serv.produto = new ProdutoRepositorio(this._context, this._transaction).Get(serv.produto.Id);
+
+            return result;
+        }
+
         public IEnumerable<ServicoPrestado> GetByNomeLike(string nome)
         {
             var result = new List<ServicoPrestado>();

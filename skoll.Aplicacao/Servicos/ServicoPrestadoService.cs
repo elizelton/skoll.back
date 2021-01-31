@@ -58,6 +58,14 @@ namespace skoll.Aplicacao.Servicos
             }
         }
 
+        public IEnumerable<ServicoPrestado> GetByProduto(int idProduto)
+        {
+            using (var context = _unitOfWork.Create())
+            {
+                return context.Repositorios.ServicoPrestadoRepositorio.GetByProduto(idProduto);
+            }
+        }
+
         public void Remove(int id)
         {
             using (var context = _unitOfWork.Create())

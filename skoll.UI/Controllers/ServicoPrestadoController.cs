@@ -51,6 +51,17 @@ namespace skoll.ui.Controllers
                 return new ObjectResult(servPrest);
         }
 
+        [HttpGet("{idProduto}/produto", Name = "GetServicoPrestadoProduto")]
+        public IActionResult GetServicoPrestadoProduto(int idProduto)
+        {
+            var servPrest = _servPrestService.GetByProduto(idProduto);
+
+            if (servPrest == null)
+                return NotFound();
+            else
+                return new ObjectResult(servPrest);
+        }
+
         // GET: api/Usuario/5
         //[Authorize("Bearer")]
         [HttpGet("{id}", Name = "GetServicoPrestado")]

@@ -13,5 +13,7 @@ namespace skoll.Infraestrutura.Interfaces.Repositorios
         IEnumerable<ServicoPrestado> GetByNomeLike(string nome);
 
         IEnumerable<ServicoPrestado> GetAtivos();
+
+        IEnumerable<ServicoPrestado> GetByProduto(int idProduto);
     }
 }
