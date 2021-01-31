@@ -209,7 +209,7 @@ namespace skoll.Infraestrutura.Repositorios
 
         public void Update(Vendedor vendedor)
         {
-            var query = "UPDATE public.Vendedor SET codigo = @codigo, cpf = @cpf, ativo = @ativo, nome = @nome, percComis = @percComis WHERE idFormaPag = @id";
+            var query = "UPDATE public.Vendedor SET codigo = @codigo, cpf = @cpf, ativo = @ativo, nome = @nome, percComis = @percComis WHERE idVendedor = @id";
             var command = CreateCommand(query);
 
             command.Parameters.AddWithValue("@codigo", vendedor.codigo);
