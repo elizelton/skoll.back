@@ -18,6 +18,9 @@ namespace skoll.Infraestrutura.Repositorios
 
         public void Create(ContaPagar contaPagar)
         {
+            if (contaPagar.fornecedor.Id == 0)
+                contaPagar.fornecedor.Id = new FornecedorRepositorio(this._context, this._transaction).GetIdPessoa(contaPagar.fornecedor.idFornecedor);
+
             var query = "INSERT INTO public.ContaPagar(valorTotal, valorMensal, mesInicial, diaInicial, diasPagamento, numParcelas, juros, ajuste, fk_IdFornecedor, fk_IdPessoa) " +
                 "VALUES (@valorTotal, @valorMensal, @mesInicial, @diaInicial, @diasPagamento, @numParcelas, @juros, @ajuste, @fk_IdFornecedor, @fk_IdPessoa)";
             var command = CreateCommand(query);
@@ -212,6 +215,9 @@ namespace skoll.Infraestrutura.Repositorios
 
         public void Update(ContaPagar contaPagar)
         {
+            if (contaPagar.fornecedor.Id == 0)
+                contaPagar.fornecedor.Id = new FornecedorRepositorio(this._context, this._transaction).GetIdPessoa(contaPagar.fornecedor.idFornecedor);
+
             var query = "UPDATE public.ContaPagar SET valorTotal = @valorTotal, valorMensal = @valorMensal, mesInicial = @mesInicial, diaInicial = @diaInicial, " +
                         "diasPagamento = @diasPagamento, numParcelas = @numParcelas, juros = @juros, ajuste = @ajuste, " +
                         "fk_IdFornecedor = @fk_IdFornecedor, fk_IdPessoa = @fk_IdPessoa WHERE idContaPagar = @id";

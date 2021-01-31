@@ -24,7 +24,7 @@ namespace skoll.Infraestrutura.Repositorios
         public void Create(Contrato Contrato)
         {
             if (Contrato.cliente.Id == 0)
-                Contrato.cliente.Id = new ClienteRepositorio(this._context, this._transaction).Get(Contrato.cliente.idCliente).Id;
+                Contrato.cliente.Id = new ClienteRepositorio(this._context, this._transaction).GetIdPessoa(Contrato.cliente.idCliente);
 
             var query = "INSERT INTO public.Contrato(qntdExemplares, tipoDocumento, numParcelas, valorTotal, juros, ajuste, observacoes, ativo, dataInicio, periodoMeses, dataTermino, fk_IdFormaPag, fk_IdVendedor, fk_IdUsuario, fk_IdCliente, fk_IdPessoa) " +
                 "VALUES (@qntdExemplares, @tipoDocumento, @numParcelas, @valorTotal, @juros, @ajuste, @observacoes, @ativo, @dataInicio, @periodoMeses, @dataTermino, @fk_IdFormaPag, @fk_IdVendedor, @fk_IdUsuario, @fk_IdCliente, @fk_IdPessoa)";
@@ -239,6 +239,9 @@ namespace skoll.Infraestrutura.Repositorios
 
         public void Update(Contrato Contrato)
         {
+            if (Contrato.cliente.Id == 0)
+                Contrato.cliente.Id = new ClienteRepositorio(this._context, this._transaction).GetIdPessoa(Contrato.cliente.idCliente);
+
             var query = "UPDATE public.Contrato SET qntdExemplares = @qntdExemplares, tipoDocumento = @tipoDocumento, numParcelas = @numParcelas, " +
                         "valorTotal = @valorTotal, juros = @juros, ajuste = @ajuste, observacoes = @observacoes, ativo = @ativo, dataInicio = @dataInicio, " +
                         "periodoMeses = @periodoMeses, dataTermino = @dataTermino, fk_IdFormaPag = @fk_IdFormaPag, fk_IdVendedor = @fk_IdVendedor, " +

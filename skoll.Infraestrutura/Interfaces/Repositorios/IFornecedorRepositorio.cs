@@ -8,5 +8,7 @@ namespace skoll.Infraestrutura.Interfaces.Repositorios
         IEnumerable<Fornecedor> GetAtivos();
 
         IEnumerable<Fornecedor> GetByNomeLike(string nome);
+
+        int GetIdPessoa(int idFornecedor);
     }
 }

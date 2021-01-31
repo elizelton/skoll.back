@@ -198,6 +198,25 @@ namespace skoll.Infraestrutura.Repositorios
             return result;
         }
 
+        public int GetIdPessoa(int idFornecedor)
+        {
+            var command = CreateCommand("SELECT fk_IdPessoa FROM public.Fornecedor WHERE idFornecedor = @id");
+            command.Parameters.AddWithValue("@id", idFornecedor);
+
+            using (var reader = command.ExecuteReader())
+            {
+                reader.Read();
+                if (reader.HasRows)
+                {
+                    return Convert.ToInt32(reader["fk_IdPessoa"]);
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+
         public void Remove(int id)
         {
             var command = CreateCommand("DELETE FROM Fornecedor WHERE idFornecedor = @id");
