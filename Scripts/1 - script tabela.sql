@@ -12,7 +12,7 @@ CREATE TABLE Pessoa (
     email varchar(30),
     cep varchar(8),
     logradouro varchar(30),
-    fk_IdCidade int     
+    fk_IdCidade int 
 );
 
 CREATE TABLE Usuario (

@@ -8,6 +8,9 @@ CREATE FUNCTION pessoa_trigger() RETURNS trigger AS $pessoa_trigger$
 		IF NEW.cpfCnpj IS NULL or NEW.cpfCnpj = '' THEN
             RAISE EXCEPTION 'O Documento do Cadastrado não pode ser vazio';
         END IF;
+		IF NEW.fk_IdCidade IS null or NEW.fk_IdCidade <= 0 THEN
+			RAISE EXCEPTION 'A Cidade precisa ser informada';
+		END IF;
         IF EXISTS (SELECT 1 FROM PESSOA WHERE cpfCnpj = NEW.cpfCnpj and idPessoa <> NEW.idPessoa) THEN
             RAISE EXCEPTION 'CPF ou CNPJ já cadastrado';
         END IF;
