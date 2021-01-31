@@ -26,5 +26,6 @@ namespace skoll.Infraestrutura.Interfaces.UnitOfWork
         IServicoPrestadoRepositorio ServicoPrestadoRepositorio { get; }
         ITelefoneRepositorio TelefoneRepositorio { get; }
         IVendedorRepositorio VendedorRepositorio { get; }
+        IRelatorioRepositorio RelatorioRepositorio { get; }
     }
 }

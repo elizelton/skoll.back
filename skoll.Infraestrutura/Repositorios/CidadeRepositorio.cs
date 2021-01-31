@@ -160,7 +160,7 @@ namespace skoll.Infraestrutura.Repositorios
         public Cidade GetByNomeEstado(string nome, string estado)
         {
             var result = new List<Cidade>();
-            var command = CreateCommand("SELECT TOP 1 * FROM public.Cidades where cidade = @cidade and estado = @estado");
+            var command = CreateCommand("SELECT * FROM public.Cidades where cidade = @cidade and estado = @estado LIMIT 1");
             command.Parameters.AddWithValue("@cidade", nome);
             command.Parameters.AddWithValue("@estado", estado);
 
