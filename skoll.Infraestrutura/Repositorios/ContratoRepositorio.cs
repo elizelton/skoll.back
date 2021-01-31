@@ -102,7 +102,7 @@ namespace skoll.Infraestrutura.Repositorios
                 }
             }
 
-            for (int i=0; i< Contrato.numParcelas; i++)
+            for (int i = 0; i < Contrato.numParcelas; i++)
             {
                 ContratoParcela parc = new ContratoParcela();
                 parc.idContrato = Contrato.Id;
