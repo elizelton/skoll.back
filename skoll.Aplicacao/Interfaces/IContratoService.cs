@@ -13,7 +13,7 @@ namespace skoll.Aplicacao.Interfaces
 
         void GerarParcelaAjuste(int idConta, decimal valorDif, DateTime vencimento);
 
-        void GerarParcelas(Contrato Contrato);
+        void GerarParcelas(Contrato Contrato, int diaVencimentoDemais, bool isPrimeiraVigencia);
 
         void CancelarContrato(Contrato contrato, int novoCliente, decimal multa);
 

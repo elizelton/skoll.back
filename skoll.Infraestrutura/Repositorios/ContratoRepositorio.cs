@@ -64,9 +64,57 @@ namespace skoll.Infraestrutura.Repositorios
             throw new NotImplementedException();
         }
 
-        public void GerarParcelas(Contrato Contrato)
+        public void GerarParcelas(Contrato Contrato, int diaVencimentoDemais, bool isPrimeiraVigencia)
         {
-            throw new NotImplementedException();
+            //datainicio, datatermino, numparcelass
+            var servicos = (List<ContratoServico>)new ContratoServicoRepositorio(this._context, this._transaction).GetByContrato(Contrato.Id);
+            if (servicos == null || servicos.Count == 0)
+                return;
+            else if (Contrato.numParcelas == 0)
+                throw new InvalidOperationException("É necessário informar o número de parcelas");
+
+            DateTime dataPrimeira = DateTime.Today;
+            decimal valorParc = servicos.Sum(s => s.valorTotal);
+
+            if (valorParc == 0)
+                throw new InvalidOperationException("Os serviços prestados a esse contrato não possuem valor");
+
+            if (diaVencimentoDemais == 0)
+            {
+                dataPrimeira = Contrato.dataInicio;
+            }
+            else
+            {                
+                if (isPrimeiraVigencia)
+                    dataPrimeira = Contrato.dataInicio;
+                else
+                {
+                    if (diaVencimentoDemais < Contrato.dataInicio.Day)
+                    {
+                        //Mês seguinte
+                        var dataFinal = Contrato.dataInicio.AddMonths(1);
+                        dataPrimeira = Convert.ToDateTime($"{diaVencimentoDemais}/{dataFinal.Month}/{dataFinal.Year}");
+                    }
+                    else
+                    {
+                        dataPrimeira = Convert.ToDateTime($"{diaVencimentoDemais}/{Contrato.dataInicio.Month}/{Contrato.dataInicio.Year}");
+                    }                    
+                }
+            }
+
+            for (int i=0; i< Contrato.numParcelas; i++)
+            {
+                ContratoParcela parc = new ContratoParcela();
+                parc.idContrato = Contrato.Id;
+                parc.numParcela = i + 1;
+                parc.valorParcela = valorParc;
+                parc.dataVencimento = (i == 0) ? dataPrimeira : dataPrimeira.AddMonths(i);
+                parc.situacao = 1;
+                parc.comissao = valorParc * (Contrato.vendedor.percComis / 100);
+                parc.ajuste = 0;
+
+                new ContratoParcelaRepositorio(this._context, this._transaction).Create(parc);
+            }
         }
 
         public Contrato Get(int id)

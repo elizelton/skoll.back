@@ -70,17 +70,21 @@ namespace skoll.ui.Controllers
 
         // PUT: api/Usuario/5
         //[Authorize("Bearer")]
-        [HttpPut("{id}/gerarparcelas")]
-        public IActionResult GerarParcelasContrato(int id, [FromBody] Contrato cont)
+        [HttpPut("{id}/{diaVencimento}/{isPrimeira}/gerarparcelas")]
+        public IActionResult GerarParcelasContrato(int id, int diaVencimento, bool isPrimeira)
         {
-            _contService.GerarParcelas(cont);
+            var cont = _contService.Get(id);
+            if (cont != null)
+                _contService.GerarParcelas(cont, diaVencimento, isPrimeira);
+            else
+                return BadRequest();
 
             return new NoContentResult();
         }
 
         // PUT: api/Usuario/5
         //[Authorize("Bearer")]
-        [HttpPut("{id}/{valorDif}/{vencimento}")]
+        [HttpPut("{id}/{valorDif}/{vencimento}/parcelajuste")]
         public IActionResult GerarParcelaAjusteContrato(int id, decimal valorDif, DateTime vencimento)
         {
             _contService.GerarParcelaAjuste(id, valorDif, vencimento);

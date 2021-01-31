@@ -23,7 +23,6 @@ namespace skoll.Aplicacao.Servicos
             using (var context = _unitOfWork.Create())
             {
                 context.Repositorios.ContratoRepositorio.Create(Contrato);
-                context.Repositorios.ContratoRepositorio.GerarParcelas(Contrato);
                 context.SaveChanges();
             }
         }
@@ -37,11 +36,11 @@ namespace skoll.Aplicacao.Servicos
             }
         }
 
-        public void GerarParcelas(Contrato Contrato)
+        public void GerarParcelas(Contrato Contrato, int diaVencimentoDemais, bool isPrimeiraVigencia)
         {
             using (var context = _unitOfWork.Create())
             {
-                context.Repositorios.ContratoRepositorio.GerarParcelas(Contrato);
+                context.Repositorios.ContratoRepositorio.GerarParcelas(Contrato, diaVencimentoDemais, isPrimeiraVigencia);
                 context.SaveChanges();
             }
         }
@@ -85,7 +84,6 @@ namespace skoll.Aplicacao.Servicos
             using (var context = _unitOfWork.Create())
             {
                 context.Repositorios.ContratoRepositorio.Update(Contrato);
-                context.Repositorios.ContratoRepositorio.GerarParcelas(Contrato);
                 context.SaveChanges();
             }
         }
