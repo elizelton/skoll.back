@@ -73,7 +73,7 @@ namespace skoll.Aplicacao.Relatorios
         {
             if (!Paisagem)
             {
-                doc = new Document(PageSize.A4, 20, 10, 80, 40);
+                doc = new Document(PageSize.A4, 20, 10, 80, 75);
             }
             else
             {
@@ -162,6 +162,7 @@ namespace skoll.Aplicacao.Relatorios
 
                 PdfPTable table = new PdfPTable(3);
                 table.TotalWidth = doc.PageSize.Width - (doc.LeftMargin + doc.RightMargin);
+                table.SpacingBefore = 20f;
                 table.SetWidths(sizes);
 
                 #region Coluna TNE

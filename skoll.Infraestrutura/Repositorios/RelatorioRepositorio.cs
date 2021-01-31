@@ -16,25 +16,10 @@ namespace skoll.Infraestrutura.Repositorios
             this._transaction = transaction;
         }
 
-        public void Create(Usuario t)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Usuario Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Usuario> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
         public List<Cidade> RelCidadesEstado(string estado)
         {
             var result = new List<Cidade>();
-            var command = CreateCommand("SELECT * FROM public.Cidades where estado = @estado LIMIT 10");
+            var command = CreateCommand("SELECT * FROM public.Cidades where estado = @estado ");
             command.Parameters.AddWithValue("@estado", estado);
 
             using (var reader = command.ExecuteReader())
@@ -62,12 +47,37 @@ namespace skoll.Infraestrutura.Repositorios
             return result;
         }
 
-        public void Remove(int id)
+        public List<RelComissaoVendedor> RelComissaoMensalVendedor(int idVendedor, DateTime inicio, DateTime fim, bool porRecebimento)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(Usuario t)
+        public List<RelContrato> RelContratosPorCliente(int idCliente, DateTime inicio, DateTime fim)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<RelContrato> RelContratosPorVendedor(int idCliente, DateTime inicio, DateTime fim)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<RelEntradaSaida> RelEntradaSaida(DateTime inicio, DateTime fim)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<RelParcelasPagar> RelParcelasPagar(DateTime dataAte)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<RelParcelasVencer> RelParcelasVencer(DateTime dataAte)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<RelContrato> RelVendasMensais(int mes)
         {
             throw new NotImplementedException();
         }
