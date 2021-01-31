@@ -75,8 +75,10 @@ namespace skoll.Aplicacao.Servicos
 
                         return new
                         {
+                            id= usuarioBanco.Id,
                             UserName = usuarioBanco.userName,
                             nome = usuarioBanco.nome,
+                            email = usuarioBanco.email,
                             autenticado = true,
                             accessToken = token,
                             sessaoExpira = dataExpiracao
