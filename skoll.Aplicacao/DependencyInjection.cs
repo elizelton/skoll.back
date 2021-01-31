@@ -16,7 +16,7 @@ namespace skoll.Aplicacao
     {
         public static IServiceCollection AddAplicacao(this IServiceCollection services, IConfiguration configuration)
         {
-
+            services.AddSingleton(configuration);
             var signingConfigurations = new SigningConfigurations();
             services.AddSingleton(signingConfigurations);
             var tokenConfigurations = new TokenConfigurations();

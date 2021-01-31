@@ -16,6 +16,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Configuration;
 using System.Text;
+using Microsoft.Extensions.Configuration;
 
 namespace skoll.Aplicacao.Servicos
 {
@@ -24,13 +25,16 @@ namespace skoll.Aplicacao.Servicos
         private IUnitOfWorkFactory _unitOfWork;
         private SigningConfigurations _signingConfigurations;
         private TokenConfigurations _tokenConfigurations;
+        private IConfiguration _configuration;
         public AutenticacaoService(IUnitOfWorkFactory unitOfWorkFactory,
             [FromServices] SigningConfigurations signingConfigurations,
-            [FromServices] TokenConfigurations tokenConfigurations)
+            [FromServices] TokenConfigurations tokenConfigurations,
+            [FromServices] IConfiguration configuration)
         {
             _unitOfWork = unitOfWorkFactory;
             _signingConfigurations = signingConfigurations;
             _tokenConfigurations = tokenConfigurations;
+            _configuration = configuration;
         }
 
         public object Autenticar(Usuario usuario)
@@ -101,12 +105,12 @@ namespace skoll.Aplicacao.Servicos
             client.Host = "smtp.gmail.com";
             client.EnableSsl = true;
             client.Port = 587;
-            //var email = _configuration.GetConnectionString("Login");
-            //var senhaEmail = 
-            client.Credentials = new System.Net.NetworkCredential("suporteskoll@gmail.com", "Vinik@2020");
+            var email = _configuration.GetSection("Email").GetSection("Login").Value;
+            var senhaEmail = _configuration.GetSection("Email").GetSection("Senha").Value; 
+            client.Credentials = new System.Net.NetworkCredential(email, senhaEmail);
             MailMessage mail = new MailMessage();
-            mail.Sender = new System.Net.Mail.MailAddress("suporteskoll@gmail.com", "Suporte Skoll");
-            mail.From = new MailAddress("suporteskoll@gmail.com", "Suporte Skoll");
+            mail.Sender = new System.Net.Mail.MailAddress(email, "Suporte Skoll");
+            mail.From = new MailAddress(email, "Suporte Skoll");
             mail.To.Add(new MailAddress(usuario.email, usuario.nome));
             mail.Subject = "Nova senha de usuário - Sistema Skoll";
             var senha = GeraSenhaAleatoria();
@@ -114,23 +118,22 @@ namespace skoll.Aplicacao.Servicos
             mail.IsBodyHtml = true;
             mail.Priority = MailPriority.High;
 
-            usuario.senha = senha;
-            new UsuarioService(_unitOfWork).Update(usuario);
-
             try
             {
                 client.Send(mail);
+                usuario.senha = senha;
+                new UsuarioService(_unitOfWork).Update(usuario);
             }
             catch (System.Exception erro)
             {
-                throw new AppError("Não foi possível enviar seu email - favor entre em contato com o administrador do sistema. Erro: " + erro.Message + ". Stack: " + erro.StackTrace, 401);
+                throw new AppError("Não foi possível enviar seu email - favor entre em contato com o administrador do sistema. Erro: " + erro.Message , 401);
             }
             finally
             {
                 mail = null;                
             }
 
-            return "oi";
+            return "Email enviado com sucesso. Confira sua nova senha em sua caixa de entrada";
 
         }
 
