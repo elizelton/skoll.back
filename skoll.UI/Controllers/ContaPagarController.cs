@@ -71,8 +71,13 @@ namespace skoll.ui.Controllers
         // PUT: api/Usuario/5
         //[Authorize("Bearer")]
         [HttpPut("{id}/gerarparcelas")]
-        public IActionResult GerarParcelasConta(int id, [FromBody] ContaPagar cont)
+        public IActionResult GerarParcelasConta(int id)
         {
+            var cont = _contPgService.Get(id);
+
+            if (cont == null)
+                return BadRequest();
+
             _contPgService.GerarParcelas(cont);
 
             return new NoContentResult();

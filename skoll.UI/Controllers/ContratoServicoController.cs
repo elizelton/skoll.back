@@ -13,11 +13,11 @@ namespace skoll.ui.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ContratoServicoServicoController : Controller
+    public class ContratoServicoController : Controller
     {
         private IContratoServicoService _contService;
         private IAutenticacaoService _autenticacaoService;
-        public ContratoServicoServicoController(IContratoServicoService contService,
+        public ContratoServicoController(IContratoServicoService contService,
                                  IAutenticacaoService autenticacaoService)
         {
             this._autenticacaoService = autenticacaoService;

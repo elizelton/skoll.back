@@ -89,6 +89,13 @@ namespace skoll.Infraestrutura.Repositorios
                     throw new InvalidOperationException("Dias de Pagamento não conferem com o número de parcelas");
             }
 
+            var parcelasConta = new ContaPagarParcelaRepositorio(this._context, this._transaction).GetByContaPagar(contaPagar.Id).ToList();
+            if (parcelasConta.Count > 0)
+            {
+                foreach (var parc in parcelasConta)
+                    new ContaPagarParcelaRepositorio(this._context, this._transaction).Remove(parc.Id);
+            }
+
             for (int i = 0; i < contaPagar.numParcelas; i++)
             {
                 ContaPagarParcela contaPagarParcela = new ContaPagarParcela();
@@ -98,10 +105,12 @@ namespace skoll.Infraestrutura.Repositorios
                 {
                     data = Convert.ToDateTime(contaPagar.diaInicial + "/" + contaPagar.mesInicial + "/" + ano.ToString()).AddMonths(i);
                     valorParc = contaPagar.valorTotal / contaPagar.numParcelas;
+                    valorParc = Math.Round(valorParc, 2);
                 }
                 else if (contaPagar.valorMensal > 0 && !string.IsNullOrEmpty(contaPagar.diasPagamento))
                 {
                     valorParc = contaPagar.valorMensal / contaPagar.numParcelas;
+                    valorParc = Math.Round(valorParc, 2);
                     data = Convert.ToDateTime(diasParc[i].ToString().Trim() + "/" + contaPagar.mesInicial + "/" + ano.ToString());
                 }
                 else if (contaPagar.valorMensal > 0)
@@ -117,6 +126,19 @@ namespace skoll.Infraestrutura.Repositorios
                 parcelas.Add(contaPagarParcela);
             }
 
+            var soma = parcelas.Sum(p => p.valorParcela);
+            decimal dif = 0;
+            if (contaPagar.valorTotal > 0)
+            {
+                dif = contaPagar.valorTotal - soma;
+            }
+            else if (contaPagar.valorMensal > 0)
+            { 
+                dif = contaPagar.valorMensal - soma;
+            }
+
+            if (dif > 0)
+                parcelas.Last().valorParcela = parcelas.Last().valorParcela + dif;
 
             foreach (var parc in parcelas)
             {

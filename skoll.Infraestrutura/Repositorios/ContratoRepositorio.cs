@@ -81,7 +81,13 @@ namespace skoll.Infraestrutura.Repositorios
 
         public void GerarParcelas(Contrato Contrato, int diaVencimentoDemais, bool isPrimeiraVigencia)
         {
-            //datainicio, datatermino, numparcelass
+            var parcelasContrato = new ContratoParcelaRepositorio(this._context, this._transaction).GetByContrato(Contrato.Id).ToList();
+            if (parcelasContrato.Count > 0)
+            {
+                foreach (var parc in parcelasContrato)
+                    new ContratoParcelaRepositorio(this._context, this._transaction).Remove(parc.Id);
+            }
+
             var servicos = (List<ContratoServico>)new ContratoServicoRepositorio(this._context, this._transaction).GetByContrato(Contrato.Id);
             if (servicos == null || servicos.Count == 0)
                 return;
@@ -89,10 +95,12 @@ namespace skoll.Infraestrutura.Repositorios
                 throw new InvalidOperationException("É necessário informar o número de parcelas");
 
             DateTime dataPrimeira = DateTime.Today;
-            decimal valorParc = servicos.Sum(s => s.valorTotal);
+            decimal valorParc = servicos.Sum(s => s.valorTotal) / Contrato.numParcelas;
 
             if (valorParc == 0)
                 throw new InvalidOperationException("Os serviços prestados a esse contrato não possuem valor");
+
+            valorParc = Math.Round(valorParc, 2);
 
             if (diaVencimentoDemais == 0)
             {
@@ -117,6 +125,8 @@ namespace skoll.Infraestrutura.Repositorios
                 }
             }
 
+            List<ContratoParcela> parcelas = new List<ContratoParcela>();
+
             for (int i = 0; i < Contrato.numParcelas; i++)
             {
                 ContratoParcela parc = new ContratoParcela();
@@ -128,6 +138,18 @@ namespace skoll.Infraestrutura.Repositorios
                 parc.comissao = valorParc * (Contrato.vendedor.percComis / 100);
                 parc.ajuste = 0;
 
+                parcelas.Add(parc);              
+            }
+
+            var soma = parcelas.Sum(p => p.valorParcela);
+            decimal dif = 0;
+            dif = servicos.Sum(s => s.valorTotal) - soma;
+
+            if (dif > 0)
+                parcelas.Last().valorParcela = parcelas.Last().valorParcela + dif;
+
+            foreach (var parc in parcelas)
+            {
                 new ContratoParcelaRepositorio(this._context, this._transaction).Create(parc);
             }
         }
