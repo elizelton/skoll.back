@@ -355,7 +355,7 @@ CREATE FUNCTION contratoinsert_trigger() RETURNS trigger AS $contratoinsert_trig
         IF NEW.numParcelas IS NULL or NEW.numParcelas <= 0 THEN
             RAISE EXCEPTION 'O número de parcelas deve ser informado';
         END IF;
-		IF NEW.valorTotal IS NULL or NEW.valorTotal <= 0 THEN
+		IF NEW.valorTotal IS NULL or NEW.valorTotal < 0 THEN
             RAISE EXCEPTION 'O valor total deve ser informado';
         END IF;
 		IF NEW.fk_IdFormaPag IS NULL or NEW.fk_IdFormaPag <= 0 THEN

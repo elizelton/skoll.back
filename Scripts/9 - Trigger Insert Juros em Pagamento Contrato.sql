@@ -4,7 +4,7 @@ $VALORJUROSPAGAMENTOCONTRATO$
 BEGIN    
     select fk_idContrato into idCont from ContratoParcela where idContratoParcela = NEW.fk_IdContratoParcela;
 
-    UPDATE CONTRATO SET juros = juros + NEW.juros where idContrato = idCont;
+    UPDATE CONTRATO SET juros = (select sum(juros) from contratoParcelaPagamento where fk_IdContratoParcela in (select idContratoParcela from ContratoParcela where fk_idContrato = idCont)) where idContrato = idCont;
     RETURN NEW;        
 END
 $VALORJUROSPAGAMENTOCONTRATO$
