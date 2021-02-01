@@ -47,7 +47,7 @@ namespace skoll.ui.Controllers
 
         // GET: api/Usuario/5
         //[Authorize("Bearer")]
-        [HttpGet("{id}/contrato", Name = "GetContratoServicoContrato")]
+        [HttpGet("{idContrato}/contrato", Name = "GetContratoServicoContrato")]
         public IActionResult GetContratoServicoContrato(int idContrato)
         {
             var cont = _contService.GetByContrato(idContrato);

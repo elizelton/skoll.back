@@ -7,18 +7,18 @@ namespace skoll.Dominio.Entities
 {
     public class RelContrato
     {
-        string clienteContrato { get; set; }
+        public string clienteContrato { get; set; }
 
-        DateTime inicio { get; set; }
+        public string inicio { get; set; }
 
-        string vendedor { get; set; }
+        public string vendedor { get; set; }
 
-        int numParcelas { get; set; }
+        public int numParcelas { get; set; }
 
-        decimal valorTotal { get; set; }
+        public decimal valorTotal { get; set; }
 
-        string formaPagamento { get; set; }
+        public string formaPagamento { get; set; }
 
-        string status { get; set; }
+        public string status { get; set; }
     }
 }

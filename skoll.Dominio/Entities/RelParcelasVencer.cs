@@ -8,12 +8,12 @@ namespace skoll.Dominio.Entities
 {
     public class RelParcelasVencer
     {
-        string clienteContrato { get; set; }
+        public string clienteContrato { get; set; }
 
-        decimal valorPagar { get; set; }
+        public decimal valorPagar { get; set; }
 
-        decimal valorPago { get; set; }
+        public decimal valorPago { get; set; }
 
-        DateTime dataVencimento { get; set; }
+        public string dataVencimento { get; set; }
     }
 }

@@ -7,10 +7,10 @@ namespace skoll.Dominio.Entities
 {
     public class RelComissaoVendedor 
     {
-        string clienteContrato { get; set; }
+        public string clienteContrato { get; set; }
 
-        decimal valorComissao { get; set; }
+        public decimal valorComissao { get; set; }
 
-        decimal valorPago { get; set; }
+        public decimal valorPago { get; set; }
     }
 }

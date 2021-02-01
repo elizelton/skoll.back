@@ -24,7 +24,7 @@ namespace skoll.Aplicacao.Servicos
             var rpt = new RelCidadesEstado();
             rpt.InicializaVariaveis();
             rpt.PageTitle = $"Relatório de Cidades do Estado de {estado}";
-
+                        
             using (var context = _unitOfWork.Create())
             {
                 rpt.list = context.Repositorios.RelatorioRepositorio.RelCidadesEstado(estado);

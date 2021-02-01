@@ -4,6 +4,7 @@ using skoll.Infraestrutura.Interfaces.Repositorios;
 using skoll.Infraestrutura.Interfaces.Repositorios.acoes;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace skoll.Infraestrutura.Repositorios
@@ -69,7 +70,42 @@ namespace skoll.Infraestrutura.Repositorios
 
         public List<RelParcelasPagar> RelParcelasPagar(DateTime dataAte)
         {
-            throw new NotImplementedException();
+            var result = new List<RelParcelasPagar>();
+            var command = CreateCommand("Select t1.Nome, t2.valorParcela, t2.numParcela, COALESCE(sum(t3.valorPagamento),0) as pago, t2.dataVencimento " +
+                                        "from Pessoa t1 inner join contapagar c on c.fk_idPessoa = t1.idPessoa " +
+                                        "inner join contapagarparcela t2 on t2.fk_idContaPagar = c.idContaPagar " +
+                                        "left join contapagarparcelapagamento t3 on t3.fk_idcontapagarparcela = t2.idcontapagarparcela " +
+                                        "where t2.datavencimento <= @data " +
+                                        "and t2.valorParcela <> (select COALESCE(sum(t4.valorPagamento),0) from contapagarparcelapagamento t4 where t4.fk_idcontapagarparcela = t2.idContaPagarParcela) " +
+                                        "GROUP BY t1.Nome,t2.valorParcela,t2.numParcela,t2.dataVencimento ");
+            command.Parameters.AddWithValue("@data", dataAte);
+
+
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    if (reader.HasRows)
+                    {
+                        result.Add(new RelParcelasPagar
+                        {
+                            fornecedorConta = reader["nome"].ToString(),
+                            valorPagar = Convert.ToDecimal(reader["valorparcela"]),
+                            valorPago = Convert.ToDecimal(reader["pago"]),
+                            numParcela = Convert.ToInt32(reader["numparcela"]),
+                            dataVencimento = DateTime.Parse(reader["datavencimento"].ToString(), new CultureInfo("pt-BR")).ToString("dd/MM/yyyy")
+                        });
+                    }
+                    else
+                    {
+                        return null;
+                    }
+
+                }
+                reader.Close();
+            }
+
+            return result;
         }
 
         public List<RelParcelasVencer> RelParcelasVencer(DateTime dataAte)

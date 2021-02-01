@@ -8,10 +8,10 @@ namespace skoll.Dominio.Entities
 {
     public class RelEntradaSaida
     {
-        string descricao { get; set; }
+        public string descricao { get; set; }
 
-        decimal valor { get; set; }
+        public decimal valor { get; set; }
 
-        bool isEstrada { get; set; }
+        public bool isEstrada { get; set; }
     }
 }
