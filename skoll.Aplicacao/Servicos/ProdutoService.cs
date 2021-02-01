@@ -50,6 +50,14 @@ namespace skoll.Aplicacao.Servicos
             }
         }
 
+        public IEnumerable<Produto> GetAtivosComServico()
+        {
+            using (var context = _unitOfWork.Create())
+            {
+                return context.Repositorios.ProdutoRepositorio.GetAtivosComServico();
+            }
+        }
+
         public IEnumerable<Produto> GetByNomeLike(string nome)
         {
             using (var context = _unitOfWork.Create())

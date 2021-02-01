@@ -125,6 +125,37 @@ namespace skoll.Infraestrutura.Repositorios
             return result;
         }
 
+        public IEnumerable<Produto> GetAtivosComServico()
+        {
+            var result = new List<Produto>();
+
+            var command = CreateCommand("SELECT t1.* FROM public.Produto t1 where ativo = true and exists (select 1 from servicoPrestado t2 where t2.fk_idProduto = t1.idProduto) ");
+
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    if (reader.HasRows)
+                    {
+                        result.Add(new Produto
+                        {
+                            Id = Convert.ToInt32(reader["idProduto"]),
+                            nome = reader["nome"].ToString(),
+                            ativo = Convert.ToBoolean(reader["ativo"])
+                        });
+                    }
+                    else
+                    {
+                        return null;
+                    }
+
+                }
+                reader.Close();
+            }
+
+            return result;
+        }
+
         public IEnumerable<Produto> GetByNomeLike(string nome)
         {
             var result = new List<Produto>();

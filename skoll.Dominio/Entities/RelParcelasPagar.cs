@@ -12,6 +12,8 @@ namespace skoll.Dominio.Entities
 
         decimal valorPagar { get; set; }
 
+        int numParcela { get; set; }
+
         decimal valorPago { get; set; }
 
         DateTime dataVencimento { get; set; }

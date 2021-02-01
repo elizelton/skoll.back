@@ -17,6 +17,8 @@ namespace skoll.Aplicacao.Interfaces
 
         IEnumerable<Produto> GetAtivos();
 
+        IEnumerable<Produto> GetAtivosComServico();
+
         IEnumerable<Produto> GetByNomeLike(string nome);
 
         void Remove(int id);

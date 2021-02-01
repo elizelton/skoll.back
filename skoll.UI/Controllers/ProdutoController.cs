@@ -40,6 +40,14 @@ namespace skoll.ui.Controllers
             return new { items = _produtoService.GetAtivos() };
         }
 
+        // GET: api/Usuario     
+        //[Authorize("Bearer")]
+        [HttpGet("comserv", Name = "GetProdutosAtivosComServ")]
+        public object GetProdutosAtivosComServ([FromQuery] QueryString query)
+        {
+            return new { items = _produtoService.GetAtivosComServico() };
+        }
+
         [HttpGet("{nome}/nome", Name = "GetProdutoNome")]
         public IActionResult GetProdutoNome(string nome)
         {
