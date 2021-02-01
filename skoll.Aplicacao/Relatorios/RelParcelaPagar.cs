@@ -47,14 +47,14 @@ namespace skoll.Aplicacao.Relatorios
             table.AddCell(getNewCell("Fornecedor", titulo, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER, preto, fundo));
             table.AddCell(getNewCell("Venc.", titulo, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER, preto, fundo));
             table.AddCell(getNewCell("Num.", titulo, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER, preto, fundo));
-            table.AddCell(getNewCell("Total", titulo, Element.ALIGN_RIGHT, 5, PdfPCell.BOTTOM_BORDER, preto, fundo));
+            table.AddCell(getNewCell("A Pagar", titulo, Element.ALIGN_RIGHT, 5, PdfPCell.BOTTOM_BORDER, preto, fundo));
             table.AddCell(getNewCell("Pago", titulo, Element.ALIGN_RIGHT, 5, PdfPCell.BOTTOM_BORDER, preto, fundo));
             table.AddCell(getNewCell("Saldo", titulo, Element.ALIGN_RIGHT, 5, PdfPCell.BOTTOM_BORDER, preto, fundo));            
             #endregion
 
-            var cidades = this.list;
+            var parcelas = this.list;
 
-            foreach (var d in cidades)
+            foreach (var d in parcelas)
             { 
                 table.AddCell(getNewCell(d.fornecedorConta, font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
                 table.AddCell(getNewCell(d.dataVencimento, font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
@@ -63,6 +63,17 @@ namespace skoll.Aplicacao.Relatorios
                 table.AddCell(getNewCell(string.Format("R$ {0:0.00}", d.valorPago), font, Element.ALIGN_RIGHT, 5, PdfPCell.BOTTOM_BORDER));
                 table.AddCell(getNewCell(string.Format("R$ {0:0.00}", d.valorPagar - d.valorPago), font, Element.ALIGN_RIGHT, 5, PdfPCell.BOTTOM_BORDER));
             }
+
+
+            var total = parcelas.Sum(e => e.valorPagar);
+            var pago = parcelas.Sum(e => e.valorPago);
+
+            table.AddCell(getNewCell("", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
+            table.AddCell(getNewCell("", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
+            table.AddCell(getNewCell("Total: ", titulo, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
+            table.AddCell(getNewCell(string.Format("R$ {0:0.00}", total), titulo, Element.ALIGN_RIGHT, 5, PdfPCell.BOTTOM_BORDER));
+            table.AddCell(getNewCell(string.Format("R$ {0:0.00}", pago), titulo, Element.ALIGN_RIGHT, 5, PdfPCell.BOTTOM_BORDER));
+            table.AddCell(getNewCell(string.Format("R$ {0:0.00}", total - pago), titulo, Element.ALIGN_RIGHT, 5, PdfPCell.BOTTOM_BORDER));
 
             doc.Add(table);
         }
