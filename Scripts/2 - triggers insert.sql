@@ -239,11 +239,8 @@ CREATE FUNCTION contapagarparcelainsert_trigger() RETURNS trigger AS $contapagar
 		IF NEW.dataVencimento IS NULL THEN
             RAISE EXCEPTION 'A data de vencimento da parcela da conta a pagar deve ser informada';
         END IF;
-		IF NEW.pk_IdContaPagar IS NULL or NEW.pk_IdContaPagar <= 0 THEN
+		IF NEW.fk_IdContaPagar IS NULL or NEW.fk_IdContaPagar <= 0 THEN
             RAISE EXCEPTION 'A parcela deve estar atrelada a uma conta a pagar';
-        END IF;
-		IF NEW.Situacao IS NULL or NEW.Situacao <= 0 or NEW.Situacao > 3 THEN
-            NEW.Situacao := 1;
         END IF;
 		RETURN NEW;
     END;
@@ -255,7 +252,7 @@ CREATE TRIGGER contapagarparcelainsert_trigger BEFORE INSERT ON ContaPagarParcel
 -- Regras Contrato Serviço
 CREATE FUNCTION contratoservicoinsert_trigger() RETURNS trigger AS $contratoservicoinsert_trigger$
     BEGIN
-        IF NEW.valorUnitario IS NULL or NEW.numParcela <= 0 THEN
+        IF NEW.valorUnitario IS NULL or NEW.valorUnitario <= 0 THEN
             RAISE EXCEPTION 'O valor unitário do Serviço Prestado no contrato deve ser informado';
         END IF;
 		IF NEW.quantidade IS NULL or NEW.quantidade <= 0 THEN

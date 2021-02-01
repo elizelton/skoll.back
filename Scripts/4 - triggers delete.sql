@@ -8,7 +8,7 @@ CREATE FUNCTION pessoadelete_trigger() RETURNS trigger AS $pessoadelete_trigger$
         IF EXISTS (SELECT 1 FROM ContaPagar WHERE fk_IdPessoa = OLD.IdPessoa) OR EXISTS (SELECT 1 FROM Contrato WHERE fk_IdPessoa = OLD.IdPessoa) THEN
             RAISE EXCEPTION 'Pessoa ja atribuída a um Contrato ou Conta a Pagar';
         END IF;
-		RETURN NEW;
+		RETURN OLD;
     END;
   $pessoadelete_trigger$ LANGUAGE plpgsql;
   
@@ -21,7 +21,7 @@ CREATE FUNCTION usuariodelete_trigger() RETURNS trigger AS $usuariodelete_trigge
         IF EXISTS (SELECT 1 FROM Contrato WHERE fk_IdUsuario = OLD.IdUsuario) THEN
             RAISE EXCEPTION 'Usuário ja atribuído a um Contrato';
         END IF;
-		RETURN NEW;
+		RETURN OLD;
     END;
   $usuariodelete_trigger$ LANGUAGE plpgsql;
   
@@ -34,7 +34,7 @@ CREATE FUNCTION fornecedordelete_trigger() RETURNS trigger AS $fornecedordelete_
         IF EXISTS (SELECT 1 FROM ContaPagar WHERE fk_IdFornecedor = OLD.IdFornecedor and fk_IdPessoa = OLD.IdPessoa) THEN
             RAISE EXCEPTION 'Fornecedor ja atribuído a uma Conta a Pagar';
         END IF;
-		RETURN NEW;
+		RETURN OLD;
     END;
   $fornecedordelete_trigger$ LANGUAGE plpgsql;
   
@@ -47,7 +47,7 @@ CREATE FUNCTION clientedelete_trigger() RETURNS trigger AS $clientedelete_trigge
         IF EXISTS (SELECT 1 FROM Contrato WHERE fk_IdCliente = OLD.IdCliente and fk_IdPessoa = OLD.IdPessoa) THEN
             RAISE EXCEPTION 'Cliente ja atribuído a um Contrato';
         END IF;
-		RETURN NEW;
+		RETURN OLD;
     END;
   $clientedelete_trigger$ LANGUAGE plpgsql;
   
@@ -60,7 +60,7 @@ CREATE FUNCTION produtodelete_trigger() RETURNS trigger AS $produtodelete_trigge
         IF EXISTS (SELECT 1 FROM ServicoPrestado WHERE fk_IdProduto = OLD.IdProduto) THEN
             RAISE EXCEPTION 'Produto ja atribuído a um Serviço Prestado';
         END IF;     
-		RETURN NEW;
+		RETURN OLD;
     END;
   $produtodelete_trigger$ LANGUAGE plpgsql;
   
@@ -73,7 +73,7 @@ CREATE FUNCTION servicoprestadodelete_trigger() RETURNS trigger AS $servicoprest
         IF EXISTS (SELECT 1 FROM ContratoServico WHERE fk_IdServicoPrestado = OLD.idServPrest) THEN
             RAISE EXCEPTION 'Serviço Prestado ja atribuído a um Contrato';
         END IF;     
-		RETURN NEW;
+		RETURN OLD;
     END;
   $servicoprestadodelete_trigger$ LANGUAGE plpgsql;
   
@@ -86,7 +86,7 @@ CREATE FUNCTION formapagamentodelete_trigger() RETURNS trigger AS $formapagament
         IF EXISTS (SELECT 1 FROM Contrato WHERE fk_IdFormaPag = OLD.idFormaPag) THEN
             RAISE EXCEPTION 'Forma de Pagamento ja atribuída a um Contrato';
         END IF;  
-		RETURN NEW;
+		RETURN OLD;
     END;
   $formapagamentodelete_trigger$ LANGUAGE plpgsql;
   
@@ -99,7 +99,7 @@ CREATE FUNCTION vendedordelete_trigger() RETURNS trigger AS $vendedordelete_trig
         IF EXISTS (SELECT 1 FROM Contrato WHERE fk_IdVendedor = OLD.IdVendedor) THEN
             RAISE EXCEPTION 'Vendedor ja atribuída a um Contrato';
         END IF; 
-		RETURN NEW;
+		RETURN OLD;
     END;
   $vendedordelete_trigger$ LANGUAGE plpgsql;
   
@@ -112,7 +112,7 @@ CREATE FUNCTION contratoparceladelete_trigger() RETURNS trigger AS $contratoparc
         IF EXISTS (SELECT 1 FROM ContratoParcelaPagamento WHERE fk_IdContratoParcela = OLD.IdContratoParcela) THEN
             RAISE EXCEPTION 'Parcela já possui um pagamento';
         END IF; 
-		RETURN NEW;
+		RETURN OLD;
     END;
   $contratoparceladelete_trigger$ LANGUAGE plpgsql;
   
@@ -125,7 +125,7 @@ CREATE FUNCTION contapagarparceladelete_trigger() RETURNS trigger AS $contapagar
         IF EXISTS (SELECT 1 FROM ContaPagarParcelaPagamento WHERE fk_IdContaPagarParcela = OLD.IdContaPagarParcela) THEN
             RAISE EXCEPTION 'Parcela já possui um pagamento';
         END IF; 
-		RETURN NEW;
+		RETURN OLD;
     END;
   $contapagarparceladelete_trigger$ LANGUAGE plpgsql;
   

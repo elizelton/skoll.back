@@ -145,9 +145,6 @@ CREATE FUNCTION contapagarparcelaupdate_trigger() RETURNS trigger AS $contapagar
         IF NEW.fk_IdContaPagar <> OLD.fk_IdContaPagar THEN
             RAISE EXCEPTION 'A Conta a Pagar correspondente a parcela não pode ser alterado';
         END IF;
-		IF NEW.Situacao IS NULL or NEW.Situacao <= 0 or NEW.Situacao > 3 THEN
-            NEW.Situacao := 1;
-        END IF;
 		RETURN NEW;
     END;
   $contapagarparcelaupdate_trigger$ LANGUAGE plpgsql;
@@ -257,7 +254,7 @@ CREATE FUNCTION contapagarupdate_trigger() RETURNS trigger AS $contapagarupdate_
         IF NEW.fk_IdPessoa <> OLD.fk_IdPessoa THEN
             RAISE EXCEPTION 'A Pessoa não pode ser alterada';
         END IF;
-        IF EXISTS (SELECT 1 FROM CONTAPAGARPARCELAPAGAMENTO T1, CONTRATOPARCELA T2 WHERE T2.fk_IdContaPagar = NEW.idContaPagar and t1.fk_IdContaPagarParcela = t2.idContaPagarParcela and t1.valorPagamento <> 0) THEN
+        IF EXISTS (SELECT 1 FROM CONTAPAGARPARCELAPAGAMENTO T1,CONTAPAGARPARCELA T2 WHERE T2.fk_IdContaPagar = NEW.idContaPagar and t1.fk_IdContaPagarParcela = t2.idContaPagarParcela and t1.valorPagamento <> 0) THEN
             IF NEW.valorTotal <> OLD.valorTotal THEN
                  RAISE EXCEPTION 'Já houve pagamento de parcela(s) para essa Conta. Não é possível alterar o valor total. Para alterar o valor total do contrato é necessário inserir uma nova parcela de ajuste.';
             END IF;
