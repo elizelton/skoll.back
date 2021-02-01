@@ -12,5 +12,7 @@ namespace skoll.Aplicacao.Interfaces
     public interface IRelatorioService
     {
         RelCidadesEstado RelCidadesEstado(string estado);
+
+        RelParcelaPagar RelParcelasPagar(DateTime dataAte);
     }
 }

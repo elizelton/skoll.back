@@ -73,7 +73,7 @@ namespace skoll.Aplicacao.Relatorios
         {
             if (!Paisagem)
             {
-                doc = new Document(PageSize.A4, 20, 10, 80, 75);
+                doc = new Document(PageSize.A4, 10, 10, 80, 75);
             }
             else
             {
