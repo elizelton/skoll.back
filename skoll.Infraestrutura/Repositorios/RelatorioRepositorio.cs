@@ -77,7 +77,7 @@ namespace skoll.Infraestrutura.Repositorios
                                         "left join contapagarparcelapagamento t3 on t3.fk_idcontapagarparcela = t2.idcontapagarparcela " +
                                         "where t2.datavencimento <= @data " +
                                         "and t2.valorParcela <> (select COALESCE(sum(t4.valorPagamento),0) from contapagarparcelapagamento t4 where t4.fk_idcontapagarparcela = t2.idContaPagarParcela) " +
-                                        "GROUP BY t1.Nome,t2.valorParcela,t2.numParcela,t2.dataVencimento ");
+                                        "GROUP BY t1.Nome,t2.numParcela,t2.dataVencimento,t2.valorParcela ");
             command.Parameters.AddWithValue("@data", dataAte);
 
 
