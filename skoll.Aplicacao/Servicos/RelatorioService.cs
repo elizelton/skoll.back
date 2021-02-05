@@ -61,5 +61,20 @@ namespace skoll.Aplicacao.Servicos
 
             return rpt;
         }
+
+        public RelContratoCliente RelContratosPorCliente(int idCliente, DateTime inicio, DateTime fim)
+        {
+            var rpt = new RelContratoCliente();
+            rpt.InicializaVariaveis();            
+
+            using (var context = _unitOfWork.Create())
+            {
+                rpt.list = context.Repositorios.RelatorioRepositorio.RelContratosPorCliente(idCliente, inicio, fim);
+            }
+
+            rpt.PageTitle = $"Relatório de Contratos do Cliente {rpt.list.FirstOrDefault().clienteContrato}";
+
+            return rpt;
+        }
     }
 }

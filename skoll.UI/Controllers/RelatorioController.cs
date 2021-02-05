@@ -52,5 +52,14 @@ namespace skoll.ui.Controllers
 
             return file;
         }
+
+        [HttpGet("{idcliente}/{inicio}/{fim}/contratocliente", Name = "RelContratosCliente")]
+        public FileResult RelContratosCliente(int idcliente, DateTime inicio, DateTime fim)
+        {
+            var rel = _relatorioService.RelContratosPorCliente(idcliente, inicio, fim);
+            var file = File(rel.GetOutput().GetBuffer(), "application/pdf", "Relatorio.pdf");
+
+            return file;
+        }
     }
 }

@@ -55,7 +55,41 @@ namespace skoll.Infraestrutura.Repositorios
 
         public List<RelContrato> RelContratosPorCliente(int idCliente, DateTime inicio, DateTime fim)
         {
-            throw new NotImplementedException();
+            var result = new List<RelContrato>();
+            var command = CreateCommand("select t1.nome as nomePes, t2.datainicio, t3.nome as nomeVen, t2.numparcelas, " +
+                                        "t2.valortotal, t4.nome as forma, case when t2.ativo then 'ATIVO' else 'INATIVO' END as status " +
+                                        "from pessoa t1 inner join contrato t2 on t2.fk_idpessoa = t1.idpessoa " +
+                                        "inner join vendedor t3 on t3.idvendedor = t2.fk_idvendedor " +
+                                        "inner join formapagamento t4 on t4.idformapag = t2.fk_idformapag " +
+                                        "inner join cliente t5 on t5.fk_idpessoa = t1.idpessoa " +
+                                        "where t5.idcliente = @cli and t2.datainicio >= @ini " +
+                                        "and t2.datatermino <= @term order by t2.datainicio ");
+            command.Parameters.AddWithValue("@cli", idCliente);
+            command.Parameters.AddWithValue("@ini", inicio);
+            command.Parameters.AddWithValue("@term", fim);
+
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    if (reader.HasRows)
+                    {
+                        result.Add(new RelContrato
+                        {
+                            clienteContrato = reader["nomePes"].ToString(),
+                            vendedor = reader["nomeVen"].ToString(),
+                            formaPagamento = reader["forma"].ToString(),
+                            valorTotal = Convert.ToDecimal(reader["valortotal"]),
+                            status = Convert.ToString(reader["status"]),
+                            numParcelas = Convert.ToInt32(reader["numparcelas"]),
+                            inicio = DateTime.Parse(reader["datainicio"].ToString(), new CultureInfo("pt-BR")).ToString("dd/MM/yyyy")
+                        });
+                    }
+                }
+                reader.Close();
+            }
+
+            return result;
         }
 
         public List<RelContrato> RelContratosPorVendedor(int idCliente, DateTime inicio, DateTime fim)
@@ -97,10 +131,6 @@ namespace skoll.Infraestrutura.Repositorios
                             dataVencimento = DateTime.Parse(reader["datavencimento"].ToString(), new CultureInfo("pt-BR")).ToString("dd/MM/yyyy")
                         });
                     }
-                    else
-                    {
-                        return null;
-                    }
 
                 }
                 reader.Close();
@@ -135,10 +165,6 @@ namespace skoll.Infraestrutura.Repositorios
                             numParcela = Convert.ToInt32(reader["numparcela"]),
                             valorPago = Convert.ToDecimal(reader["pago"])
                         }); ;
-                    }
-                    else
-                    {
-                        return null;
                     }
 
                 }
