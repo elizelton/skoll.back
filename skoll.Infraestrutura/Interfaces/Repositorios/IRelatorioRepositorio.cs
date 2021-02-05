@@ -21,6 +21,6 @@ namespace skoll.Infraestrutura.Interfaces.Repositorios
 
         List<RelEntradaSaida> RelEntradaSaida(DateTime inicio, DateTime fim);
 
-        List<RelContrato> RelVendasMensais(int mes);
+        List<RelContrato> RelVendasMensais(int mes, int ano);
     }
 }

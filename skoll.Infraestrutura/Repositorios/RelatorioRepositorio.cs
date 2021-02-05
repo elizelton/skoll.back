@@ -174,9 +174,43 @@ namespace skoll.Infraestrutura.Repositorios
             return result;
         }
 
-        public List<RelContrato> RelVendasMensais(int mes)
+        public List<RelContrato> RelVendasMensais(int mes , int ano)
         {
-            throw new NotImplementedException();
+            var result = new List<RelContrato>();
+            var command = CreateCommand("select t1.nome as nomePes, t2.datainicio, t3.nome as nomeVen, t2.numparcelas, " +
+                                        "t2.valortotal, t4.nome as forma, case when t2.ativo then 'ATIVO' else 'INATIVO' END as status " +
+                                        "from pessoa t1 inner join contrato t2 on t2.fk_idpessoa = t1.idpessoa " +
+                                        "inner join vendedor t3 on t3.idvendedor = t2.fk_idvendedor " +
+                                        "inner join formapagamento t4 on t4.idformapag = t2.fk_idformapag " +
+                                        "inner join cliente t5 on t5.fk_idpessoa = t1.idpessoa " +
+                                        "where extract (month from t2.datainicio) = @mes " +
+                                        "and extract (year from t2.datainicio) = @ano " +
+                                        "order by t2.datainicio ");
+            command.Parameters.AddWithValue("@mes", mes);
+            command.Parameters.AddWithValue("@ano", ano);
+
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    if (reader.HasRows)
+                    {
+                        result.Add(new RelContrato
+                        {
+                            clienteContrato = reader["nomePes"].ToString(),
+                            vendedor = reader["nomeVen"].ToString(),
+                            formaPagamento = reader["forma"].ToString(),
+                            valorTotal = Convert.ToDecimal(reader["valortotal"]),
+                            status = Convert.ToString(reader["status"]),
+                            numParcelas = Convert.ToInt32(reader["numparcelas"]),
+                            inicio = DateTime.Parse(reader["datainicio"].ToString(), new CultureInfo("pt-BR")).ToString("dd/MM/yyyy")
+                        });
+                    }
+                }
+                reader.Close();
+            }
+
+            return result;
         }
     }
 }

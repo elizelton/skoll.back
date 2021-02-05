@@ -76,5 +76,19 @@ namespace skoll.Aplicacao.Servicos
 
             return rpt;
         }
+
+        public RelContratoMes RelContratosMes(int mes, int ano)
+        {
+            var rpt = new RelContratoMes();
+            rpt.InicializaVariaveis();
+            rpt.PageTitle = $"Relatório de Contratos vendidos em {mes.ToString().PadLeft(2, '0')}/{ ano}";
+
+            using (var context = _unitOfWork.Create())
+            {
+                rpt.list = context.Repositorios.RelatorioRepositorio.RelVendasMensais(mes, ano);
+            }
+
+            return rpt;
+        }
     }
 }

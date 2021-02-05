@@ -18,5 +18,7 @@ namespace skoll.Aplicacao.Interfaces
         RelParcelaVencer RelParcelasVencer(DateTime dataAte);
 
         RelContratoCliente RelContratosPorCliente(int idCliente, DateTime inicio, DateTime fim);
+
+        RelContratoMes RelContratosMes(int mes, int ano);
     }
 }
