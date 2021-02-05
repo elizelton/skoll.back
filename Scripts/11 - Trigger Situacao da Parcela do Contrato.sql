@@ -3,7 +3,7 @@ $SituacaoParcelaContratoInUp$
     DECLARE valorTot DECIMAL;
     DECLARE valorParc DECIMAL;
 BEGIN    
-    select sum(valorPagamento) into valorTot from ContratoParcelaPagamento where fk_idContratoParcela = NEW.fk_idContratoParcela;
+    select COALESCE(sum(valorPagamento),0) into valorTot from ContratoParcelaPagamento where fk_idContratoParcela = NEW.fk_idContratoParcela;
     select valorParcela into valorParc from ContratoParcela where idContratoParcela = NEW.fk_idContratoParcela;
     
     IF valorTot = valorParc
@@ -27,7 +27,7 @@ $SituacaoParcelaContratoDel$
     DECLARE valorTot DECIMAL;
     DECLARE valorParc DECIMAL;
 BEGIN    
-    select sum(valorPagamento) into valorTot from ContratoParcelaPagamento where fk_idContratoParcela = OLD.fk_idContratoParcela;
+    select COALESCE(sum(valorPagamento),0) into valorTot from ContratoParcelaPagamento where fk_idContratoParcela = OLD.fk_idContratoParcela;
     select valorParcela into valorParc from ContratoParcela where idContratoParcela = OLD.fk_idContratoParcela;
 
     IF valorTot = valorParc

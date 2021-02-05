@@ -1,7 +1,7 @@
 CREATE OR REPLACE FUNCTION VALORTOTALCONTRATOPARCELA() RETURNS trigger AS 
 $VALORTOTALCONTRATOPARCELA$ 
 BEGIN    
-    UPDATE Contrato SET valorTotal = (select sum(valorParcela) from ContratoParcela where fk_idContrato = NEW.fk_idContrato) where idContrato = NEW.fk_idContrato;
+    UPDATE Contrato SET valorTotal = COALESCE((select sum(valorParcela) from ContratoParcela where fk_idContrato = NEW.fk_idContrato),0) where idContrato = NEW.fk_idContrato;
     RETURN NEW;        
 END
 $VALORTOTALCONTRATOPARCELA$
@@ -15,7 +15,7 @@ EXECUTE PROCEDURE VALORTOTALCONTRATOPARCELA();
 CREATE OR REPLACE FUNCTION VALORTOTALCONTRATOPARCELADELETE() RETURNS trigger AS 
 $VALORTOTALCONTRATOPARCELADELETE$ 
 BEGIN    
-    UPDATE Contrato SET valorTotal =  (select sum(valorParcela) from ContratoParcela where fk_idContrato = NEW.fk_idContrato) where idContrato = OLD.fk_idContrato;
+    UPDATE Contrato SET valorTotal =  COALESCE((select sum(valorParcela) from ContratoParcela where fk_idContrato = NEW.fk_idContrato),0) where idContrato = OLD.fk_idContrato;
     RETURN OLD;      
 END
 $VALORTOTALCONTRATOPARCELADELETE$

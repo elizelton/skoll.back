@@ -4,7 +4,7 @@ $VALORJUROSPAGAMENTOCONTRATO$
 BEGIN    
     select fk_idContrato into idCont from ContratoParcela where idContratoParcela = NEW.fk_IdContratoParcela;
 
-    UPDATE CONTRATO SET juros = (select sum(juros) from contratoParcelaPagamento where fk_IdContratoParcela in (select idContratoParcela from ContratoParcela where fk_idContrato = idCont)) where idContrato = idCont;
+    UPDATE CONTRATO SET juros = COALESCE((select sum(juros) from contratoParcelaPagamento where fk_IdContratoParcela in (select idContratoParcela from ContratoParcela where fk_idContrato = idCont)),0) where idContrato = idCont;
     RETURN NEW;        
 END
 $VALORJUROSPAGAMENTOCONTRATO$
@@ -21,8 +21,8 @@ $VALORJUROSPAGAMENTOCONTRATODELETE$
 BEGIN    
     select fk_idContrato into idCont from ContratoParcela where idContratoParcela = OLD.fk_IdContratoParcela;
 
-    UPDATE CONTRATO SET juros = (select sum(juros) from contratoParcelaPagamento where fk_IdContratoParcela in (select idContratoParcela from ContratoParcela where fk_idContrato = idCont)) where idContrato = idCont;
-    RETURN OLD;        
+    UPDATE CONTRATO SET juros = COALESCE((select sum(juros) from contratoParcelaPagamento where fk_IdContratoParcela in (select idContratoParcela from ContratoParcela where fk_idContrato = idCont)),0) where idContrato = idCont;
+    RETURN OLD;       
 END
 $VALORJUROSPAGAMENTOCONTRATODELETE$
 LANGUAGE plpgsql;

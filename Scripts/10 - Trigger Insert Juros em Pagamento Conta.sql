@@ -4,7 +4,7 @@ $VALORJUROSPAGAMENTOCONTA$
 BEGIN    
     select fk_idContaPagar into idCont from ContaPagarParcela where idContaPagarParcela = NEW.fk_IdContaPagarParcela;
 
-    UPDATE ContaPagar SET juros = (select sum(juros) from ContaPagarParcelaPagamento where fk_IdContaPagarParcela in (select idContaPagarParcela from ContaPagarParcela where fk_idContaPagar = idCont)) where idContaPagar = idCont;
+    UPDATE ContaPagar SET juros = COALESCE((select sum(juros) from ContaPagarParcelaPagamento where fk_IdContaPagarParcela in (select idContaPagarParcela from ContaPagarParcela where fk_idContaPagar = idCont)),0) where idContaPagar = idCont;
     RETURN NEW;        
 END
 $VALORJUROSPAGAMENTOCONTA$
@@ -21,7 +21,7 @@ $VALORJUROSPAGAMENTOCONTADELETE$
 BEGIN    
     select fk_idContaPagar into idCont from ContaPagarParcela where idContaPagarParcela = OLD.fk_IdContaPagarParcela;
 
-    UPDATE CONTAPAGAR SET juros = (select sum(juros) from ContaPagarParcelaPagamento where fk_IdContaPagarParcela in (select idContaPagarParcela from ContaPagarParcela where fk_idContaPagar = idCont)) where idContaPagar = idCont;
+    UPDATE CONTAPAGAR SET juros = COALESCE((select sum(juros) from ContaPagarParcelaPagamento where fk_IdContaPagarParcela in (select idContaPagarParcela from ContaPagarParcela where fk_idContaPagar = idCont)),0) where idContaPagar = idCont;
     RETURN OLD;      
 END
 $VALORJUROSPAGAMENTOCONTADELETE$
