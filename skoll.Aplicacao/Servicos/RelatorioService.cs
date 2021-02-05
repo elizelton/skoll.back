@@ -47,5 +47,19 @@ namespace skoll.Aplicacao.Servicos
 
             return rpt;
         }
+
+        public RelParcelaVencer RelParcelasVencer(DateTime dataAte)
+        {
+            var rpt = new RelParcelaVencer();
+            rpt.InicializaVariaveis();
+            rpt.PageTitle = $"Relatório de Parcelas a Receber até {DateTime.Parse(dataAte.ToString(), new CultureInfo("pt-BR")).ToString("dd/MM/yyyy")}";
+
+            using (var context = _unitOfWork.Create())
+            {
+                rpt.list = context.Repositorios.RelatorioRepositorio.RelParcelasVencer(dataAte);
+            }
+
+            return rpt;
+        }
     }
 }

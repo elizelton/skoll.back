@@ -43,5 +43,14 @@ namespace skoll.ui.Controllers
 
             return file;
         }
+
+        [HttpGet("{dataAte}/parcelavencer", Name = "RelParcelasVencer")]
+        public FileResult RelParcelasVencer(DateTime dataAte)
+        {
+            var rel = _relatorioService.RelParcelasVencer(dataAte);
+            var file = File(rel.GetOutput().GetBuffer(), "application/pdf", "Relatorio.pdf");
+
+            return file;
+        }
     }
 }

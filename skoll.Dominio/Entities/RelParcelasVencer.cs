@@ -12,6 +12,8 @@ namespace skoll.Dominio.Entities
 
         public decimal valorPagar { get; set; }
 
+        public int numParcela { get; set; }
+
         public decimal valorPago { get; set; }
 
         public string dataVencimento { get; set; }

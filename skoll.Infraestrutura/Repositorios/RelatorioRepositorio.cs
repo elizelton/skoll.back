@@ -77,7 +77,8 @@ namespace skoll.Infraestrutura.Repositorios
                                         "left join contapagarparcelapagamento t3 on t3.fk_idcontapagarparcela = t2.idcontapagarparcela " +
                                         "where t2.datavencimento <= @data " +
                                         "and t2.valorParcela <> (select COALESCE(sum(t4.valorPagamento),0) from contapagarparcelapagamento t4 where t4.fk_idcontapagarparcela = t2.idContaPagarParcela) " +
-                                        "GROUP BY t1.Nome,t2.numParcela,t2.dataVencimento,t2.valorParcela ");
+                                        "GROUP BY t1.Nome,t2.numParcela,t2.dataVencimento,t2.valorParcela " +
+                                        "Order by t2.datavencimento ");
             command.Parameters.AddWithValue("@data", dataAte);
 
 
@@ -110,7 +111,41 @@ namespace skoll.Infraestrutura.Repositorios
 
         public List<RelParcelasVencer> RelParcelasVencer(DateTime dataAte)
         {
-            throw new NotImplementedException();
+            var result = new List<RelParcelasVencer>();
+            var command = CreateCommand("select t3.nome, t1.datavencimento, t1.valorparcela, t1.numparcela, COALESCE(sum(t4.valorPagamento),0) as pago " +
+                                        "from contratoparcela t1 inner join contrato t2 on t1.fk_idcontrato = t2.idcontrato " +
+                                        "inner join pessoa t3 on t2.fk_idpessoa = t3.idpessoa " +
+                                        "left join contratoparcelapagamento t4 on t4.fk_idcontratoparcela = t1.idcontratoparcela " +
+                                        "where t1.datavencimento <= @data and t1.situacao <> 3 " +
+                                        "GROUP BY t3.Nome,t1.numParcela,t1.dataVencimento,t1.valorParcela " +
+                                        "Order by t1.datavencimento ");
+            command.Parameters.AddWithValue("@data", dataAte);
+
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    if (reader.HasRows)
+                    {
+                        result.Add(new RelParcelasVencer
+                        {
+                            clienteContrato = reader["nome"].ToString(),
+                            dataVencimento = DateTime.Parse(reader["datavencimento"].ToString(), new CultureInfo("pt-BR")).ToString("dd/MM/yyyy"),
+                            valorPagar = Convert.ToDecimal(reader["valorparcela"]),
+                            numParcela = Convert.ToInt32(reader["numparcela"]),
+                            valorPago = Convert.ToDecimal(reader["pago"])
+                        }); ;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+
+                }
+                reader.Close();
+            }
+
+            return result;
         }
 
         public List<RelContrato> RelVendasMensais(int mes)

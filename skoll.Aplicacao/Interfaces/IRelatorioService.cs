@@ -14,5 +14,7 @@ namespace skoll.Aplicacao.Interfaces
         RelCidadesEstado RelCidadesEstado(string estado);
 
         RelParcelaPagar RelParcelasPagar(DateTime dataAte);
+
+        RelParcelaVencer RelParcelasVencer(DateTime dataAte);
     }
 }
