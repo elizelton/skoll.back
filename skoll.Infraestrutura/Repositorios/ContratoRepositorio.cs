@@ -95,6 +95,7 @@ namespace skoll.Infraestrutura.Repositorios
                 throw new InvalidOperationException("É necessário informar o número de parcelas");
 
             DateTime dataPrimeira = DateTime.Today;
+            DateTime dataSegunda = DateTime.Today;
             decimal valorParc = servicos.Sum(s => s.valorTotal) / Contrato.numParcelas;
 
             if (valorParc == 0)
@@ -107,9 +108,24 @@ namespace skoll.Infraestrutura.Repositorios
                 dataPrimeira = Contrato.dataInicio;
             }
             else
-            {                
+            {
                 if (isPrimeiraVigencia)
+                {
                     dataPrimeira = Contrato.dataInicio;
+                    if (diaVencimentoDemais != 0)
+                    {
+                        if (diaVencimentoDemais < Contrato.dataInicio.Day)
+                        {
+                            //Mês seguinte
+                            var dataFinal = Contrato.dataInicio.AddMonths(1);
+                            dataSegunda = Convert.ToDateTime($"{diaVencimentoDemais}/{dataFinal.Month}/{dataFinal.Year}");
+                        }
+                        else
+                        {
+                            dataSegunda = Convert.ToDateTime($"{diaVencimentoDemais}/{Contrato.dataInicio.Month}/{Contrato.dataInicio.Year}");
+                        }
+                    }
+                }
                 else
                 {
                     if (diaVencimentoDemais < Contrato.dataInicio.Day)
@@ -117,11 +133,13 @@ namespace skoll.Infraestrutura.Repositorios
                         //Mês seguinte
                         var dataFinal = Contrato.dataInicio.AddMonths(1);
                         dataPrimeira = Convert.ToDateTime($"{diaVencimentoDemais}/{dataFinal.Month}/{dataFinal.Year}");
+                        dataSegunda = dataPrimeira;
                     }
                     else
                     {
                         dataPrimeira = Convert.ToDateTime($"{diaVencimentoDemais}/{Contrato.dataInicio.Month}/{Contrato.dataInicio.Year}");
-                    }                    
+                        dataSegunda = dataPrimeira;
+                    }
                 }
             }
 
@@ -133,7 +151,7 @@ namespace skoll.Infraestrutura.Repositorios
                 parc.idContrato = Contrato.Id;
                 parc.numParcela = i + 1;
                 parc.valorParcela = valorParc;
-                parc.dataVencimento = (i == 0) ? dataPrimeira : dataPrimeira.AddMonths(i);
+                parc.dataVencimento = (i == 0) ? dataPrimeira : (diaVencimentoDemais == 0) ? dataPrimeira.AddMonths(i) : dataSegunda.AddMonths(i);
                 parc.situacao = 1;
                 parc.comissao = valorParc * (Contrato.vendedor.percComis / 100);
                 parc.ajuste = 0;

@@ -76,7 +76,7 @@ namespace skoll.Aplicacao.Servicos
             using (var context = _unitOfWork.Create())
             {
                 context.Repositorios.ContaPagarRepositorio.Update(contaPagar);
-                context.Repositorios.ContaPagarRepositorio.GerarParcelas(contaPagar);
+                //context.Repositorios.ContaPagarRepositorio.GerarParcelas(contaPagar);
                 context.SaveChanges();
             }
         }
