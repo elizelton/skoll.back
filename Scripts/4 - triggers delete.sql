@@ -152,6 +152,19 @@ CREATE FUNCTION contratodelete_trigger() RETURNS trigger AS $contratodelete_trig
 CREATE TRIGGER contratodelete_trigger BEFORE DELETE ON Contrato
     FOR EACH ROW EXECUTE PROCEDURE contratodelete_trigger();
 
+--Regras Contrato Serviço
+CREATE FUNCTION contratoservicodelete_trigger() RETURNS trigger AS $contratoservicodelete_trigger$
+    BEGIN
+    IF EXISTS (SELECT 1 FROM CONTRATOPARCELAPAGAMENTO T1, CONTRATOPARCELA T2 WHERE T2.fk_IdContrato = OLD.fk_idContrato and t1.fk_IdContratoParcela = t2.idContratoParcela and t1.valorPagamento <> 0) THEN
+       RAISE EXCEPTION 'Já houve pagamento de parcela(s) para esse Contrato. Não é possível excluir o Serviço Prestado.';
+    END IF;
+    RETURN OLD;
+    END
+  $contratoservicodelete_trigger$ LANGUAGE plpgsql;
+  
+CREATE TRIGGER contratoservicodelete_trigger BEFORE DELETE ON ContratoServico
+    FOR EACH ROW EXECUTE PROCEDURE contratoservicodelete_trigger();
+
 --Regras Cidades
 CREATE FUNCTION cidadesdelete_trigger() RETURNS trigger as $cidadesdelete_trigger$
     BEGIN
