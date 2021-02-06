@@ -5,12 +5,14 @@ $SituacaoParcelaContratoInUp$
 BEGIN    
     select COALESCE(sum(valorPagamento),0) into valorTot from ContratoParcelaPagamento where fk_idContratoParcela = NEW.fk_idContratoParcela;
     select valorParcela into valorParc from ContratoParcela where idContratoParcela = NEW.fk_idContratoParcela;
-    
+
     IF valorTot = valorParc
     THEN
         UPDATE ContratoParcela SET situacao = 3 where idContratoParcela = NEW.fk_idContratoParcela;
-    ELSE
+    ELSIF valorTot > 0 then
         UPDATE ContratoParcela SET situacao = 2 where idContratoParcela = NEW.fk_idContratoParcela;
+    ELSE
+        UPDATE ContratoParcela SET situacao = 1 where idContratoParcela = NEW.fk_idContratoParcela;
     END IF;
     RETURN NEW;        
 END
@@ -33,8 +35,10 @@ BEGIN
     IF valorTot = valorParc
     THEN
         UPDATE ContratoParcela SET situacao = 3 where idContratoParcela = OLD.fk_idContratoParcela;
-    ELSE
+    ELSIF valorTot > 0 then
         UPDATE ContratoParcela SET situacao = 2 where idContratoParcela = OLD.fk_idContratoParcela;
+    ELSE
+        UPDATE ContratoParcela SET situacao = 1 where idContratoParcela = OLD.fk_idContratoParcela;
     END IF;
     RETURN OLD;      
 END
