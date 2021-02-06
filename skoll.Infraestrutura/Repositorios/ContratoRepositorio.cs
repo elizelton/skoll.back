@@ -153,7 +153,8 @@ namespace skoll.Infraestrutura.Repositorios
                 parc.valorParcela = valorParc;
                 parc.dataVencimento = (i == 0) ? dataPrimeira : (diaVencimentoDemais == 0) ? dataPrimeira.AddMonths(i) : dataSegunda.AddMonths(i);
                 parc.situacao = 1;
-                parc.comissao = valorParc * (Contrato.vendedor.percComis / 100);
+                //parc.comissao = valorParc * (Contrato.vendedor.percComis / 100);
+                parc.comissao = 0;
                 parc.ajuste = 0;
 
                 parcelas.Add(parc);              
