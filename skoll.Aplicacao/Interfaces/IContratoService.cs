@@ -11,8 +11,6 @@ namespace skoll.Aplicacao.Interfaces
     {
         void Create(Contrato Contrato);
 
-        void GerarParcelaAjuste(int idConta, decimal valorDif, DateTime vencimento);
-
         void GerarParcelas(Contrato Contrato, int diaVencimentoDemais, bool isPrimeiraVigencia);
 
         void CancelarContrato(Contrato contrato, int novoCliente, decimal multa);

@@ -27,15 +27,6 @@ namespace skoll.Aplicacao.Servicos
             }
         }
 
-        public void GerarParcelaAjuste(int idConta, decimal valorDif, DateTime vencimento)
-        {
-            using (var context = _unitOfWork.Create())
-            {
-                context.Repositorios.ContratoRepositorio.GerarParcelaAjuste(idConta, valorDif, vencimento);
-                context.SaveChanges();
-            }
-        }
-
         public void GerarParcelas(Contrato Contrato, int diaVencimentoDemais, bool isPrimeiraVigencia)
         {
             using (var context = _unitOfWork.Create())

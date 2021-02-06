@@ -18,8 +18,8 @@ namespace skoll.Infraestrutura.Repositorios
 
         public void Create(ContratoParcela contParc)
         {
-            var query = "INSERT INTO public.ContratoParcela(numParcela, valorParcela, dataVencimento, situacao, comissao, ajuste, fk_IdContrato) " +
-                        "VALUES (@numParcela, @valorParcela, @dataVencimento, @situacao, @comissao, @ajuste, @fk_IdContrato)";
+            var query = "INSERT INTO public.ContratoParcela(numParcela, valorParcela, dataVencimento, situacao, comissao, fk_IdContrato) " +
+                        "VALUES (@numParcela, @valorParcela, @dataVencimento, @situacao, @comissao, @fk_IdContrato)";
             var command = CreateCommand(query);
 
             command.Parameters.AddWithValue("@numParcela", contParc.numParcela);
@@ -27,7 +27,6 @@ namespace skoll.Infraestrutura.Repositorios
             command.Parameters.AddWithValue("@dataVencimento", contParc.dataVencimento);
             command.Parameters.AddWithValue("@situacao", contParc.situacao);
             command.Parameters.AddWithValue("@comissao", contParc.comissao);
-            command.Parameters.AddWithValue("@ajuste", contParc.ajuste);
             command.Parameters.AddWithValue("@fk_IdContrato", contParc.idContrato);
 
             command.ExecuteNonQuery();
@@ -64,8 +63,7 @@ namespace skoll.Infraestrutura.Repositorios
                         numParcela = Convert.ToInt32(reader["numParcela"]),
                         idContrato = Convert.ToInt32(reader["fk_IdContrato"]),
                         situacao = Convert.ToInt32(reader["situacao"]),
-                        comissao = Convert.ToDecimal(reader["comissao"]),
-                        ajuste = Convert.ToDecimal(reader["ajuste"])
+                        comissao = Convert.ToDecimal(reader["comissao"])
                     };
                 }
                 else
@@ -99,8 +97,7 @@ namespace skoll.Infraestrutura.Repositorios
                             numParcela = Convert.ToInt32(reader["numParcela"]),
                             idContrato = Convert.ToInt32(reader["fk_IdContrato"]),
                             situacao = Convert.ToInt32(reader["situacao"]),
-                            comissao = Convert.ToDecimal(reader["comissao"]),
-                            ajuste = Convert.ToDecimal(reader["ajuste"])
+                            comissao = Convert.ToDecimal(reader["comissao"])
                         });
                     }
                     else
@@ -139,8 +136,7 @@ namespace skoll.Infraestrutura.Repositorios
                             numParcela = Convert.ToInt32(reader["numParcela"]),
                             idContrato = Convert.ToInt32(reader["fk_IdContrato"]),
                             situacao = Convert.ToInt32(reader["situacao"]),
-                            comissao = Convert.ToDecimal(reader["comissao"]),
-                            ajuste = Convert.ToDecimal(reader["ajuste"])
+                            comissao = Convert.ToDecimal(reader["comissao"])
                         });
                     }
                     else
@@ -179,8 +175,7 @@ namespace skoll.Infraestrutura.Repositorios
                             numParcela = Convert.ToInt32(reader["numParcela"]),
                             idContrato = Convert.ToInt32(reader["fk_IdContrato"]),
                             situacao = Convert.ToInt32(reader["situacao"]),
-                            comissao = Convert.ToDecimal(reader["comissao"]),
-                            ajuste = Convert.ToDecimal(reader["ajuste"])
+                            comissao = Convert.ToDecimal(reader["comissao"])
                         });
                     }
                     else
@@ -218,8 +213,7 @@ namespace skoll.Infraestrutura.Repositorios
                             numParcela = Convert.ToInt32(reader["numParcela"]),
                             idContrato = Convert.ToInt32(reader["fk_IdContrato"]),
                             situacao = Convert.ToInt32(reader["situacao"]),
-                            comissao = Convert.ToDecimal(reader["comissao"]),
-                            ajuste = Convert.ToDecimal(reader["ajuste"])
+                            comissao = Convert.ToDecimal(reader["comissao"])
                         });
                     }
                     else
@@ -257,8 +251,7 @@ namespace skoll.Infraestrutura.Repositorios
                             numParcela = Convert.ToInt32(reader["numParcela"]),
                             idContrato = Convert.ToInt32(reader["fk_IdContrato"]),
                             situacao = Convert.ToInt32(reader["situacao"]),
-                            comissao = Convert.ToDecimal(reader["comissao"]),
-                            ajuste = Convert.ToDecimal(reader["ajuste"])
+                            comissao = Convert.ToDecimal(reader["comissao"])
                         });
                     }
                     else
@@ -287,7 +280,7 @@ namespace skoll.Infraestrutura.Repositorios
         public void Update(ContratoParcela contParc)
         {
             var query = "UPDATE public.ContratoParcela SET numParcela = @numParcela, valorParcela = @valorParcela, dataVencimento = @dataVencimento, " +
-                        "situacao = @situacao, comissao = @comissao, ajuste = @ajuste, fk_IdContrato = @fk_IdContrato WHERE idContratoParcela = @id";
+                        "situacao = @situacao, comissao = @comissao, fk_IdContrato = @fk_IdContrato WHERE idContratoParcela = @id";
             var command = CreateCommand(query);
 
             command.Parameters.AddWithValue("@numParcela", contParc.numParcela);
@@ -295,7 +288,6 @@ namespace skoll.Infraestrutura.Repositorios
             command.Parameters.AddWithValue("@dataVencimento", contParc.dataVencimento);
             command.Parameters.AddWithValue("@situacao", contParc.situacao);
             command.Parameters.AddWithValue("@comissao", contParc.comissao);
-            command.Parameters.AddWithValue("@ajuste", contParc.ajuste);
             command.Parameters.AddWithValue("@fk_IdContrato", contParc.idContrato);
             command.Parameters.AddWithValue("@id", contParc.Id);
 

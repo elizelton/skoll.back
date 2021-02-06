@@ -84,16 +84,6 @@ namespace skoll.ui.Controllers
 
         // PUT: api/Usuario/5
         //[Authorize("Bearer")]
-        [HttpPut("{id}/{valorDif}/{vencimento}/parcelajuste")]
-        public IActionResult GerarParcelaAjusteContrato(int id, decimal valorDif, DateTime vencimento)
-        {
-            _contService.GerarParcelaAjuste(id, valorDif, vencimento);
-
-            return new NoContentResult();
-        }
-
-        // PUT: api/Usuario/5
-        //[Authorize("Bearer")]
         [HttpPut("{novoCliente}/{multa}/cancelar")]
         public IActionResult GerarCancelamentoContrato(int idNovoCliente, decimal multa, [FromBody] Contrato cont)
         {

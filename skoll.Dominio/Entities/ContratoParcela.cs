@@ -13,7 +13,6 @@ namespace skoll.Dominio.Entities
         public DateTime dataVencimento { get; set; }
         public int situacao { get; set; }
         public decimal comissao { get; set; }
-        public decimal ajuste { get; set; }
         public List<ContratoParcelaPagamento> pagamentos { get; set; }
     }
 }
