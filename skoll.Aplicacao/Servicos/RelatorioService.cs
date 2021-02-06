@@ -72,7 +72,23 @@ namespace skoll.Aplicacao.Servicos
                 rpt.list = context.Repositorios.RelatorioRepositorio.RelContratosPorCliente(idCliente, inicio, fim);
             }
 
-            rpt.PageTitle = $"Relatório de Contratos do Cliente {rpt.list.FirstOrDefault().clienteContrato}";
+            rpt.PageTitle = $"Relatório de Contratos do Cliente {rpt.list.FirstOrDefault().clienteContrato} de {DateTime.Parse(inicio.ToString(), new CultureInfo("pt-BR")).ToString("dd/MM/yyyy")} " +
+                $" até {DateTime.Parse(fim.ToString(), new CultureInfo("pt-BR")).ToString("dd/MM/yyyy")}  "; 
+            return rpt;
+        }
+
+        public RelContratoVendedor RelContratosPorVendedor(int idVendedor, DateTime inicio, DateTime fim)
+        {
+            var rpt = new RelContratoVendedor();
+            rpt.InicializaVariaveis();            
+
+            using (var context = _unitOfWork.Create())
+            {
+                rpt.list = context.Repositorios.RelatorioRepositorio.RelContratosPorVendedor(idVendedor, inicio, fim);
+            }
+
+            rpt.PageTitle = $"Relatório de Contratos do Vendedor {rpt.list.FirstOrDefault().vendedor} de {DateTime.Parse(inicio.ToString(), new CultureInfo("pt-BR")).ToString("dd/MM/yyyy")} " +
+                $" até {DateTime.Parse(fim.ToString(), new CultureInfo("pt-BR")).ToString("dd/MM/yyyy")}  ";
 
             return rpt;
         }

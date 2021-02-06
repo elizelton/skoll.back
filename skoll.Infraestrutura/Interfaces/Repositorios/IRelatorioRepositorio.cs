@@ -13,7 +13,7 @@ namespace skoll.Infraestrutura.Interfaces.Repositorios
 
         List<RelContrato> RelContratosPorVendedor(int idCliente, DateTime inicio, DateTime fim);
 
-        List<RelComissaoVendedor> RelComissaoMensalVendedor(int idVendedor, DateTime inicio, DateTime fim, bool porRecebimento);
+        List<RelComissaoVendedor> RelComissaoPagaVendedor(int idVendedor, DateTime inicio, DateTime fim);
 
         List<RelParcelasVencer> RelParcelasVencer(DateTime dataAte);
 

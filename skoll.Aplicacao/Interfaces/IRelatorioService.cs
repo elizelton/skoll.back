@@ -19,6 +19,8 @@ namespace skoll.Aplicacao.Interfaces
 
         RelContratoCliente RelContratosPorCliente(int idCliente, DateTime inicio, DateTime fim);
 
+        RelContratoVendedor RelContratosPorVendedor(int idVendedor, DateTime inicio, DateTime fim);
+
         RelContratoMes RelContratosMes(int mes, int ano);
     }
 }
