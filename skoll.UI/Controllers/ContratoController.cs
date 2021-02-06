@@ -84,10 +84,11 @@ namespace skoll.ui.Controllers
 
         // PUT: api/Usuario/5
         //[Authorize("Bearer")]
-        [HttpPut("{novoCliente}/{multa}/cancelar")]
-        public IActionResult GerarCancelamentoContrato(int idNovoCliente, decimal multa, [FromBody] Contrato cont)
+        [HttpPut("{idContrato}/{novoCliente}/cancelar")]
+        public IActionResult GerarCancelamentoContrato(int idContrato, int novoCliente)
         {
-            _contService.CancelarContrato(cont, idNovoCliente, multa);
+            Contrato cont = _contService.Get(idContrato);
+            _contService.CancelarContrato(cont, novoCliente);
 
             return new NoContentResult();
         }

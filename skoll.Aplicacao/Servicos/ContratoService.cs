@@ -36,11 +36,11 @@ namespace skoll.Aplicacao.Servicos
             }
         }
 
-        public void CancelarContrato(Contrato contrato, int novoCliente, decimal multa)
+        public void CancelarContrato(Contrato contrato, int novoCliente)
         {
             using (var context = _unitOfWork.Create())
             {
-                context.Repositorios.ContratoRepositorio.CancelarContrato(contrato, novoCliente, multa);
+                context.Repositorios.ContratoRepositorio.CancelarContrato(contrato, novoCliente);
                 context.SaveChanges();
             }
         }

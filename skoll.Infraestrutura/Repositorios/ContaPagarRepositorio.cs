@@ -1,5 +1,6 @@
 ﻿using Npgsql;
 using skoll.Dominio.Entities;
+using skoll.Dominio.Exceptions;
 using skoll.Infraestrutura.Interfaces.Repositorios;
 using skoll.Infraestrutura.Interfaces.Repositorios.acoes;
 using System;
@@ -54,9 +55,9 @@ namespace skoll.Infraestrutura.Repositorios
         public void GerarParcelaAjuste(int idConta, decimal valorDif, DateTime vencimento)
         {
             if (idConta == 0)
-                throw new InvalidOperationException("É necessário informar o ID da Conta");
+                throw new AppError("É necessário informar o ID da Conta");
             else if (valorDif == 0)
-                throw new InvalidOperationException("É necessário informar o valor de ajuste para a Conta");
+                throw new AppError("É necessário informar o valor de ajuste para a Conta");
 
             var query = "select PARCELAAJUSTECONTA(@valor, @idConta, @venc) ";
             var command = CreateCommand(query);
@@ -71,13 +72,13 @@ namespace skoll.Infraestrutura.Repositorios
         public void GerarParcelas(ContaPagar contaPagar)
         {
             if (contaPagar.valorTotal == 0 && contaPagar.valorMensal == 0)
-                throw new InvalidOperationException("É necessário informar o Valor Total ou Mensal para a Conta");
+                throw new AppError("É necessário informar o Valor Total ou Mensal para a Conta");
             else if (contaPagar.valorTotal > 0 && contaPagar.valorMensal > 0)
-                throw new InvalidOperationException("Não é possível informar o Valor Total e Mensal para a Conta");
+                throw new AppError("Não é possível informar o Valor Total e Mensal para a Conta");
             else if (contaPagar.mesInicial <= 0 || contaPagar.mesInicial > 12)
-                throw new InvalidOperationException("O Mês Inicial da Conta deve ser informado");
+                throw new AppError("O Mês Inicial da Conta deve ser informado");
             else if (contaPagar.numParcelas <= 0)
-                throw new InvalidOperationException("O número de parcelas da Conta deve ser informado");
+                throw new AppError("O número de parcelas da Conta deve ser informado");
 
             List<ContaPagarParcela> parcelas = new List<ContaPagarParcela>();
             var ano = (contaPagar.mesInicial < DateTime.Now.Month && (DateTime.Now.Month == 12 && (contaPagar.mesInicial == 1 || contaPagar.mesInicial == 2))) ? DateTime.Now.Year + 1 : DateTime.Now.Year;
@@ -86,7 +87,7 @@ namespace skoll.Infraestrutura.Repositorios
             if (contaPagar.valorMensal > 0 && !string.IsNullOrEmpty(contaPagar.diasPagamento))
             {
                 if (diasParc.Length != contaPagar.numParcelas)
-                    throw new InvalidOperationException("Dias de Pagamento não conferem com o número de parcelas");
+                    throw new AppError("Dias de Pagamento não conferem com o número de parcelas");
             }
 
             var parcelasConta = new ContaPagarParcelaRepositorio(this._context, this._transaction).GetByContaPagar(contaPagar.Id).ToList();

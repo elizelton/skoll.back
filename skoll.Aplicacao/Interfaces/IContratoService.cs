@@ -13,7 +13,7 @@ namespace skoll.Aplicacao.Interfaces
 
         void GerarParcelas(Contrato Contrato, int diaVencimentoDemais, bool isPrimeiraVigencia);
 
-        void CancelarContrato(Contrato contrato, int novoCliente, decimal multa);
+        void CancelarContrato(Contrato contrato, int novoCliente);
 
         Contrato Get(int id);
 

@@ -1,5 +1,6 @@
 ﻿using Npgsql;
 using skoll.Dominio.Entities;
+using skoll.Dominio.Exceptions;
 using skoll.Infraestrutura.Interfaces.Repositorios;
 using skoll.Infraestrutura.Interfaces.Repositorios.acoes;
 using System;
@@ -16,9 +17,51 @@ namespace skoll.Infraestrutura.Repositorios
             this._transaction = transaction;
         }
 
-        public void CancelarContrato(Contrato contrato, int novoCliente, decimal multa)
+        public void CancelarContrato(Contrato contrato, int novoCliente)
         {
-            throw new NotImplementedException();
+            if (novoCliente > 0)
+            {
+                var cliente = new ClienteRepositorio(this._context, this._transaction).Get(novoCliente);
+                var newContrato = contrato;
+                newContrato.Id = 0;
+                newContrato.cliente.Id = cliente.Id;
+                newContrato.cliente.idCliente = cliente.idCliente;
+
+                Create(newContrato);
+
+                if (newContrato.Id == 0)
+                    throw new AppError("Não foi possível gerar um novo contrato");
+
+                var parcelas = contrato.parcelas;
+
+                foreach(var parc in parcelas)
+                {
+                    parc.Id = 0;
+                    parc.idContrato = newContrato.Id;
+
+                    new ContratoParcelaRepositorio(this._context, this._transaction).Create(parc);
+
+                    if (parc.Id == 0)
+                        throw new AppError("Não foi possível gerar as parcelas do novo contrato");
+
+                    foreach (var pgto in parc.pagamentos)
+                    {
+                        pgto.Id = 0;
+                        pgto.idContratoParcela = parc.Id;
+
+                        new ContratoParcelaPagamentoRepositorio(this._context, this._transaction).Create(pgto);
+
+                        if (pgto.Id == 0)
+                            throw new AppError("Não foi possível gerar os pagamentos das parcelas do novo contrato");
+                    }
+                }
+            }
+
+            var query = "UPDATE public.Contrato SET tipoDocumento = @tipoDocumento WHERE idContrato = @id";
+            var command = CreateCommand(query);
+
+            command.Parameters.AddWithValue("@tipoDocumento", 3);
+            command.Parameters.AddWithValue("@id", contrato.Id);
         }
 
         public void Create(Contrato Contrato)
@@ -74,14 +117,14 @@ namespace skoll.Infraestrutura.Repositorios
             if (servicos == null || servicos.Count == 0)
                 return;
             else if (Contrato.numParcelas == 0)
-                throw new InvalidOperationException("É necessário informar o número de parcelas");
+                throw new AppError("É necessário informar o número de parcelas");
 
             DateTime dataPrimeira = DateTime.Today;
             DateTime dataSegunda = DateTime.Today;
             decimal valorParc = servicos.Sum(s => s.valorTotal) / Contrato.numParcelas;
 
             if (valorParc == 0)
-                throw new InvalidOperationException("Os serviços prestados a esse contrato não possuem valor");
+                throw new AppError("Os serviços prestados a esse contrato não possuem valor");
 
             valorParc = Math.Round(valorParc, 2);
 
