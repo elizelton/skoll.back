@@ -19,9 +19,12 @@ namespace skoll.Infraestrutura.Repositorios
 
         public void CancelarContrato(Contrato contrato, int novoCliente)
         {
+            int idContrato = contrato.Id;
             if (novoCliente > 0)
             {
                 var cliente = new ClienteRepositorio(this._context, this._transaction).Get(novoCliente);
+                if (cliente.Id == 0)
+                    throw new AppError("Não foi possível gerar um novo contrato - Cliente inválido");
                 var newContrato = contrato;
                 newContrato.Id = 0;
                 newContrato.cliente.Id = cliente.Id;
@@ -61,7 +64,7 @@ namespace skoll.Infraestrutura.Repositorios
             var command = CreateCommand(query);
 
             command.Parameters.AddWithValue("@tipoDocumento", 3);
-            command.Parameters.AddWithValue("@id", contrato.Id);
+            command.Parameters.AddWithValue("@id", idContrato);
 
             command.ExecuteNonQuery();
         }
