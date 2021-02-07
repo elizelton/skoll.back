@@ -13,6 +13,7 @@ namespace skoll.Dominio.Entities
         public decimal juros { get; set; }
         public decimal ajuste { get; set; }
         public string diasPagamento { get; set; }
+        public string nomeFornecedor { get; set; }
         public int diaInicial { get; set; }
         public int mesInicial { get; set; }
         public List<ContaPagarParcela> parcelas { get; set; }

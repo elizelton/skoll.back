@@ -268,6 +268,8 @@ namespace skoll.Infraestrutura.Repositorios
                             dataInicio = Convert.ToDateTime(reader["dataInicio"]),
                             periodoMeses = Convert.ToInt32(reader["periodoMeses"]),
                             dataTermino = Convert.ToDateTime(reader["dataTermino"]),
+                            formaPagamento = new FormaPagamento() { Id = Convert.ToInt32(reader["fk_IdFormaPag"]) },
+                            vendedor = new Vendedor() { Id = Convert.ToInt32(reader["fk_IdVendedor"]) },
                             usuario = new Usuario() { Id = Convert.ToInt32(reader["fk_IdUsuario"]) },
                             cliente = new Cliente() { idCliente = Convert.ToInt32(reader["fk_IdCliente"]) }
                         });

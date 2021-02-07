@@ -221,8 +221,7 @@ namespace skoll.Infraestrutura.Repositorios
 
             foreach (var conta in result)
             {
-                conta.fornecedor = new FornecedorRepositorio(this._context, this._transaction).Get(conta.fornecedor.idFornecedor);
-                conta.parcelas = (List<ContaPagarParcela>)new ContaPagarParcelaRepositorio(this._context, this._transaction).GetByContaPagar(conta.Id);
+                conta.nomeFornecedor = new FornecedorRepositorio(this._context, this._transaction).Get(conta.fornecedor.idFornecedor).nome;
             }
 
             return result;
