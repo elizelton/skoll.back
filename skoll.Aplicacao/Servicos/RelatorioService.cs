@@ -106,5 +106,29 @@ namespace skoll.Aplicacao.Servicos
 
             return rpt;
         }
+
+        public ReciboParcelaImp ReciboImpParcela(int idParcela, decimal valor, string valorExtenso, bool imprimirObs)
+        {
+            var rpt = new ReciboParcelaImp();
+            rpt.InicializaVariaveis();
+            rpt.PageTitle = "Recibo";
+
+            using (var context = _unitOfWork.Create())
+            {
+                var parc = context.Repositorios.ContratoParcelaRepositorio.Get(idParcela);
+
+                if (parc == null)
+                    throw new AppError("Não foi possível gerar o recibo - parcela inexistente");
+
+                var numParcela = parc.numParcela;
+                var contrato = context.Repositorios.ContratoRepositorio.Get(parc.idContrato);
+                contrato.servicos = context.Repositorios.ContratoServicoRepositorio.GetByContrato(contrato.Id).ToList();
+                contrato.parcelas = context.Repositorios.ContratoParcelaRepositorio.GetByContrato(contrato.Id).ToList();
+
+                rpt.recibo = context.Repositorios.ContratoParcelaRepositorio.ImprimirRecibo(contrato, numParcela, valor, valorExtenso, imprimirObs);
+            }
+
+            return rpt;
+        }
     }
 }

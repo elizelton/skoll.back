@@ -10,5 +10,6 @@ namespace skoll.Infraestrutura.Interfaces.Repositorios
         IEnumerable<ContratoParcela> GetPendentes();
         IEnumerable<ContratoParcela> GetNaoPagasTotalmente();
         IEnumerable<ContratoParcela> GetByContrato(int idContrato);
+        ReciboParcela ImprimirRecibo(Contrato contrato, int numParcela, decimal valor, string valorExtenso, bool imprimirObs);
     }
 }

@@ -80,6 +80,15 @@ namespace skoll.ui.Controllers
             return file;
         }
 
+        [HttpGet("{idParcela}/{valor}/{valorExtenso}/{imprimirObs}/ImprimeRecibo", Name = "ImprimirReciboParcela")]
+        public FileResult ImprimirReciboParcela(int idParcela, decimal valor, string valorExtenso, bool imprimirObs)
+        {
+            var rel = _relatorioService.ReciboImpParcela(idParcela, valor, valorExtenso, imprimirObs);
+            var file = File(rel.GetOutput().GetBuffer(), "application/pdf", "Relatorio.pdf");
+
+            return file;
+        }
+
 
     }
 }

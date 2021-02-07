@@ -1,9 +1,11 @@
 ﻿using Npgsql;
 using skoll.Dominio.Entities;
+using skoll.Dominio.Exceptions;
 using skoll.Infraestrutura.Interfaces.Repositorios;
 using skoll.Infraestrutura.Interfaces.Repositorios.acoes;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace skoll.Infraestrutura.Repositorios
@@ -267,6 +269,28 @@ namespace skoll.Infraestrutura.Repositorios
                 contrato.pagamentos = (List<ContratoParcelaPagamento>)new ContratoParcelaPagamentoRepositorio(this._context, this._transaction).GetByContratoParcela(contrato.Id);
 
             return result;
+        }
+
+        public ReciboParcela ImprimirRecibo(Contrato contrato, int numParcela, decimal valor, string valorExtenso, bool imprimirObs)
+        {
+            ReciboParcela recibo = new ReciboParcela();
+            var parc = contrato.parcelas.Where(e => e.numParcela == numParcela).FirstOrDefault();
+            if (parc == null)
+                throw new AppError("Não foi possível gerar o recibo - número de parcela inexistente");
+
+            recibo.cliente = contrato.cliente;
+            recibo.idContrato = contrato.Id;
+            recibo.idParcela = parc.Id;
+            recibo.servicos = contrato.servicos;
+            recibo.valor = valor;
+            recibo.valorExtenso = valorExtenso;
+            recibo.vencimento = DateTime.Parse(parc.dataVencimento.ToString(), new CultureInfo("pt-BR")).ToString("dd/MM/yyyy");
+            if (imprimirObs)
+                recibo.observacoes = contrato.observacoes;
+            else
+                recibo.observacoes = "FALSE";
+
+            return recibo;
         }
 
         public void Remove(int id)

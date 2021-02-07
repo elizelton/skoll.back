@@ -22,5 +22,7 @@ namespace skoll.Aplicacao.Interfaces
         RelContratoVendedor RelContratosPorVendedor(int idVendedor, DateTime inicio, DateTime fim);
 
         RelContratoMes RelContratosMes(int mes, int ano);
+
+        ReciboParcelaImp ReciboImpParcela(int idParcela, decimal valor, string valorExtenso, bool imprimirObs);
     }
 }
