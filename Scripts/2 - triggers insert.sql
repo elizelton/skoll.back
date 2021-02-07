@@ -233,7 +233,7 @@ CREATE FUNCTION contapagarparcelainsert_trigger() RETURNS trigger AS $contapagar
         IF NEW.numParcela IS NULL or NEW.numParcela <= 0 THEN
             RAISE EXCEPTION 'O número da parcela da conta a pagar deve ser informado';
         END IF;
-		IF NEW.valorParcela IS NULL or NEW.valorParcela <= 0 THEN
+		IF NEW.valorParcela IS NULL or (NEW.valorParcela <= 0 and NEW.ajuste <= 0) THEN
             RAISE EXCEPTION 'O valor da parcela da conta a pagar deve ser informado';
         END IF;
 		IF NEW.dataVencimento IS NULL THEN

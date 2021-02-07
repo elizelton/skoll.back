@@ -131,9 +131,65 @@ namespace skoll.Infraestrutura.Repositorios
             return result;
         }
 
-        public List<RelEntradaSaida> RelEntradaSaida(DateTime inicio, DateTime fim)
+        public List<RelPagamentoParcela> RelPagamentosParc(DateTime inicio, DateTime fim)
         {
-            throw new NotImplementedException();
+            var result = new List<RelPagamentoParcela>();
+            var command = CreateCommand("select t3.idContrato, t4.nome, t2.numparcela,t1.valorpagamento, t1.datapagamento " +
+                                        "from contratoparcelapagamento t1 inner join contratoparcela t2 on t2.idContratoParcela = t1.fk_idcontratoparcela " +
+                                        "inner join contrato t3 on t3.idContrato = t2.fk_idContrato " +
+                                        "inner join pessoa t4 on t4.idPessoa = t3.fk_idPessoa " +
+                                        "where t1.datapagamento >= @ini and t1.datapagamento <= @fim " +
+                                        "order by t1.datapagamento, t2.numparcela ");
+            command.Parameters.AddWithValue("@ini", inicio);
+            command.Parameters.AddWithValue("@fim", fim);
+
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    if (reader.HasRows)
+                    {
+                        result.Add(new RelPagamentoParcela
+                        {
+                            isEstrada = true,
+                            descricao = "#" + reader["idContrato"].ToString() + " - " + reader["nome"].ToString() + ". Parc: " + reader["numParcela"].ToString(),
+                            valor = Convert.ToDecimal(reader["valorpagamento"]),
+                            dataPagamento = DateTime.Parse(reader["datapagamento"].ToString(), new CultureInfo("pt-BR")).ToString("dd/MM/yyyy")
+                        });
+                    }
+                }
+                reader.Close();
+            }
+
+            command = CreateCommand("select t3.idContaPagar, t4.nome, t2.numparcela,t1.valorpagamento, t1.datapagamento " +
+                                        "from contapagarparcelapagamento t1 inner join contapagarparcela t2 on t2.idContaPagarParcela = t1.fk_idContaPagarParcela " +
+                                        "inner join contapagar t3 on t3.idContaPagar = t2.fk_idContaPagar " +
+                                        "inner join pessoa t4 on t4.idPessoa = t3.fk_idPessoa " +
+                                        "where t1.datapagamento >= @ini and t1.datapagamento <= @fim " +
+                                        "order by t1.datapagamento, t2.numparcela ");
+            command.Parameters.AddWithValue("@ini", inicio);
+            command.Parameters.AddWithValue("@fim", fim);
+
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    if (reader.HasRows)
+                    {
+                        result.Add(new RelPagamentoParcela
+                        {
+                            isEstrada = false,
+                            descricao = "#" + reader["idContrato"].ToString() + " - " + reader["nome"].ToString() + ". Parc: " + reader["numParcela"].ToString(),
+                            valor = Convert.ToDecimal(reader["valorpagamento"]),
+                            dataPagamento = DateTime.Parse(reader["datapagamento"].ToString(), new CultureInfo("pt-BR")).ToString("dd/MM/yyyy")
+                        });
+                    }
+                }
+                reader.Close();
+            }
+
+            return result;
+
         }
 
         public List<RelParcelasPagar> RelParcelasPagar(DateTime dataAte)

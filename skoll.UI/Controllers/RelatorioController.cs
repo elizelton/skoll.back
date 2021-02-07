@@ -89,6 +89,14 @@ namespace skoll.ui.Controllers
             return file;
         }
 
+        [HttpGet("{inicio}/{fim}/relparcelas", Name = "RelParcelas")]
+        public FileResult RelParcelas(DateTime inicio, DateTime fim)
+        {
+            var rel = _relatorioService.RelParcelasEntraSai(inicio, fim);
+            var file = File(rel.GetOutput().GetBuffer(), "application/pdf", "Relatorio.pdf");
+
+            return file;
+        }
 
     }
 }

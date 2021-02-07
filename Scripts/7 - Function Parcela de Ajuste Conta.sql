@@ -1,10 +1,10 @@
 CREATE OR REPLACE FUNCTION PARCELAAJUSTECONTA (valorDiferenca decimal, contaIdPagar integer, vencimentoAjuste date) RETURNS TEXT AS 
 $PARCELAAJUSTECONTA$ 
 BEGIN
-    INSERT INTO contaPagarParcela (numParcela, ajuste, dataVencimento, situacao, fk_idContaPagar, valorParcela)
+    INSERT INTO contaPagarParcela (numParcela, ajuste, dataVencimento, fk_idContaPagar, valorParcela)
         values ((select max(numParcela) + 1 from contaPagarParcela where fk_idContaPagar = contaIdPagar), valorDiferenca,
                vencimentoAjuste,
-               1, contaIdPagar, 0);
+               contaIdPagar, 0);
     
     UPDATE CONTAPAGAR SET ajuste = (select sum(ajuste) from contaPagarParcela where fk_idContaPagar = contaIdPagar) where idContaPagar = contaIdPagar;
 

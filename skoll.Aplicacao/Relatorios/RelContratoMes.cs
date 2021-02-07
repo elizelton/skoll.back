@@ -34,8 +34,8 @@ namespace skoll.Aplicacao.Relatorios
             Font font = FontFactory.GetFont("Verdana", 8, Font.NORMAL, preto);
             Font titulo = FontFactory.GetFont("Verdana", 8, Font.BOLD, preto);
 
-            //float[] colsW = { 65,25,40,50,15,25,20 };
-            float[] colsW = { 40,20,20,25,15,35,20 };
+            float[] colsW = { 65,25,40,50,15,25,20 };
+            //float[] colsW = { 40,20,20,25,15,35,20 };
             table.SetWidths(colsW);
             table.HeaderRows = 1;
             table.WidthPercentage = 100;
@@ -71,12 +71,12 @@ namespace skoll.Aplicacao.Relatorios
             //var total = parcelas.Sum(e => e.valorTotal);
             //var totalCon = parcelas.Count;
 
-            //table.AddCell(getNewCell("Teste", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
-            //table.AddCell(getNewCell("Total: ", titulo, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
-            //table.AddCell(getNewCell(totalCon.ToString(), font, Element.ALIGN_RIGHT, 5, PdfPCell.BOTTOM_BORDER));
-            //table.AddCell(getNewCell("Valores: ", titulo, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
-            //table.AddCell(getNewCell(string.Format("R$ {0:0.00}", total), titulo, Element.ALIGN_RIGHT, 5, PdfPCell.BOTTOM_BORDER));
-            //table.AddCell(getNewCell("", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
+            //table.AddCell(getNewCell("Teste", titulo, Element.ALIGN_LEFT, 0, PdfPCell.BOTTOM_BORDER));
+            //table.AddCell(getNewCell("Total: ", titulo, Element.ALIGN_LEFT, 0, PdfPCell.BOTTOM_BORDER));
+            //table.AddCell(getNewCell(totalCon.ToString(), font, Element.ALIGN_RIGHT, 0, PdfPCell.BOTTOM_BORDER));
+            //table.AddCell(getNewCell("Valores: ", titulo, Element.ALIGN_LEFT, 0, PdfPCell.BOTTOM_BORDER));
+            //table.AddCell(getNewCell(string.Format("R$ {0:0.00}", total), titulo, Element.ALIGN_RIGHT, 0, PdfPCell.BOTTOM_BORDER));
+            //table.AddCell(getNewCell("", titulo, Element.ALIGN_LEFT, 0, PdfPCell.BOTTOM_BORDER));
 
             doc.Add(table);
         }

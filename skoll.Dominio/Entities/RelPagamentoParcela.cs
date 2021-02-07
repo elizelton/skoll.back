@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace skoll.Dominio.Entities
 {
-    public class RelEntradaSaida
+    public class RelPagamentoParcela
     {
         public string descricao { get; set; }
 
         public decimal valor { get; set; }
+
+        public string dataPagamento { get; set; }
 
         public bool isEstrada { get; set; }
     }

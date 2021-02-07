@@ -19,7 +19,7 @@ namespace skoll.Infraestrutura.Interfaces.Repositorios
 
         List<RelParcelasPagar> RelParcelasPagar(DateTime dataAte);
 
-        List<RelEntradaSaida> RelEntradaSaida(DateTime inicio, DateTime fim);
+        List<RelPagamentoParcela> RelPagamentosParc(DateTime inicio, DateTime fim);
 
         List<RelContrato> RelVendasMensais(int mes, int ano);
     }

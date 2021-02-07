@@ -59,7 +59,7 @@ namespace skoll.Infraestrutura.Repositorios
             else if (valorDif == 0)
                 throw new AppError("É necessário informar o valor de ajuste para a Conta");
 
-            var query = "select PARCELAAJUSTECONTA(@valor, @idConta, @venc) ";
+            var query = "select PARCELAAJUSTECONTA(@valor, @idConta, cast(@venc as date)) ";
             var command = CreateCommand(query);
 
             command.Parameters.AddWithValue("@valor", valorDif);

@@ -130,5 +130,20 @@ namespace skoll.Aplicacao.Servicos
 
             return rpt;
         }
+
+        public RelParcelasCaixa RelParcelasEntraSai(DateTime inicio, DateTime fim)
+        {
+            var rpt = new RelParcelasCaixa();
+            rpt.InicializaVariaveis();
+            rpt.PageTitle = $"Relatório de Parcelas pagas e recebidas de {DateTime.Parse(inicio.ToString(), new CultureInfo("pt-BR")).ToString("dd/MM/yyyy")} " +
+                $" até {DateTime.Parse(fim.ToString(), new CultureInfo("pt-BR")).ToString("dd/MM/yyyy")}  ";
+
+            using (var context = _unitOfWork.Create())
+            {
+                rpt.list = context.Repositorios.RelatorioRepositorio.RelPagamentosParc(inicio, fim);
+            }
+
+            return rpt;
+        }
     }
 }
