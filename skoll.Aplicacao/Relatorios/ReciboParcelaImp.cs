@@ -29,9 +29,11 @@ namespace skoll.Aplicacao.Relatorios
 
             PdfPTable table = new PdfPTable(1);
             BaseColor preto = new BaseColor(0, 0, 0);
+            BaseColor branco = new BaseColor(255, 255, 255);
             BaseColor fundo = new BaseColor(200, 200, 200);
-            Font font = FontFactory.GetFont("Verdana", 8, Font.NORMAL, preto);
-            Font titulo = FontFactory.GetFont("Verdana", 8, Font.BOLD, preto);
+            Font font = FontFactory.GetFont("Verdana", 12, Font.NORMAL, preto);
+            Font fontTitle = FontFactory.GetFont("Verdana", 15, Font.NORMAL, preto);
+            Font titulo = FontFactory.GetFont("Verdana", 12, Font.BOLD, preto);
 
             var rec = this.recibo;
             float[] colsW = { 100 };
@@ -44,38 +46,40 @@ namespace skoll.Aplicacao.Relatorios
             table.DefaultCell.BorderColorBottom = new BaseColor(255, 255, 255);
             table.DefaultCell.Padding = 10;
 
-            table.AddCell(getNewCell($"Recibo num {rec.idContrato}.{rec.idParcela}.{rec.numParcela}", titulo, Element.ALIGN_LEFT, 0, PdfPCell.ALIGN_LEFT, preto, fundo));
-            //table.AddCell(getNewCell($"R${string.Format("R$ {0:0.00}",rec.valorExtenso)}", titulo, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER, preto, fundo));
+            table.AddCell(getNewCell($"Recibo {rec.idContrato}.{rec.idParcela}.{rec.numParcela}", titulo, Element.ALIGN_LEFT, 0, PdfPCell.ALIGN_LEFT, preto, fundo));
+            table.AddCell(getNewCell($"{string.Format("R${0:0.00}", rec.valor)}", titulo, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER, preto, fundo));
 
-            //table.AddCell(getNewCell($"Recebemos de {rec.cliente.nome}", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
-            //table.AddCell(getNewCell($"             {rec.cliente.logradouro}, {rec.cliente.numero} - {rec.cliente.bairro}", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
-            //table.AddCell(getNewCell($"             {rec.cliente.Cidade.cidade}/{rec.cliente.Cidade.estado} - {rec.cliente.cep}", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
-            //table.AddCell(getNewCell($" ", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
-            //table.AddCell(getNewCell($" ", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
-            //table.AddCell(getNewCell($"A quantia de {rec.valorExtenso.ToUpper()} reais ", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
-            //table.AddCell(getNewCell($" ", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
-            //table.AddCell(getNewCell($" ", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
-            //table.AddCell(getNewCell($"Referente aos serviços prestados: ", titulo, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
+            table.AddCell(getNewCell($"Recebemos de {rec.cliente.nome}", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER, branco));
+            table.AddCell(getNewCell($"             {rec.cliente.logradouro}, {rec.cliente.numero} - {rec.cliente.bairro}", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER, branco));
+            table.AddCell(getNewCell($"             {rec.cliente.Cidade.cidade}/{rec.cliente.Cidade.estado} - {rec.cliente.cep}", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER, branco));
+            table.AddCell(getNewCell($" ", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER, branco));
+            table.AddCell(getNewCell($" ", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER, branco));
+            table.AddCell(getNewCell($"A quantia de {rec.valorExtenso.ToUpper()} reais ", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER, branco));
+            table.AddCell(getNewCell($" ", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER, branco));
+            table.AddCell(getNewCell($" ", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER, branco));
+            table.AddCell(getNewCell($"Referente aos serviços prestados: ", titulo, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER, branco));
 
-            //foreach (var serv in rec.servicos)
-            //{
-            //    table.AddCell(getNewCell($"{serv.servicoPrestado.produto.nome} - {serv.servicoPrestado.nome}", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
-            //}
+            foreach (var serv in rec.servicos)
+            {
+                table.AddCell(getNewCell($"{serv.servicoPrestado.produto.nome} - {serv.servicoPrestado.nome}", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER, branco));
+            }
 
-            //if (rec.observacoes != "FALSE")
-            //{
-            //    table.AddCell(getNewCell($" ", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
-            //    table.AddCell(getNewCell($"Observações: {rec.observacoes}", titulo, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
-            //}
+            if (rec.observacoes != "FALSE")
+            {
+                table.AddCell(getNewCell($" ", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER, branco));
+                table.AddCell(getNewCell($"Observações: {rec.observacoes}", titulo, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER, branco));
+            }
 
-            //table.AddCell(getNewCell($" ", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
-            //table.AddCell(getNewCell($"Vencimento: {rec.vencimento}", titulo, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
-            //table.AddCell(getNewCell($" ", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
-            //table.AddCell(getNewCell($"E para clareza firmamos o presente ", titulo, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
-            //table.AddCell(getNewCell($"Data: ___/___/____", titulo, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
-            //table.AddCell(getNewCell($" ", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
-            //table.AddCell(getNewCell($"_____________________________________", titulo, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
-            //table.AddCell(getNewCell($"Jornal Regional Notícias de Itararé - 22.013.543/0001-86", titulo, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
+            table.AddCell(getNewCell($" ", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER, branco));
+            table.AddCell(getNewCell($"Vencimento: {rec.vencimento}", titulo, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER, branco));
+            table.AddCell(getNewCell($" ", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER, branco));
+            table.AddCell(getNewCell($"E para clareza firmamos o presente ", titulo, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER, branco));
+            table.AddCell(getNewCell($"Data: ___/___/____", titulo, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER, branco));
+            table.AddCell(getNewCell($" ", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER, branco));
+            table.AddCell(getNewCell($"_____________________________________", titulo, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER, branco));
+            table.AddCell(getNewCell($"Jornal Regional Notícias de Itararé - 22.013.543/0001-86", titulo, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER, branco));
+
+            doc.Add(table);
         }
     }
 }
