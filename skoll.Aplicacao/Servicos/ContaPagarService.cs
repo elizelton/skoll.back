@@ -54,11 +54,15 @@ namespace skoll.Aplicacao.Servicos
             }
         }
 
-        public IEnumerable<ContaPagar> GetAll()
+        public IEnumerable<ContaPagar> GetAll(string search)
         {
             using (var context = _unitOfWork.Create())
             {
-                return context.Repositorios.ContaPagarRepositorio.GetAll();
+                var list = context.Repositorios.ContaPagarRepositorio.GetAll();
+                if (!string.IsNullOrEmpty(search))
+                    return list.Where(e => e.nomeFornecedor.Contains(search));
+                else
+                    return list;
             }
         }
 

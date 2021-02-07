@@ -13,7 +13,7 @@ namespace skoll.Aplicacao.Interfaces
 
         Produto Get(int id);
 
-        IEnumerable<Produto> GetAll();
+        IEnumerable<Produto> GetAll(string search);
 
         IEnumerable<Produto> GetAtivos();
 

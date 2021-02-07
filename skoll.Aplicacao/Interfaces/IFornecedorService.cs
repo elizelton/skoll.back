@@ -13,7 +13,7 @@ namespace skoll.Aplicacao.Interfaces
 
         Fornecedor Get(int id);
 
-        IEnumerable<Fornecedor> GetAll();
+        IEnumerable<Fornecedor> GetAll(string search);
 
         IEnumerable<Fornecedor> GetAtivos();
 

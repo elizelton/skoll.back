@@ -13,7 +13,7 @@ namespace skoll.Aplicacao.Interfaces
 
         FormaPagamento Get(int id);
 
-        IEnumerable<FormaPagamento> GetAll();
+        IEnumerable<FormaPagamento> GetAll(string search);
 
         IEnumerable<FormaPagamento> GetAtivos();
 

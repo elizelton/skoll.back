@@ -29,7 +29,7 @@ namespace skoll.ui.Controllers
         [HttpGet]
         public object GetContratos([FromQuery] QueryString query)
         {
-            return new { items = _contService.GetAll() };
+            return new { items = _contService.GetAll(query.search) };
         }
 
         // GET: api/Usuario/5

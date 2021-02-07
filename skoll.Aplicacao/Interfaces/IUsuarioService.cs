@@ -9,7 +9,7 @@ namespace skoll.Aplicacao.Interfaces
 {
     public interface IUsuarioService
     {
-        IEnumerable<Usuario> GetAll();
+        IEnumerable<Usuario> GetAll(string search);
         Usuario Get(int id);
         void Create(Usuario usuario);
         void Update(Usuario usuario);

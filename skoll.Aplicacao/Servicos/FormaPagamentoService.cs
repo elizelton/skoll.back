@@ -34,11 +34,15 @@ namespace skoll.Aplicacao.Servicos
             }
         }
 
-        public IEnumerable<FormaPagamento> GetAll()
+        public IEnumerable<FormaPagamento> GetAll(string search)
         {
             using(var context = _unitOfWork.Create())
             {
-                return context.Repositorios.FormaPagamentoRepositorio.GetAll();
+                var list = context.Repositorios.FormaPagamentoRepositorio.GetAll();
+                if (!string.IsNullOrEmpty(search))
+                    return list.Where(e => e.nome.Contains(search));
+                else
+                    return list;
             }
         }
 

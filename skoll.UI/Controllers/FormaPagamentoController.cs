@@ -29,7 +29,7 @@ namespace skoll.ui.Controllers
         [HttpGet]
         public object GetFormasPagamento([FromQuery] QueryString query)
         {
-            return new { items = _formaPagService.GetAll() };
+            return new { items = _formaPagService.GetAll(query.search) };
         }
 
         // GET: api/Usuario/5

@@ -29,7 +29,7 @@ namespace skoll.ui.Controllers
         [HttpGet]
         public object GetFornecedores([FromQuery] QueryString query)
         {
-            return new { items = _fornecedorService.GetAll() };
+            return new { items = _fornecedorService.GetAll(query.search) };
         }
 
         // GET: api/Usuario     

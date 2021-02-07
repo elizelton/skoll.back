@@ -17,7 +17,7 @@ namespace skoll.Aplicacao.Interfaces
 
         ContaPagar Get(int id);
 
-        IEnumerable<ContaPagar> GetAll();
+        IEnumerable<ContaPagar> GetAll(string search);
 
         void Remove(int id);
 

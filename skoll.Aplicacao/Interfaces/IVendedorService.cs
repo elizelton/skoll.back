@@ -13,7 +13,7 @@ namespace skoll.Aplicacao.Interfaces
 
         Vendedor Get(int id);
 
-        IEnumerable<Vendedor> GetAll();
+        IEnumerable<Vendedor> GetAll(string search);
 
         IEnumerable<Vendedor> GetByNomeLike(string nome);
 

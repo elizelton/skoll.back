@@ -17,7 +17,7 @@ namespace skoll.Aplicacao.Interfaces
 
         Contrato Get(int id);
 
-        IEnumerable<Contrato> GetAll();
+        IEnumerable<Contrato> GetAll(string search);
 
         void Remove(int id);
 

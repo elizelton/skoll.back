@@ -34,11 +34,15 @@ namespace skoll.Aplicacao.Servicos
             }
         }
 
-        public IEnumerable<Cliente> GetAll()
+        public IEnumerable<Cliente> GetAll(string search)
         {
             using (var context = _unitOfWork.Create())
             {
-                return context.Repositorios.ClienteRepositorio.GetAll();
+                var list = context.Repositorios.ClienteRepositorio.GetAll();
+                if (!string.IsNullOrEmpty(search))
+                    return list.Where(e => e.nome.Contains(search) || e.cpfCnpj.Contains(search));
+                else
+                    return list;
             }
         }
 

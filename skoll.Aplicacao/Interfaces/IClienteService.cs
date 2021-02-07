@@ -13,7 +13,7 @@ namespace skoll.Aplicacao.Interfaces
 
         Cliente Get(int id);
 
-        IEnumerable<Cliente> GetAll();
+        IEnumerable<Cliente> GetAll(string search);
 
         IEnumerable<Cliente> GetAtivos();
 
