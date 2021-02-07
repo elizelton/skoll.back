@@ -179,7 +179,7 @@ namespace skoll.Infraestrutura.Repositorios
                         result.Add(new RelPagamentoParcela
                         {
                             isEstrada = false,
-                            descricao = "#" + reader["idContrato"].ToString() + " - " + reader["nome"].ToString() + ". Parc: " + reader["numParcela"].ToString(),
+                            descricao = "#" + reader["idContaPagar"].ToString() + " - " + reader["nome"].ToString() + ". Parc: " + reader["numParcela"].ToString(),
                             valor = Convert.ToDecimal(reader["valorpagamento"]),
                             dataPagamento = DateTime.Parse(reader["datapagamento"].ToString(), new CultureInfo("pt-BR")).ToString("dd/MM/yyyy")
                         });

@@ -34,8 +34,8 @@ namespace skoll.Aplicacao.Relatorios
             Font font = FontFactory.GetFont("Verdana", 8, Font.NORMAL, preto);
             Font titulo = FontFactory.GetFont("Verdana", 8, Font.BOLD, preto);
 
-            float[] colsW = { 65,25,40,50,15,25,20 };
-            //float[] colsW = { 40,20,20,25,15,35,20 };
+            //float[] colsW = { 65,25,40,50,15,25,20 };
+            float[] colsW = { 40,20,20,25,15,35,20 };
             table.SetWidths(colsW);
             table.HeaderRows = 1;
             table.WidthPercentage = 100;
