@@ -40,6 +40,8 @@ namespace skoll.Aplicacao.Servicos
         {
             using (var context = _unitOfWork.Create())
             {
+                contrato.servicos = context.Repositorios.ContratoServicoRepositorio.GetByContrato(contrato.Id).ToList();
+                contrato.parcelas = context.Repositorios.ContratoParcelaRepositorio.GetByContrato(contrato.Id).ToList();
                 context.Repositorios.ContratoRepositorio.CancelarContrato(contrato, novoCliente);
                 context.SaveChanges();
             }

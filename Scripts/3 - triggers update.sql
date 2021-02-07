@@ -283,7 +283,7 @@ CREATE FUNCTION contratoupdate_trigger() RETURNS trigger AS $contratoupdate_trig
 		IF NEW.periodoMeses IS NULL or NEW.periodoMeses <= 0 THEN
             RAISE EXCEPTION 'A quantidade de meses do Contrato deve ser informada';
         END IF;
-		IF NEW.tipoDocumento IS NULL or NEW.tipoDocumento <= 0 or NEW.tipoDocumento > 2 THEN
+		IF NEW.tipoDocumento IS NULL or NEW.tipoDocumento <= 0 or NEW.tipoDocumento > 3 THEN
             RAISE EXCEPTION 'O tipo de documento deve ser informado';
         END IF;
         IF NEW.numParcelas IS NULL or NEW.numParcelas <= 0 THEN

@@ -117,8 +117,12 @@ namespace skoll.Infraestrutura.Repositorios
                 reader.Close();
             }
 
-            foreach(var fornecedor in result)
+            foreach (var fornecedor in result)
+            {
                 fornecedor.prenchePessoa(new PessoaRepositorio(this._context, this._transaction).Get(fornecedor.Id));
+                fornecedor.cpfCnpj = fornecedor.tipoFornecedor == 1 ? Convert.ToUInt64(fornecedor.cpfCnpj).ToString(@"000\.000\.000\-00")
+                                                                    : Convert.ToUInt64(fornecedor.cpfCnpj).ToString(@"00\.000\.000\/0000\-00");
+            }
 
             return result;
         }

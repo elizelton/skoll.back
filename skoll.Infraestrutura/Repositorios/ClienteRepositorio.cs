@@ -122,7 +122,11 @@ namespace skoll.Infraestrutura.Repositorios
             }
 
             foreach (var cli in result)
+            {
                 cli.prenchePessoa(new PessoaRepositorio(this._context, this._transaction).Get(cli.Id));
+                cli.cpfCnpj = cli.tipoCliente == 1 ? Convert.ToUInt64(cli.cpfCnpj).ToString(@"000\.000\.000\-00")
+                                                   : Convert.ToUInt64(cli.cpfCnpj).ToString(@"00\.000\.000\/0000\-00");
+            }
 
             return result;
         }

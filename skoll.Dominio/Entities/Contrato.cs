@@ -23,5 +23,7 @@ namespace skoll.Dominio.Entities
         public Vendedor vendedor { get; set; }
         public Usuario usuario { get; set; }
         public Cliente cliente { get; set; }
+        public string nomeCliente { get; set; }
+        public string nomeVendedor { get; set; }
     }
 }

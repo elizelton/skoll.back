@@ -62,6 +62,8 @@ namespace skoll.Infraestrutura.Repositorios
 
             command.Parameters.AddWithValue("@tipoDocumento", 3);
             command.Parameters.AddWithValue("@id", contrato.Id);
+
+            command.ExecuteNonQuery();
         }
 
         public void Create(Contrato Contrato)
@@ -266,8 +268,6 @@ namespace skoll.Infraestrutura.Repositorios
                             dataInicio = Convert.ToDateTime(reader["dataInicio"]),
                             periodoMeses = Convert.ToInt32(reader["periodoMeses"]),
                             dataTermino = Convert.ToDateTime(reader["dataTermino"]),
-                            formaPagamento = new FormaPagamento() { Id = Convert.ToInt32(reader["fk_IdFormaPag"]) },
-                            vendedor = new Vendedor() { Id = Convert.ToInt32(reader["fk_IdVendedor"]) },
                             usuario = new Usuario() { Id = Convert.ToInt32(reader["fk_IdUsuario"]) },
                             cliente = new Cliente() { idCliente = Convert.ToInt32(reader["fk_IdCliente"]) }
                         });
@@ -283,10 +283,8 @@ namespace skoll.Infraestrutura.Repositorios
 
             foreach(var contrato in result)
             {
-                contrato.formaPagamento = new FormaPagamentoRepositorio(this._context, this._transaction).Get(contrato.formaPagamento.Id);
-                contrato.vendedor = new VendedorRepositorio(this._context, this._transaction).Get(contrato.vendedor.Id);
-                contrato.usuario = new UsuarioRepositorio(this._context, this._transaction).Get(contrato.usuario.Id);
-                contrato.cliente = new ClienteRepositorio(this._context, this._transaction).Get(contrato.cliente.idCliente);
+                contrato.nomeVendedor = new VendedorRepositorio(this._context, this._transaction).Get(contrato.vendedor.Id).nome;
+                contrato.nomeCliente = new ClienteRepositorio(this._context, this._transaction).Get(contrato.cliente.idCliente).nome;
             }
 
             return result;
