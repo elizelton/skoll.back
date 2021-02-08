@@ -115,7 +115,7 @@ CREATE FUNCTION produto_trigger() RETURNS trigger AS $produto_trigger$
         IF NEW.nome IS NULL or NEW.nome = '' THEN
             RAISE EXCEPTION 'O nome do Produto deve ser informado';
         END IF;
-        IF EXISTS (SELECT 1 FROM PRODUTO WHERE nome = NEW.nome) THEN
+        IF EXISTS (SELECT 1 FROM PRODUTO WHERE nome = NEW.nome and idProduto <> new.idProduto) THEN
             RAISE EXCEPTION 'Nome de produto já cadastrado';
         END IF;
 		IF NEW.Ativo IS NULL THEN
@@ -188,7 +188,7 @@ CREATE FUNCTION vendedor_trigger() RETURNS trigger AS $vendedor_trigger$
             RAISE EXCEPTION 'O Vendedor deve ter um percentual de comissão válido';
         END IF;
         IF NEW.Cpf is not null and NEW.Cpf <> '' THEN
-            IF EXISTS (SELECT 1 FROM Vendedor WHERE cpf = NEW.cpf) THEN
+            IF EXISTS (SELECT 1 FROM Vendedor WHERE cpf = NEW.cpf and idVendedor <> NEW.idVendedor) THEN
                 RAISE EXCEPTION 'CPF de Vendedor já cadastrado';
             END IF;
         END IF;
