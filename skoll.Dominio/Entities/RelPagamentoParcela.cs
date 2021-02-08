@@ -15,5 +15,11 @@ namespace skoll.Dominio.Entities
         public string dataPagamento { get; set; }
 
         public bool isEstrada { get; set; }
+
+        public string nome { get; set; }
+
+        public string numParcela { get; set; }
+
+        public string tipo { get; set; }
     }
 }

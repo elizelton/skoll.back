@@ -23,6 +23,7 @@ namespace skoll.Aplicacao.Relatorios
         public bool ImprimirCabecalhoPadrao { get; set; }
         public bool ImprimirRodapePadrao { get; set; }
         public bool Paisagem { get; set; }
+        public bool oldDoc { get; set; }
 
         public TNEReport()
         {
@@ -73,7 +74,10 @@ namespace skoll.Aplicacao.Relatorios
         {
             if (!Paisagem)
             {
-                doc = new Document(PageSize.A4, 10, 10, 80, 75);
+                if (!oldDoc)
+                    doc = new Document(PageSize.A4, 10, 10, 80, 75);
+                else
+                    doc = new Document(PageSize.A4, 20, 10, 80, 40);
             }
             else
             {
