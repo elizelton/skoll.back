@@ -23,8 +23,12 @@ namespace skoll.Infraestrutura.Repositorios
                 new PessoaRepositorio(this._context, this._transaction).Update(cliente.ToPessoa());
             else
             {
-                new PessoaRepositorio(this._context, this._transaction).Create(cliente.ToPessoa());
-                var pessoaInsert = new PessoaRepositorio(this._context, this._transaction).GetByCpfCnpj(cliente.cpfCnpj);
+                var pessoaInsert = new PessoaRepositorio(this._context, this._transaction).GetByCpfCnpj(cliente.ToPessoa().cpfCnpj);
+                if (pessoaInsert == null)
+                {
+                    new PessoaRepositorio(this._context, this._transaction).Create(cliente.ToPessoa());
+                    pessoaInsert = new PessoaRepositorio(this._context, this._transaction).GetByCpfCnpj(cliente.cpfCnpj);
+                }
 
                 if (pessoaInsert != null)
                 {
