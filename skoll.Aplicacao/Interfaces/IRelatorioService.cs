@@ -26,5 +26,7 @@ namespace skoll.Aplicacao.Interfaces
         ReciboParcelaImp ReciboImpParcela(int idParcela, decimal valor, string valorExtenso, bool imprimirObs);
 
         RelParcelasCaixa RelParcelasEntraSai(DateTime inicio, DateTime fim);
+
+        RelComissaoPaga RelComissaoPagaVendedor(int idVendedor, DateTime inicio, DateTime fim);
     }
 }

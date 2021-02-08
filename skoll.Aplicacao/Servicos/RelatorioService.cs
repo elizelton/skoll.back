@@ -145,5 +145,21 @@ namespace skoll.Aplicacao.Servicos
 
             return rpt;
         }
+
+        public RelComissaoPaga RelComissaoPagaVendedor(int idVendedor, DateTime inicio, DateTime fim)
+        {
+            var rpt = new RelComissaoPaga();
+            rpt.InicializaVariaveis();
+
+            using (var context = _unitOfWork.Create())
+            {
+                var vendedor = context.Repositorios.VendedorRepositorio.Get(idVendedor);
+                rpt.PageTitle = $"Relatório de Comissão paga ao vendedor {vendedor.nome} de {DateTime.Parse(inicio.ToString(), new CultureInfo("pt-BR")).ToString("dd/MM/yyyy")} " +
+                $" até {DateTime.Parse(fim.ToString(), new CultureInfo("pt-BR")).ToString("dd/MM/yyyy")}  ";
+                rpt.list = context.Repositorios.RelatorioRepositorio.RelComissaoPagaVendedor(vendedor.Id, inicio, fim);
+            }
+
+            return rpt;
+        }
     }
 }

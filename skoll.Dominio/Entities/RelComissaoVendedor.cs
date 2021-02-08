@@ -10,7 +10,5 @@ namespace skoll.Dominio.Entities
         public string clienteContrato { get; set; }
 
         public decimal valorComissao { get; set; }
-
-        public decimal valorPago { get; set; }
     }
 }
