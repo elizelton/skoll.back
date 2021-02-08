@@ -31,6 +31,7 @@ namespace skoll.Infraestrutura.UnitOfWork
         public ITelefoneRepositorio TelefoneRepositorio { get; }
         public IVendedorRepositorio VendedorRepositorio { get; }
         public IRelatorioRepositorio RelatorioRepositorio { get; }
+        public IPagamentoComissaoRepositorio PagamentoComissaoRepositorio { get; }
         public UnitOfWorkRepository(NpgsqlConnection context, NpgsqlTransaction transaction)
         {
             UsuarioRepositorio = new UsuarioRepositorio(context, transaction);
@@ -51,6 +52,7 @@ namespace skoll.Infraestrutura.UnitOfWork
             TelefoneRepositorio = new TelefoneRepositorio(context, transaction);
             VendedorRepositorio = new VendedorRepositorio(context, transaction);
             RelatorioRepositorio = new RelatorioRepositorio(context, transaction);
+            PagamentoComissaoRepositorio = new PagamentoComissaoRepositorio(context, transaction);
         }
     }
 }

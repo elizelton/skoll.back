@@ -40,7 +40,7 @@ namespace skoll.Aplicacao.Servicos
             {
                 var list = context.Repositorios.ClienteRepositorio.GetAll();
                 if (!string.IsNullOrEmpty(search))
-                    return list.Where(e => e.nome.Contains(search) || e.cpfCnpj.Contains(search));
+                    return list.Where(e => e.nome.ToUpper().Contains(search.ToUpper()) || e.cpfCnpj.Contains(search.ToUpper()));
                 else
                     return list;
             }
