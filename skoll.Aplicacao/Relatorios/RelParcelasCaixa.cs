@@ -68,7 +68,7 @@ namespace skoll.Aplicacao.Relatorios
 
                 if (d.isEstrada == false &&!entrou)
                 {
-                    cell = getNewCell($"Total: R${total1}", titulo, Element.ALIGN_RIGHT, 10, PdfPCell.BOTTOM_BORDER);
+                    cell = getNewCell($"Total: R${string.Format("{0:0.00}", total1)}", titulo, Element.ALIGN_RIGHT, 10, PdfPCell.BOTTOM_BORDER);
                     cell.Colspan = 5;
                     table.AddCell(cell);
 
@@ -88,13 +88,13 @@ namespace skoll.Aplicacao.Relatorios
 
             if (entrou)
             {
-                cell = getNewCell($"Total: R${total2}", titulo, Element.ALIGN_RIGHT, 10, PdfPCell.BOTTOM_BORDER);
+                cell = getNewCell($"Total: R${string.Format("{0:0.00}", total2)}", titulo, Element.ALIGN_RIGHT, 10, PdfPCell.BOTTOM_BORDER);
                 cell.Colspan = 5;
                 table.AddCell(cell);
             }
             else
             {
-                cell = getNewCell($"Total: R${total1}", titulo, Element.ALIGN_RIGHT, 10, PdfPCell.BOTTOM_BORDER);
+                cell = getNewCell($"Total: R${string.Format("{0:0.00}", total1)}", titulo, Element.ALIGN_RIGHT, 10, PdfPCell.BOTTOM_BORDER);
                 cell.Colspan = 5;
                 table.AddCell(cell);
             }

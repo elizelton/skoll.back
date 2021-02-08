@@ -50,7 +50,68 @@ namespace skoll.Infraestrutura.Repositorios
 
         public List<RelComissaoVendedor> RelComissaoPagaVendedor(int idVendedor, DateTime inicio, DateTime fim)
         {
-            throw new NotImplementedException();
+            var result = new List<RelComissaoVendedor>();
+            var command = CreateCommand("select t1.idContrato, t2.nome as nomeVend, sum(t3.comissao) as comissao, t4.nome " +
+                                        "from contrato t1 inner join vendedor t2 on t2.idVendedor = t1.fk_idVendedor " +
+                                        "inner join contratoparcela t3 on t3.fk_idContrato = t1.idContrato and t3.comissao <> 0 " +
+                                        "inner join pessoa t4 on t4.idPessoa = t1.fk_idPessoa " +
+                                        "where t1.datainicio >= @ini and t1.datainicio <= @term " +
+                                        "and t2.idVendedor = @vend " +
+                                        "group by t3.fk_idContrato, t1.idContrato, t2.nome, t4.nome ");
+            command.Parameters.AddWithValue("@vend", idVendedor);
+            command.Parameters.AddWithValue("@ini", inicio);
+            command.Parameters.AddWithValue("@term", fim);
+
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    if (reader.HasRows)
+                    {
+                        result.Add(new RelComissaoVendedor
+                        {
+                            clienteContrato = reader["nome"].ToString(),
+                            idContrato = Convert.ToInt32(reader["idContrato"]),
+                            tipoPagamento = "V",
+                            valorComissao = Convert.ToDecimal(reader["comissao"]),
+                            vendedor = reader["nomeVend"].ToString()
+                        });
+                    }
+                }
+                reader.Close();
+            }
+
+            command = CreateCommand("select t1.idContrato, t2.nome as nomeVend, sum(t4.comissao) as comissao, t5.nome " +
+                                        "from contrato t1 inner join vendedor t2 on t2.idVendedor = t1.fk_idVendedor " +
+                                        "inner join contratoparcela t3 on t3.fk_idContrato = t1.idContrato and t3.comissao = 0  " +
+                                        "inner join contratoparcelapagamento t4 on t4.fk_idContratoParcela = t3.idContratoParcela and t4.comissao > 0 " +
+                                        "inner join pessoa t5 on t5.idPessoa = t1.fk_idPessoa " +
+                                        "where t4.datapagamento >= @ini and t4.datapagamento <= @term " +
+                                        "and t2.idVendedor = @vend group by t4.fk_idContratoParcela, t3.idContratoParcela, t3.fk_idContrato, t1.idContrato, t2.nome, t5.nome ");
+            command.Parameters.AddWithValue("@vend", idVendedor);
+            command.Parameters.AddWithValue("@ini", inicio);
+            command.Parameters.AddWithValue("@term", fim);
+
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    if (reader.HasRows)
+                    {
+                        result.Add(new RelComissaoVendedor
+                        {
+                            clienteContrato = reader["nome"].ToString(),
+                            idContrato = Convert.ToInt32(reader["idContrato"]),
+                            tipoPagamento = "R",
+                            valorComissao = Convert.ToDecimal(reader["comissao"]),
+                            vendedor = reader["nomeVend"].ToString()
+                        });
+                    }
+                }
+                reader.Close();
+            }
+
+            return result;
         }
 
         public List<RelContrato> RelContratosPorCliente(int idCliente, DateTime inicio, DateTime fim)
