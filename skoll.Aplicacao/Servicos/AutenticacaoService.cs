@@ -98,6 +98,10 @@ namespace skoll.Aplicacao.Servicos
         /// <returns>Status da mensagem</returns>
         public string EsqueciMinhaSenha(Usuario usuario)
         {
+            if (usuario == null)
+            {
+                throw new AppError("Não foi encontrado nenhum usuário com as informações digitadas", 401);
+            }
             if (string.IsNullOrEmpty(usuario.email))
             {
                 throw new AppError("Email do usuário não é válido. Favor entrar em contato com o administrador do sistema", 401);
