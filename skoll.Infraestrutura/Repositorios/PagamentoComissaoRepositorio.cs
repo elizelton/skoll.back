@@ -65,6 +65,8 @@ namespace skoll.Infraestrutura.Repositorios
                 reader.Close();
             }
 
+            List<PagamentoComissao> idsRemove = new List<PagamentoComissao>();
+
             if (filtroPag == 2) //Por recebimento
             {
                 foreach (var com in result)
@@ -85,8 +87,11 @@ namespace skoll.Infraestrutura.Repositorios
                         }
                     }
                     if (com.valorComissao == 0)
-                        result.Remove(com);
+                        idsRemove.Add(com);
                 }
+
+                foreach (var com in idsRemove)
+                    result.Remove(com);
             }
 
             return result;
