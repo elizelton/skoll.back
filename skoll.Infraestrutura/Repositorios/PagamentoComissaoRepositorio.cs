@@ -72,7 +72,7 @@ namespace skoll.Infraestrutura.Repositorios
                 foreach (var com in result)
                 {
                     string query2 = "select COALESCE(sum(valorPagamento),0) as total from contratoparcelapagamento " +
-                                    "where fk_IdContratoParcela in (select idContratoParcela from contratoparcela where fk_idcontrato = @id) and comissao <> 0 ";
+                                    "where fk_IdContratoParcela in (select idContratoParcela from contratoparcela where fk_idcontrato = @id) and comissao = 0 ";
 
                     var command2 = CreateCommand(query2);
 
