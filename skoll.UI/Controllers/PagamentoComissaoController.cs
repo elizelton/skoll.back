@@ -32,5 +32,13 @@ namespace skoll.ui.Controllers
             return new { items = _pgtoComissService.ComissoesPagar(idVendedor, inicio, fim, filtroPag) };
         }
 
+        [HttpPut("{idVendedor}/{filtroPag}")]
+        public IActionResult PagarComissao(int idVendedor, int filtroPag, [FromBody] List<int> contratos)
+        {
+            _pgtoComissService.PagarComissao(idVendedor, contratos, filtroPag);
+
+            return new NoContentResult();
+        }
+
     }
 }

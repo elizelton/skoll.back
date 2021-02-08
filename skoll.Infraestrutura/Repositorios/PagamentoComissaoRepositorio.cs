@@ -70,7 +70,7 @@ namespace skoll.Infraestrutura.Repositorios
                 foreach (var com in result)
                 {
                     string query2 = "select COALESCE(sum(valorPagamento),0) as total from contratoparcelapagamento " +
-                                    "where fk_IdContratoParcela in (select idContratoParcela from contratoparcela where fk_idcontrato = @id) ";
+                                    "where fk_IdContratoParcela in (select idContratoParcela from contratoparcela where fk_idcontrato = @id) and comissao <> 0 ";
 
                     var command2 = CreateCommand(query2);
 
@@ -84,6 +84,8 @@ namespace skoll.Infraestrutura.Repositorios
                             com.valorComissao = ((Convert.ToDecimal(reader["total"])) * (com.percComis / 100));
                         }
                     }
+                    if (com.valorComissao == 0)
+                        result.Remove(com);
                 }
             }
 
@@ -92,7 +94,37 @@ namespace skoll.Infraestrutura.Repositorios
 
         public void PagarComissao(int idVendedor, List<int> contratos, int filtroPag)
         {
-            throw new NotImplementedException();
+            var vendedor = new VendedorRepositorio(this._context, this._transaction).Get(idVendedor);
+            if (filtroPag == 1)
+            {
+                foreach (var cont in contratos)
+                {
+                    var parcelas = new ContratoParcelaRepositorio(this._context, this._transaction).GetByContrato(cont);
+                    foreach (var parc in parcelas)
+                    {
+                        parc.comissao = parc.valorParcela * (vendedor.percComis / 100);
+                        new ContratoParcelaRepositorio(this._context, this._transaction).Update(parc);
+                    }
+                }
+            }
+            else if (filtroPag == 2)
+            {
+                foreach (var cont in contratos)
+                {
+                    var parcelas = new ContratoParcelaRepositorio(this._context, this._transaction).GetByContrato(cont);
+                    foreach (var parc in parcelas)
+                    {
+                        var pagamentos = new ContratoParcelaPagamentoRepositorio(this._context, this._transaction).GetByContratoParcela(parc.Id);
+                        pagamentos = pagamentos.Where(e => e.comissao == 0 && e.valorPagamento > 0).ToList();
+                        foreach(var pgto in pagamentos)
+                        {
+                            pgto.comissao = pgto.valorPagamento * (vendedor.percComis / 100);
+                        }
+                    }
+                }
+            }
+            else
+                throw new AppError("Filtro inválido");
         }
     }        
 }

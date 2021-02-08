@@ -28,7 +28,11 @@ namespace skoll.Aplicacao.Servicos
 
         public void PagarComissao(int idVendedor, List<int> contratos, int filtroPag)
         {
-            throw new NotImplementedException();
+            using (var context = _unitOfWork.Create())
+            {
+                context.Repositorios.PagamentoComissaoRepositorio.PagarComissao(idVendedor, contratos, filtroPag);
+                context.SaveChanges();
+            }
         }
     }
 }
