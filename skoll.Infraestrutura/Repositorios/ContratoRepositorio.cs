@@ -58,6 +58,19 @@ namespace skoll.Infraestrutura.Repositorios
                             throw new AppError("Não foi possível gerar os pagamentos das parcelas do novo contrato");
                     }
                 }
+
+                var servicos = contrato.servicos;
+
+                foreach(var serv in servicos)
+                {
+                    serv.Id = 0;
+                    serv.Id = newContrato.Id;
+
+                    new ContratoServicoRepositorio(this._context, this._transaction).Create(serv);
+
+                    if (serv.Id == 0)
+                        throw new AppError("Não foi possível gerar os serviços do novo contrato");
+                }
             }
 
             var query = "UPDATE public.Contrato SET tipoDocumento = @tipoDocumento WHERE idContrato = @id";
