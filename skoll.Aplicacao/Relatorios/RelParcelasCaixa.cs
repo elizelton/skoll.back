@@ -54,7 +54,7 @@ namespace skoll.Aplicacao.Relatorios
             #endregion
 
 
-            var parcelas = this.list.OrderBy(e=> e.isEstrada);
+            var parcelas = this.list.OrderByDescending(e=> e.isEstrada);
             bool entrou = false;
             var total1 = parcelas.Where(e => e.isEstrada).Sum(e => e.valor);
             var total2 = parcelas.Where(e => !e.isEstrada).Sum(e => e.valor);
@@ -78,11 +78,11 @@ namespace skoll.Aplicacao.Relatorios
                     table.AddCell(cell);
                     entrou = true;
                 }
-                table.AddCell(getNewCell("0", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
-                table.AddCell(getNewCell("01/01/2020", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
-                table.AddCell(getNewCell("01/01/2020", font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
-                table.AddCell(getNewCell(string.Format("{0:0.00}", "100"), font, Element.ALIGN_RIGHT, 5, PdfPCell.BOTTOM_BORDER));
-                table.AddCell(getNewCell(string.Format("{0:0.00}", "100"), font, Element.ALIGN_RIGHT, 5, PdfPCell.BOTTOM_BORDER));
+                table.AddCell(getNewCell(d.descricao, font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
+                table.AddCell(getNewCell(d.nome, font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
+                table.AddCell(getNewCell(d.dataPagamento, font, Element.ALIGN_LEFT, 5, PdfPCell.BOTTOM_BORDER));
+                table.AddCell(getNewCell(d.numParcela, font, Element.ALIGN_RIGHT, 5, PdfPCell.BOTTOM_BORDER));
+                table.AddCell(getNewCell(string.Format("{0:0.00}", d.valor), font, Element.ALIGN_RIGHT, 5, PdfPCell.BOTTOM_BORDER));
 
             }
 
