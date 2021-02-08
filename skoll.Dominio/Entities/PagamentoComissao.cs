@@ -12,8 +12,8 @@ namespace skoll.Dominio.Entities
 
         public string vendedor { get; set; }
 
-        public DateTime dataPagamento { get; set; }
-
         public decimal valorComissao { get; set; }
+
+        public int filtro { get; set; }
     }
 }

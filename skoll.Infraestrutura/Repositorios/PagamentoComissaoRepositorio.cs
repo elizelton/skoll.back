@@ -1,5 +1,6 @@
 ﻿using Npgsql;
 using skoll.Dominio.Entities;
+using skoll.Dominio.Exceptions;
 using skoll.Infraestrutura.Interfaces.Repositorios;
 using skoll.Infraestrutura.Interfaces.Repositorios.acoes;
 using System;
@@ -18,7 +19,73 @@ namespace skoll.Infraestrutura.Repositorios
 
         public List<PagamentoComissao> ComissoesPagar(int idVendedor, DateTime inicio, DateTime fim, int filtroPag)
         {
-            throw new NotImplementedException();
+            if (filtroPag < 1 || filtroPag > 2)
+                throw new AppError("Filtro inválido");
+
+            var result = new List<PagamentoComissao>();
+            string query = "select t1.nome as vendNome, t2.idContrato, t3.nome as nomeCli, (t2.valortotal * (t1.perccomis/100)) as valor from vendedor t1  " +
+                           "inner join contrato t2 on t2.fk_idVendedor = t1.idVendedor inner join pessoa t3 on t3.idPessoa = t2.fk_idPessoa " +
+                           "where t1.idVendedor = @id and t1.perccomis > 0 and exists (select 1 from contratoparcela where fk_idcontrato = t2.idContrato) " +
+                           "and not exists (select 1 from contratoparcela where fk_idcontrato = t2.idContrato and comissao > 0) " +
+                           "and t2.tipodocumento <> 3 and t2.ativo = true  " +
+                           "and not exists (select 1 from contratoparcelapagamento where fk_idcontratoparcela in (select idcontratoparcela  " +
+                           "               from contratoparcela where fk_idcontrato = t2.idContrato) and comissao > 0) ";
+
+            if (filtroPag == 2)
+            {
+                query += "and exists (select 1 from contratoparcelapagamento where fk_idcontratoparcela in (select idcontratoparcela " +
+                         "            from contratoparcela where fk_idcontrato = t2.idContrato) and valorpagamento > 0) ";
+            }
+
+            query += "and t2.datainicio >= @ini and t2.datainicio <= @fim order by t2.idContrato ";
+
+            var command = CreateCommand(query);
+
+            command.Parameters.AddWithValue("@ini", inicio);
+            command.Parameters.AddWithValue("@fim", fim);
+            command.Parameters.AddWithValue("@id", idVendedor);
+
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    if (reader.HasRows)
+                    {
+                        result.Add(new PagamentoComissao
+                        {
+                            cliente = reader["nomeCli"].ToString(),
+                            idContrato = Convert.ToInt32(reader["idContrato"]),
+                            valorComissao = Convert.ToDecimal(reader["valor"]),
+                            vendedor = reader["vendNome"].ToString(),
+                            filtro = filtroPag
+                        });
+                    }
+                }
+                reader.Close();
+            }
+
+            if (filtroPag == 2) //Por recebimento
+            {
+                foreach (var com in result)
+                {
+                    string query2 = "select COALESCE(sum(t4.valorPagamento),0) as total from contratoparcelapagamento " +
+                                    "where fk_IdContratoParcela in (select idContratoParcela from contratoparcela where fk_idcontrato = @id) ";
+
+                    var command2 = CreateCommand(query2);
+
+                    command.Parameters.AddWithValue("@id", com.idContrato);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            com.valorComissao = Convert.ToDecimal(reader["total"]);
+                        }
+                    }
+                }
+            }
+
+            return result;
         }
 
         public void PagarComissao(int idVendedor, List<int> contratos, int filtroPag)

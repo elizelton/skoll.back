@@ -75,6 +75,7 @@ namespace skoll.Aplicacao
             services.AddSingleton<IContratoService, ContratoService>();
             services.AddSingleton<IContratoServicoService, ContratoServicoService>();
             services.AddSingleton<IRelatorioService, RelatorioService>();
+            services.AddSingleton<IPagamentoComissaoService, PagamentoComissaoService>();
 
 
             return services;
