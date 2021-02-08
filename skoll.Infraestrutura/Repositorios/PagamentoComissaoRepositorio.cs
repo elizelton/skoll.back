@@ -23,7 +23,7 @@ namespace skoll.Infraestrutura.Repositorios
                 throw new AppError("Filtro inválido");
 
             var result = new List<PagamentoComissao>();
-            string query = "select t1.nome as vendNome, t2.idContrato, t3.nome as nomeCli, (t2.valortotal * (t1.perccomis/100)) as valor from vendedor t1  " +
+            string query = "select t1.nome as vendNome, t2.idContrato, t3.nome as nomeCli, (t2.valortotal * (t1.perccomis/100)) as valor, t1.perccomis from vendedor t1  " +
                            "inner join contrato t2 on t2.fk_idVendedor = t1.idVendedor inner join pessoa t3 on t3.idPessoa = t2.fk_idPessoa " +
                            "where t1.idVendedor = @id and t1.perccomis > 0 and exists (select 1 from contratoparcela where fk_idcontrato = t2.idContrato) " +
                            "and not exists (select 1 from contratoparcela where fk_idcontrato = t2.idContrato and comissao > 0) " +
@@ -57,6 +57,7 @@ namespace skoll.Infraestrutura.Repositorios
                             idContrato = Convert.ToInt32(reader["idContrato"]),
                             valorComissao = Convert.ToDecimal(reader["valor"]),
                             vendedor = reader["vendNome"].ToString(),
+                            percComis = Convert.ToDecimal(reader["perccomis"]),
                             filtro = filtroPag
                         });
                     }
@@ -68,7 +69,7 @@ namespace skoll.Infraestrutura.Repositorios
             {
                 foreach (var com in result)
                 {
-                    string query2 = "select COALESCE(sum(t4.valorPagamento),0) as total from contratoparcelapagamento " +
+                    string query2 = "select COALESCE(sum(valorPagamento),0) as total from contratoparcelapagamento " +
                                     "where fk_IdContratoParcela in (select idContratoParcela from contratoparcela where fk_idcontrato = @id) ";
 
                     var command2 = CreateCommand(query2);
@@ -77,9 +78,10 @@ namespace skoll.Infraestrutura.Repositorios
 
                     using (var reader = command2.ExecuteReader())
                     {
+                        reader.Read();
                         if (reader.HasRows)
                         {
-                            com.valorComissao = Convert.ToDecimal(reader["total"]);
+                            com.valorComissao = ((Convert.ToDecimal(reader["total"])) * (com.percComis / 100));
                         }
                     }
                 }

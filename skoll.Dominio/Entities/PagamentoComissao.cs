@@ -13,7 +13,7 @@ namespace skoll.Dominio.Entities
         public string vendedor { get; set; }
 
         public decimal valorComissao { get; set; }
-
+        public decimal percComis { get; set; }
         public int filtro { get; set; }
     }
 }
