@@ -73,9 +73,9 @@ namespace skoll.Infraestrutura.Repositorios
 
                     var command2 = CreateCommand(query2);
 
-                    command.Parameters.AddWithValue("@id", com.idContrato);
+                    command2.Parameters.AddWithValue("@id", com.idContrato);
 
-                    using (var reader = command.ExecuteReader())
+                    using (var reader = command2.ExecuteReader())
                     {
                         if (reader.HasRows)
                         {
