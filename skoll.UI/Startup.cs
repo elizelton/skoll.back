@@ -58,7 +58,7 @@ namespace skoll
                 app.UseHsts();
             }
 
-            app.UseCors(builder => builder.WithOrigins("https://skollweb.herokuapp.com").AllowAnyOrigin());
+            app.UseCors(builder => builder.WithOrigins("https://skollweb.herokuapp.com").AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseCors(builder => builder.WithOrigins("http://localhost:4200")
                                 .AllowAnyMethod()
                                 .AllowAnyHeader());
