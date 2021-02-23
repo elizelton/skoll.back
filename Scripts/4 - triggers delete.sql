@@ -31,7 +31,7 @@ CREATE TRIGGER usuariodelete_trigger BEFORE DELETE ON Usuario
 -- Regras Fornecedor
 CREATE FUNCTION fornecedordelete_trigger() RETURNS trigger AS $fornecedordelete_trigger$
     BEGIN
-        IF EXISTS (SELECT 1 FROM ContaPagar WHERE fk_IdFornecedor = OLD.IdFornecedor and fk_IdPessoa = OLD.IdPessoa) THEN
+        IF EXISTS (SELECT 1 FROM ContaPagar WHERE fk_IdFornecedor = OLD.IdFornecedor and fk_IdPessoa = OLD.fk_IdPessoa) THEN
             RAISE EXCEPTION 'Fornecedor ja atribuído a uma Conta a Pagar';
         END IF;
 		RETURN OLD;
