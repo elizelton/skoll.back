@@ -18,6 +18,7 @@ namespace skoll.Infraestrutura.Repositorios
 
         public void Create(Cliente cliente)
         {
+            bool inseriuNovo = false;
             var idPessoa = cliente.Id;
             if (idPessoa > 0)
                 new PessoaRepositorio(this._context, this._transaction).Update(cliente.ToPessoa());
@@ -26,6 +27,7 @@ namespace skoll.Infraestrutura.Repositorios
                 var pessoaInsert = new PessoaRepositorio(this._context, this._transaction).GetByCpfCnpj(cliente.ToPessoa().cpfCnpj);
                 if (pessoaInsert == null)
                 {
+                    inseriuNovo = true;
                     new PessoaRepositorio(this._context, this._transaction).Create(cliente.ToPessoa());
                     pessoaInsert = new PessoaRepositorio(this._context, this._transaction).GetByCpfCnpj(cliente.cpfCnpj);
                 }
@@ -34,6 +36,8 @@ namespace skoll.Infraestrutura.Repositorios
                 {
                     idPessoa = pessoaInsert.Id;
                     cliente.Id = idPessoa;
+                    if (!inseriuNovo)
+                        new PessoaRepositorio(this._context, this._transaction).Update(cliente.ToPessoa());
                 }
             }
 
