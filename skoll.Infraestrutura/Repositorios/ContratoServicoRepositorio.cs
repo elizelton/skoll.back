@@ -156,6 +156,13 @@ namespace skoll.Infraestrutura.Repositorios
             command.Parameters.AddWithValue("@id", id);
 
             command.ExecuteNonQuery();
+
+            var serv = Get(id);
+
+            command = CreateCommand("DELETE FROM ContratoParcela WHERE fk_idContrato = @idCont");
+            command.Parameters.AddWithValue("@id", serv.idContrato);
+
+            command.ExecuteNonQuery();
         }
 
         public void Update(ContratoServico contServ)

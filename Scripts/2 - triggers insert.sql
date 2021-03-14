@@ -36,6 +36,9 @@ CREATE FUNCTION usuario_trigger() RETURNS trigger AS $usuario_trigger$
         IF EXISTS (SELECT 1 FROM USUARIO WHERE userName = NEW.userName and idUsuario <> NEW.idUsuario) THEN
             RAISE EXCEPTION 'Nome de usuário já cadastrado';
         END IF;
+		IF EXISTS (SELECT 1 FROM USUARIO WHERE email = NEW.email and idUsuario <> NEW.idUsuario) THEN
+            RAISE EXCEPTION 'Email já cadastrado para outro Usuario';
+        END IF;
 		IF NEW.senha IS NULL or NEW.senha = '' THEN
             RAISE EXCEPTION 'O Usuário deve ter uma senha';
         END IF;
