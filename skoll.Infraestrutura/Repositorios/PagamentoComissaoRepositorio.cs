@@ -37,7 +37,14 @@ namespace skoll.Infraestrutura.Repositorios
             }
             else if (filtroPag == 2)
             {
-                //A montar query
+                query = "select t1.nome as vendNome, t2.idContrato, t3.nome as nomeCli, (sum(t5.valorpagamento) * (t1.percComis/100)) as valor, t1.perccomis from vendedor t1 " +
+                        "inner join contrato t2 on t2.fk_idVendedor = t1.idVendedor inner join pessoa t3 on t3.idPessoa = t2.fk_idPessoa " +
+                        "inner join contratoparcela t4 on t4.fk_idcontrato = t2.idContrato inner join contratoparcelapagamento t5 on t5.fk_idContratoParcela = t4.idContratoParcela " +
+                        "where t1.idVendedor = @id and t1.perccomis > 0 and exists (select 1 from contratoparcela where fk_idcontrato = t2.idContrato) " +
+                        "and not exists (select 1 from contratoparcela where fk_idcontrato = t2.idContrato and comissao > 0) " +
+                        "and t2.tipodocumento <> 3 and t2.ativo = true " +
+                        "and t5.datapagamento >= @ini and t5.datapagamento <= @fim and t4.situacao = 3 and t5.comissao = 0 " +
+                        "group by t1.nome, t2.idContrato, t3.nome, t1.perccomis, t4.fk_idContrato ";
             }
 
             var command = CreateCommand(query);
@@ -66,37 +73,7 @@ namespace skoll.Infraestrutura.Repositorios
                 reader.Close();
             }
 
-            List<PagamentoComissao> idsRemove = new List<PagamentoComissao>();
-
-            if (filtroPag == 2) //Por recebimento
-            {
-                foreach (var com in result)
-                {
-                    string query2 = "select COALESCE(sum(valorPagamento),0) as total from contratoparcelapagamento " +
-                                    "where fk_IdContratoParcela in (select idContratoParcela from contratoparcela where fk_idcontrato = @id and situacao = 3) and comissao = 0 ";
-
-                    var command2 = CreateCommand(query2);
-
-                    command2.Parameters.AddWithValue("@id", com.idContrato);
-
-                    using (var reader = command2.ExecuteReader())
-                    {
-                        reader.Read();
-                        if (reader.HasRows)
-                        {
-                            com.valorComissao = ((Convert.ToDecimal(reader["total"])) * (com.percComis / 100));
-                        }
-                    }
-
-                    if (com.valorComissao == 0)
-                        idsRemove.Add(com);
-                }
-
-                foreach (var com in idsRemove)
-                    result.Remove(com);
-            }
-
-            return result;
+            return result.OrderBy(r => r.cliente).ToList<PagamentoComissao>();
         }
 
         public void PagarComissao(int idVendedor, List<int> contratos, int filtroPag, DateTime inicio, DateTime fim)
@@ -119,13 +96,15 @@ namespace skoll.Infraestrutura.Repositorios
                 foreach (var cont in contratos)
                 {
                     var parcelas = new ContratoParcelaRepositorio(this._context, this._transaction).GetByContrato(cont);
+                    parcelas = parcelas.Where(p => p.situacao == 3);
                     foreach (var parc in parcelas)
                     {
                         var pagamentos = new ContratoParcelaPagamentoRepositorio(this._context, this._transaction).GetByContratoParcela(parc.Id);
                         pagamentos = pagamentos.Where(e => e.comissao == 0 && e.valorPagamento > 0 && e.dataPagamento >= inicio && e.dataPagamento <= fim).ToList();
-                        foreach(var pgto in pagamentos)
+                        foreach (var pgto in pagamentos)
                         {
                             pgto.comissao = pgto.valorPagamento * (vendedor.percComis / 100);
+                            new ContratoParcelaPagamentoRepositorio(this._context, this._transaction).Update(pgto);
                         }
                     }
                 }
