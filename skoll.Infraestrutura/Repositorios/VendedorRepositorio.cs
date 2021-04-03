@@ -100,7 +100,7 @@ namespace skoll.Infraestrutura.Repositorios
                 reader.Close();
             }
 
-            return result;
+            return result.OrderBy(r => r.nome);
         }
 
         public IEnumerable<Vendedor> GetAtivos()

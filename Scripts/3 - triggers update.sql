@@ -206,6 +206,9 @@ CREATE FUNCTION contratoparcelapagamentoupdate_trigger() RETURNS trigger AS $con
         IF NEW.fk_IdContratoParcela <> OLD.fk_IdContratoParcela THEN
             RAISE EXCEPTION 'A Parcela de contrato correspondente ao pagamento não pode ser alterada';
         END IF;
+        IF ((((SELECT SUM(valorPagamento) from ContratoParcelaPagamento where fk_IdContratoParcela = NEW.fk_IdContratoParcela) - OLD.valorPagamento) + NEW.valorPagamento) > (SELECT SUM(valorparcela) from ContratoParcela where IdContratoParcela = NEW.fk_IdContratoParcela)) THEN
+            RAISE EXCEPTION 'Os valores de pagamento ultrapassam o valor total da parcela';
+        END IF;
 		RETURN NEW;
     END;
   $contratoparcelapagamentoupdate_trigger$ LANGUAGE plpgsql;

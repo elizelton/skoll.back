@@ -224,7 +224,7 @@ namespace skoll.Infraestrutura.Repositorios
                 conta.nomeFornecedor = new FornecedorRepositorio(this._context, this._transaction).Get(conta.fornecedor.idFornecedor).nome;
             }
 
-            return result;
+            return result.OrderBy(r=> r.nomeFornecedor);
         }
 
         public void Remove(int id)

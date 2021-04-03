@@ -305,7 +305,7 @@ namespace skoll.Infraestrutura.Repositorios
                 contrato.nomeCliente = new ClienteRepositorio(this._context, this._transaction).Get(contrato.cliente.idCliente).nome;
             }
 
-            return result;
+            return result.OrderBy(r => r.nomeCliente);
         }
 
         public void Remove(int id)

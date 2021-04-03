@@ -178,7 +178,7 @@ namespace skoll.Infraestrutura.Repositorios
             foreach (var serv in result)
                 serv.produto = new ProdutoRepositorio(this._context, this._transaction).Get(serv.produto.Id);
 
-            return result;
+            return result.OrderBy(r => r.nome);
         }
 
         public IEnumerable<ServicoPrestado> GetByNomeLike(string nome)

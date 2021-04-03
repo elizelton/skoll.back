@@ -294,6 +294,9 @@ CREATE FUNCTION contratoparcelapagamentoinsert_trigger() RETURNS trigger AS $con
 		IF NEW.fk_IdContratoParcela IS NULL or NEW.fk_IdContratoParcela <= 0 THEN
             RAISE EXCEPTION 'O pagamento deve estar atrelado a uma parcela';
         END IF;
+        IF (((SELECT SUM(valorPagamento) from ContratoParcelaPagamento where fk_IdContratoParcela = NEW.fk_IdContratoParcela) + NEW.valorPagamento) > (SELECT SUM(valorparcela) from ContratoParcela where IdContratoParcela = NEW.fk_IdContratoParcela)) THEN
+            RAISE EXCEPTION 'Os valores de pagamento ultrapassam o valor total da parcela';
+        END IF;
 		RETURN NEW;
     END;
   $contratoparcelapagamentoinsert_trigger$ LANGUAGE plpgsql;

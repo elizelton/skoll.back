@@ -136,7 +136,7 @@ namespace skoll.Infraestrutura.Repositorios
                                                    : Convert.ToUInt64(cli.cpfCnpj).ToString(@"00\.000\.000\/0000\-00");
             }
 
-            return result;
+            return result.OrderBy(r => r.nome);
         }
 
         public IEnumerable<Cliente> GetAtivos()

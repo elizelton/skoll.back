@@ -61,7 +61,7 @@ namespace skoll.Aplicacao.Servicos
             {
                 var list = context.Repositorios.ContratoRepositorio.GetAll();
                 if (!string.IsNullOrEmpty(search))
-                    return list.Where(e => e.nomeCliente.ToUpper().Contains(search) || e.nomeVendedor.Contains(search.ToUpper()));
+                    return list.Where(e => e.nomeCliente.ToUpper().Contains(search.ToUpper()) || e.nomeVendedor.Contains(search.ToUpper()));
                 else
                     return list;
             }
