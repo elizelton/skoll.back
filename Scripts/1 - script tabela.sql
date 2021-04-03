@@ -95,7 +95,7 @@ CREATE TABLE Vendedor (
     nome varchar(50) NOT NULL,
     cpf varchar(11),
     ativo boolean,
-    codigo varchar(4),
+    codigo varchar(4) UNIQUE,
     percComis decimal NOT NULL
 );
 

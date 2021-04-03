@@ -40,7 +40,7 @@ CREATE FUNCTION usuario_trigger() RETURNS trigger AS $usuario_trigger$
             RAISE EXCEPTION 'Email já cadastrado para outro Usuario';
         END IF;
 		IF NEW.senha IS NULL or NEW.senha = '' THEN
-            RAISE EXCEPTION 'O Usuário deve ter uma senha';
+            RAISE EXCEPTION 'O Usuário deve possuir uma senha';
         END IF;
 		IF NEW.Ativo IS NULL THEN
             NEW.Ativo := true;
@@ -185,14 +185,19 @@ CREATE TRIGGER formapagamento_trigger BEFORE INSERT OR UPDATE ON FormaPagamento
 CREATE FUNCTION vendedor_trigger() RETURNS trigger AS $vendedor_trigger$
     BEGIN
         IF NEW.nome IS NULL or NEW.nome = '' THEN
-            RAISE EXCEPTION 'O nome do Vendedor deve ser informada';
+            RAISE EXCEPTION 'O nome do Vendedor deve ser informado';
         END IF;
 		IF NEW.percComis IS NULL or NEW.percComis <= 0 THEN
-            RAISE EXCEPTION 'O Vendedor deve ter um percentual de comissão válido';
+            RAISE EXCEPTION 'O Vendedor deve ter um percentual de comissão maior que 0';
         END IF;
         IF NEW.Cpf is not null and NEW.Cpf <> '' THEN
             IF EXISTS (SELECT 1 FROM Vendedor WHERE cpf = NEW.cpf and idVendedor <> NEW.idVendedor) THEN
                 RAISE EXCEPTION 'CPF de Vendedor já cadastrado';
+            END IF;
+        END IF;
+        IF NEW.Codigo is not null and NEW.Codigo <> '' THEN
+            IF EXISTS (SELECT 1 FROM Vendedor WHERE codigo = NEW.Codigo and idVendedor <> NEW.idVendedor) THEN
+                RAISE EXCEPTION 'Código de Vendedor já cadastrado';
             END IF;
         END IF;
         IF NEW.Ativo IS NULL THEN
@@ -256,7 +261,7 @@ CREATE TRIGGER contapagarparcelainsert_trigger BEFORE INSERT ON ContaPagarParcel
 CREATE FUNCTION contratoservicoinsert_trigger() RETURNS trigger AS $contratoservicoinsert_trigger$
     BEGIN
         IF NEW.valorUnitario IS NULL or NEW.valorUnitario <= 0 THEN
-            RAISE EXCEPTION 'O valor unitário do Serviço Prestado no contrato deve ser informado';
+            RAISE EXCEPTION 'O valor unitário do serviço prestado no contrato deve ser informado';
         END IF;
 		IF NEW.quantidade IS NULL or NEW.quantidade <= 0 THEN
             RAISE EXCEPTION 'A quantidade deve ser informada';
@@ -287,7 +292,7 @@ CREATE FUNCTION contratoparcelapagamentoinsert_trigger() RETURNS trigger AS $con
             RAISE EXCEPTION 'O valor de pagamento não deve ser igual a 0';
         END IF;
 		IF NEW.fk_IdContratoParcela IS NULL or NEW.fk_IdContratoParcela <= 0 THEN
-            RAISE EXCEPTION 'O pagamento deve estar atlelado a uma parcela';
+            RAISE EXCEPTION 'O pagamento deve estar atrelado a uma parcela';
         END IF;
 		RETURN NEW;
     END;
@@ -306,7 +311,7 @@ CREATE FUNCTION contapagarparcelapagamentoinsert_trigger() RETURNS trigger AS $c
             RAISE EXCEPTION 'O valor de pagamento não deve ser igual a 0';
         END IF;
 		IF NEW.fk_IdContaPagarParcela IS NULL or NEW.fk_IdContaPagarParcela <= 0 THEN
-            RAISE EXCEPTION 'O pagamento deve estar atlelado a uma parcela';
+            RAISE EXCEPTION 'O pagamento deve estar atrelado a uma parcela';
         END IF;
 		RETURN NEW;
     END;
@@ -328,10 +333,10 @@ CREATE FUNCTION contapagarinsert_trigger() RETURNS trigger AS $contapagarinsert_
             RAISE EXCEPTION 'O valor total ou mensal deve ser informado';
         END IF;
 		IF NEW.fk_IdFornecedor IS NULL or NEW.fk_IdFornecedor <= 0 THEN
-            RAISE EXCEPTION 'A conta deve estar atlelada a um fornecedor';
+            RAISE EXCEPTION 'A conta deve estar atrelada a um fornecedor';
         END IF;
 		IF NEW.fk_IdPessoa IS NULL or NEW.fk_IdPessoa <= 0 THEN
-            RAISE EXCEPTION 'A conta deve estar atlelada a uma Pessoa';
+            RAISE EXCEPTION 'A conta deve estar atrelada a uma pessoa';
         END IF;
 		RETURN NEW;
     END;
@@ -371,10 +376,10 @@ CREATE FUNCTION contratoinsert_trigger() RETURNS trigger AS $contratoinsert_trig
             RAISE EXCEPTION 'O Usuário que está incluindo deve ser informado';
         END IF;
 		IF NEW.fk_IdCliente IS NULL or NEW.fk_IdCliente <= 0 THEN
-            RAISE EXCEPTION 'O Contrato deve estar atlelada a um Cliente';
+            RAISE EXCEPTION 'O Contrato deve estar atrelada a um Cliente';
         END IF;
 		IF NEW.fk_IdPessoa IS NULL or NEW.fk_IdPessoa <= 0 THEN
-            RAISE EXCEPTION 'O Contrato deve estar atlelada a uma Pessoa';
+            RAISE EXCEPTION 'O Contrato deve estar atrelada a uma Pessoa';
         END IF;
         IF EXISTS (SELECT 1 FROM FORMAPAGAMENTO WHERE idFormaPag = NEW.fk_IdFormaPag and qtdParcela < NEW.numParcelas) THEN
             RAISE EXCEPTION 'O número de parcelas do contrato excede o permitido pela forma de pagamento';
@@ -392,7 +397,7 @@ CREATE TRIGGER contratoinsert_trigger BEFORE INSERT ON Contrato
 --Regras Cidades
 CREATE FUNCTION cidadesinsert_trigger() RETURNS trigger AS $cidadesinsert_trigger$
     BEGIN
-        IF EXISTS (SELECT 1 FROM CIDADES WHERE cidade = NEW.cidade and estado = NEW.estado) THEN
+        IF EXISTS (SELECT 1 FROM CIDADES WHERE cidade = NEW.cidade and estado = NEW.estado and idCidade <> NEW.idCidade) THEN
             RAISE EXCEPTION 'Cidade já cadastrada';
         END IF;
 		RETURN NEW;

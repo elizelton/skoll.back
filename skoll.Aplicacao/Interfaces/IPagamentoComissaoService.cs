@@ -11,7 +11,7 @@ namespace skoll.Aplicacao.Interfaces
     {
         List<PagamentoComissao> ComissoesPagar(int idVendedor, DateTime inicio, DateTime fim, int filtroPag);
 
-        void PagarComissao(int idVendedor, List<int> contratos, int filtroPag);
+        void PagarComissao(int idVendedor, List<int> contratos, int filtroPag, DateTime inicio, DateTime fim);
 
     }
 }

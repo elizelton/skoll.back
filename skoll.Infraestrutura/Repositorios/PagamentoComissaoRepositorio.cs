@@ -23,21 +23,22 @@ namespace skoll.Infraestrutura.Repositorios
                 throw new AppError("Filtro inválido");
 
             var result = new List<PagamentoComissao>();
-            string query = "select t1.nome as vendNome, t2.idContrato, t3.nome as nomeCli, (t2.valortotal * (t1.perccomis/100)) as valor, t1.perccomis from vendedor t1  " +
-                           "inner join contrato t2 on t2.fk_idVendedor = t1.idVendedor inner join pessoa t3 on t3.idPessoa = t2.fk_idPessoa " +
-                           "where t1.idVendedor = @id and t1.perccomis > 0 and exists (select 1 from contratoparcela where fk_idcontrato = t2.idContrato) " +
-                           "and not exists (select 1 from contratoparcela where fk_idcontrato = t2.idContrato and comissao > 0) " +
-                           "and t2.tipodocumento <> 3 and t2.ativo = true  " +
-                           "and not exists (select 1 from contratoparcelapagamento where fk_idcontratoparcela in (select idcontratoparcela  " +
-                           "               from contratoparcela where fk_idcontrato = t2.idContrato) and comissao > 0) ";
-
-            if (filtroPag == 2)
+            string query = string.Empty;
+            if (filtroPag == 1)
             {
-                query += "and exists (select 1 from contratoparcelapagamento where fk_idcontratoparcela in (select idcontratoparcela " +
-                         "            from contratoparcela where fk_idcontrato = t2.idContrato) and valorpagamento > 0) ";
+                query = "select t1.nome as vendNome, t2.idContrato, t3.nome as nomeCli, (t2.valortotal * (t1.perccomis/100)) as valor, t1.perccomis from vendedor t1  " +
+                        "inner join contrato t2 on t2.fk_idVendedor = t1.idVendedor inner join pessoa t3 on t3.idPessoa = t2.fk_idPessoa " +
+                        "where t1.idVendedor = @id and t1.perccomis > 0 and exists (select 1 from contratoparcela where fk_idcontrato = t2.idContrato) " +
+                        "and not exists (select 1 from contratoparcela where fk_idcontrato = t2.idContrato and comissao > 0) " +
+                        "and t2.tipodocumento <> 3 and t2.ativo = true  " +
+                        "and not exists (select 1 from contratoparcelapagamento where fk_idcontratoparcela in (select idcontratoparcela  " +
+                        "               from contratoparcela where fk_idcontrato = t2.idContrato) and comissao > 0) " +
+                        "and t2.datainicio >= @ini and t2.datainicio <= @fim order by t2.idContrato ";
             }
-
-            query += "and t2.datainicio >= @ini and t2.datainicio <= @fim order by t2.idContrato ";
+            else if (filtroPag == 2)
+            {
+                //A montar query
+            }
 
             var command = CreateCommand(query);
 
@@ -98,7 +99,7 @@ namespace skoll.Infraestrutura.Repositorios
             return result;
         }
 
-        public void PagarComissao(int idVendedor, List<int> contratos, int filtroPag)
+        public void PagarComissao(int idVendedor, List<int> contratos, int filtroPag, DateTime inicio, DateTime fim)
         {
             var vendedor = new VendedorRepositorio(this._context, this._transaction).Get(idVendedor);
             if (filtroPag == 1)
@@ -121,7 +122,7 @@ namespace skoll.Infraestrutura.Repositorios
                     foreach (var parc in parcelas)
                     {
                         var pagamentos = new ContratoParcelaPagamentoRepositorio(this._context, this._transaction).GetByContratoParcela(parc.Id);
-                        pagamentos = pagamentos.Where(e => e.comissao == 0 && e.valorPagamento > 0).ToList();
+                        pagamentos = pagamentos.Where(e => e.comissao == 0 && e.valorPagamento > 0 && e.dataPagamento >= inicio && e.dataPagamento <= fim).ToList();
                         foreach(var pgto in pagamentos)
                         {
                             pgto.comissao = pgto.valorPagamento * (vendedor.percComis / 100);

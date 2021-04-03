@@ -26,11 +26,11 @@ namespace skoll.Aplicacao.Servicos
             }
         }
 
-        public void PagarComissao(int idVendedor, List<int> contratos, int filtroPag)
+        public void PagarComissao(int idVendedor, List<int> contratos, int filtroPag, DateTime inicio, DateTime fim)
         {
             using (var context = _unitOfWork.Create())
             {
-                context.Repositorios.PagamentoComissaoRepositorio.PagarComissao(idVendedor, contratos, filtroPag);
+                context.Repositorios.PagamentoComissaoRepositorio.PagarComissao(idVendedor, contratos, filtroPag, inicio, fim);
                 context.SaveChanges();
             }
         }

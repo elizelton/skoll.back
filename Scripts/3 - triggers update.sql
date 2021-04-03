@@ -201,7 +201,7 @@ CREATE FUNCTION contratoparcelapagamentoupdate_trigger() RETURNS trigger AS $con
             RAISE EXCEPTION 'O valor de pagamento não deve ser igual a 0';
         END IF;
 		IF NEW.fk_IdContratoParcela IS NULL or NEW.fk_IdContratoParcela <= 0 THEN
-            RAISE EXCEPTION 'O pagamento deve estar atlelado a uma parcela';
+            RAISE EXCEPTION 'O pagamento deve estar atrelado a uma parcela';
         END IF;
         IF NEW.fk_IdContratoParcela <> OLD.fk_IdContratoParcela THEN
             RAISE EXCEPTION 'A Parcela de contrato correspondente ao pagamento não pode ser alterada';
@@ -223,7 +223,7 @@ CREATE FUNCTION contapagarparcelapagamentoupdate_trigger() RETURNS trigger AS $c
             RAISE EXCEPTION 'O valor de pagamento não deve ser igual a 0';
         END IF;
 		IF NEW.fk_IdContaPagarParcela IS NULL or NEW.fk_IdContaPagarParcela <= 0 THEN
-            RAISE EXCEPTION 'O pagamento deve estar atlelado a uma parcela';
+            RAISE EXCEPTION 'O pagamento deve estar atrelado a uma parcela';
         END IF;
         IF NEW.fk_IdContaPagarParcela <> OLD.fk_IdContaPagarParcela THEN
             RAISE EXCEPTION 'A Parcela de conta a pagar correspondente ao pagamento não pode ser alterada';
@@ -248,13 +248,13 @@ CREATE FUNCTION contapagarupdate_trigger() RETURNS trigger AS $contapagarupdate_
             RAISE EXCEPTION 'O valor total ou mensal deve ser informado';
         END IF;
 		IF NEW.fk_IdFornecedor IS NULL or NEW.fk_IdFornecedor <= 0 THEN
-            RAISE EXCEPTION 'A conta deve estar atlelada a um fornecedor';
+            RAISE EXCEPTION 'A conta deve estar atrelada a um fornecedor';
         END IF;
         IF NEW.fk_IdFornecedor <> OLD.fk_IdFornecedor THEN
             RAISE EXCEPTION 'O Fornecedor não pode ser alterado';
         END IF;
 		IF NEW.fk_IdPessoa IS NULL or NEW.fk_IdPessoa <= 0 THEN
-            RAISE EXCEPTION 'A conta deve estar atlelada a uma Pessoa';
+            RAISE EXCEPTION 'A conta deve estar atrelada a uma Pessoa';
         END IF;
         IF NEW.fk_IdPessoa <> OLD.fk_IdPessoa THEN
             RAISE EXCEPTION 'A Pessoa não pode ser alterada';
@@ -308,10 +308,10 @@ CREATE FUNCTION contratoupdate_trigger() RETURNS trigger AS $contratoupdate_trig
             RAISE EXCEPTION 'O Usuário responsável não pode ser alterado';
         END IF;
 		IF NEW.fk_IdCliente IS NULL or NEW.fk_IdCliente <= 0 THEN
-            RAISE EXCEPTION 'O Contrato deve estar atlelada a um Cliente';
+            RAISE EXCEPTION 'O Contrato deve estar atrelada a um Cliente';
         END IF;
 		IF NEW.fk_IdPessoa IS NULL or NEW.fk_IdPessoa <= 0 THEN
-            RAISE EXCEPTION 'O Contrato deve estar atlelada a uma Pessoa';
+            RAISE EXCEPTION 'O Contrato deve estar atrelada a uma Pessoa';
         END IF;
         IF NEW.fk_IdCliente <> OLD.fk_IdCliente THEN
             RAISE EXCEPTION 'O Cliente não pode ser alterado';

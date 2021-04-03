@@ -18,10 +18,7 @@ CREATE TRIGGER pessoadelete_trigger BEFORE DELETE ON Pessoa
 -- Regras Usuario
 CREATE FUNCTION usuariodelete_trigger() RETURNS trigger AS $usuariodelete_trigger$
     BEGIN
-        IF EXISTS (SELECT 1 FROM Contrato WHERE fk_IdUsuario = OLD.IdUsuario) THEN
-            RAISE EXCEPTION 'Usuário ja atribuído a um Contrato';
-        END IF;
-		RETURN OLD;
+		RAISE EXCEPTION 'O Usuário não pode ser excluído. Favor inativá-lo em seu cadastro';
     END;
   $usuariodelete_trigger$ LANGUAGE plpgsql;
   
