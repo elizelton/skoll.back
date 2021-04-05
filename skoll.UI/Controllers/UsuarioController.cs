@@ -102,9 +102,7 @@ namespace skoll.ui.Controllers
 
             _autenticacaoService.EsqueciMinhaSenha(user);
             
-            string valida = "A nova senha foi enviada para o seu email";
-
-            return new ObjectResult(valida);
+            return new NoContentResult();
         }
     }
 }
